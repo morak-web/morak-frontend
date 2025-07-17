@@ -1,5 +1,7 @@
+import Router from './routes/Router';
+
 function App() {
-  return <div className="bg-red-500">tailwind 적용</div>;
+  return <Router />;
 }
 
 export default App;
