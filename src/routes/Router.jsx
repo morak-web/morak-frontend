@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Home from '../pages/Home';
+import HomePage from '../pages/HomePage';
 import RequestListPage from '../pages/request-list/RequestListPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
 
@@ -9,7 +10,8 @@ export default function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request-list" element={<RequestListPage />}>
           {/* <Route path="/reques/t-detail" /> */}
