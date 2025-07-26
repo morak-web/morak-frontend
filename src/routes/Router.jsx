@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage';
 import RequestListPage from '../pages/request-list/RequestListPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
 import Login from '../pages/Login';
+import SignUpPage from '../pages/SignUpPage';
 
 export default function Router() {
   return (
@@ -13,6 +14,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request-list" element={<RequestListPage />}>
