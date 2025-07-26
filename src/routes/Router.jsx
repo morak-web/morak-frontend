@@ -4,9 +4,10 @@ import Home from '../pages/Home';
 import HomePage from '../pages/HomePage';
 import RequestListPage from '../pages/request-list/RequestListPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
-import RequestWritePage from '../pages/request-write/RequestWritePage';
 import Login from '../pages/Login';
 import SignUpPage from '../pages/SignUpPage';
+import RequestWritePage from '../pages/request-write/RequestWritePage';
+import RequestWriteCompletePage from '../pages/request-write/RequestWriteCompletePage';
 
 export default function Router() {
   return (
@@ -19,6 +20,12 @@ export default function Router() {
         <Route path="/home" element={<Home />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
+        <Route path="RequestWriteCompletePage" />
+        <Route path="RequestWriteCompletePage" />
+        <Route
+          path="/request/write/complete"
+          element={<RequestWriteCompletePage />}
+        />
         <Route path="/request-list" element={<RequestListPage />}>
           {/* <Route path="/reques/t-detail" /> */}
         </Route>
