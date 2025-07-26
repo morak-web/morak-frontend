@@ -27,7 +27,7 @@ export default function Login() {
     <MainLayout>
       <div className="w-full h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
         <div className="w-[471px] h-[557px] bg-white py-[39px] px-[50px] rounded-[10px] shadow-lg">
-          <h1 className="text-[24px] mb-[55px] font-bold">로그인</h1>
+          <h1 className="text-[24px] mb-[40px] font-bold">로그인</h1>
           <form
             onSubmit={(e) => {
               e.preventDefault();

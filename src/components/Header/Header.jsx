@@ -30,9 +30,9 @@ export default function Header() {
             로그인
           </Link>
           <Link
-            // to="/sign-up"
+            to="/sign-up"
             className="text-[12px] bg-[#BDCFFF] py-[6px] px-[14px] rounded-[5px]"
-            onClick={() => setIsLogin(true)}
+            // onClick={() => setIsLogin(true)}
           >
             회원가입
           </Link>
