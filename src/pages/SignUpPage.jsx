@@ -26,7 +26,7 @@ export default function SignUpPage() {
 
   return (
     <MainLayout>
-      <div className="w-full h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
+      <div className="w-full min-h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
         <div className="w-[471px] h-[635px] bg-white py-[39px] px-[50px] rounded-[10px] shadow-lg">
           <h1 className="text-[24px] mb-[30px] font-bold">회원가입</h1>
           <form
