@@ -32,8 +32,12 @@ export default function HomePage() {
   ];
   return (
     <MainLayout>
-      <div className="w-[100%] h-[calc(100vh-64px)] mb-68 ">
-        <img src={mainImage} alt="" className="w-[100%] h-[80%] relative" />
+      <div className="w-[100%] min-h-[calc(100vh-64px)] mb-[100px] ">
+        <img
+          src={mainImage}
+          alt="mainImage"
+          className="w-[100%] h-[650px] relative"
+        />
         <div className="flex flex-col md:flex-row md:justify-between w-[100%] h-[40%] absolute top-50 px-[10%]  ">
           <div className="w-[50%] h-[100%]">
             <h1 className="text-[30px] sm:text-[35px] lg:text-[48px] xl:text-[55px] whitespace-nowrap">
