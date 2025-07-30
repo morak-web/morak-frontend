@@ -20,8 +20,7 @@ const MATCHING_AND_COMPLETE_BTN = [
  * @param {{ state: StateKey }} props
  */
 
-export default function MatchingInput({ state }) {
-  const list = RequestListMocks[state] ?? [];
+export default function MatchingInput({ state, selectedButtonClick }) {
   return (
     <div className="flex flex-col gap-[24px]">
       {RequestListMocks[state].map((item) => (
@@ -102,32 +101,37 @@ export default function MatchingInput({ state }) {
             </div>
             {state === 'matching' && (
               <div className="h-[50%] flex justify-end items-end">
-                <button className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer">
+                <button
+                  onClick={() => selectedButtonClick(item.id, '상세')}
+                  className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer"
+                >
                   상세 {'>'}
                 </button>
               </div>
             )}
             {state === 'doing' && (
               <div className="grid grid-cols-2 gap-x-2 gap-y-2 px-[5%]">
-                {MATCHING_AND_COMPLETE_BTN.map((item) => (
+                {MATCHING_AND_COMPLETE_BTN.map((label) => (
                   <button
-                    key={item}
-                    className={`w-[100%] h-[28px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${item === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} `}
-                    disabled={item === '최종 결과'}
+                    key={label}
+                    onClick={() => selectedButtonClick(item.id, label)}
+                    className={`w-[100%] h-[28px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} `}
+                    disabled={label === '최종 결과'}
                   >
-                    {item}
+                    {label}
                   </button>
                 ))}
               </div>
             )}
             {state === 'complete' && (
               <div className="grid grid-cols-2 gap-x-2 gap-y-2  px-[5%]">
-                {MATCHING_AND_COMPLETE_BTN.map((item) => (
+                {MATCHING_AND_COMPLETE_BTN.map((label) => (
                   <button
-                    key={item}
-                    className={`w-[100%] h-[28px] text-[#525466] text-[13px] rounded-[14px]  ${item === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${item === 'AI 피드백' ? ' text-white' : ''}  `}
+                    key={label}
+                    onClick={() => selectedButtonClick(item.id, label)}
+                    className={`w-[100%] h-[28px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}
                     style={
-                      item === 'AI 피드백'
+                      label === 'AI 피드백'
                         ? {
                             backgroundImage: `url(${AIBtn})`,
                             backgroundSize: 'cover',
