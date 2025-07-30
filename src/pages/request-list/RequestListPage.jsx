@@ -5,6 +5,7 @@ import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import MatchingInput from './components/MatchingInput';
 import { RequestListMocks } from '../../mocks/RequestListMocks';
 import RequestDetailPage from './components/RequestDetailPage';
+import RequestDetailNoDesignerPage from './components/RequestDetailNoDesignerPage';
 
 const ASIDE_BAR = [
   {
@@ -105,9 +106,9 @@ export default function RequestListPage() {
           </div>
           <div className="w-[70%] flex flex-col items-center  ">
             {selectedButton.action === '상세' && (
-              <RequestDetailPage
-                profile={selectedRequestDetail.profile}
-                designer={selectedRequestDetail.designer}
+              <RequestDetailNoDesignerPage
+                id={selectedButton.id}
+                category={selectedRequestDetail.category}
                 closeScreen={closeScreen}
               />
             )}
@@ -122,6 +123,7 @@ export default function RequestListPage() {
             )}
             {selectedButton.action === 'AI 피드백' && (
               <RequestDetailPage
+                id={selectedButton.id}
                 profile={selectedRequestDetail.profile}
                 designer={selectedRequestDetail.designer}
                 closeScreen={closeScreen}
@@ -129,6 +131,7 @@ export default function RequestListPage() {
             )}
             {selectedButton.action === '중간 결과 / 피드백' && (
               <RequestDetailPage
+                id={selectedButton.id}
                 profile={selectedRequestDetail.profile}
                 designer={selectedRequestDetail.designer}
                 closeScreen={closeScreen}
