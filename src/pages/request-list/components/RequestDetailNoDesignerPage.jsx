@@ -1,10 +1,8 @@
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
 
-export default function RequestDetailPage({
+export default function RequestDetailNoDesignerPage({
   id,
-  profile,
-  designer,
   category,
   closeScreen,
 }) {
@@ -19,21 +17,13 @@ export default function RequestDetailPage({
         의뢰 목록
       </button>
       <div className=" px-[4%] py-[1%]">
-        <div className="flex justify-around gap-[10px]">
-          <img
-            src={profile}
-            alt="profile"
-            className="w-[12%] h-[12%] rounded-[50%]"
-          />
-          <div className="flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
-            <h1 className="text-[10px] sm:text-[20px] whitespace-nowrap">
-              <span className="font-bold text-[15px] sm:text-[22px]">
-                {designer}
-              </span>{' '}
-              님과의 프로젝트
+        <div className="flex sm:justify-around items-center gap-[20px] sm:gap-[0px]">
+          <div className="w-[45%] sm:w-[30%] flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
+            <h1 className="text-[8px] sm:text-[12px] text-[#525466] text-center whitespace-nowrap">
+              모락 AI로 함께 프로젝트를 진행 할<br /> 디자이너를 만나보세요!
             </h1>
-            <button className="w-[90%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[13px] font-semibold  ">
-              포트폴리오 보기
+            <button className="w-[100%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[10px] md:text-[13px] font-semibold  ">
+              AI 매칭 바로가기
             </button>
           </div>
           <div className="w-[35%] md:w-[45%] flex flex-col justify-between">
