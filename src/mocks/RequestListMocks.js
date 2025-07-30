@@ -10,7 +10,7 @@ export const RequestListMocks = {
       field: ['웹디자인', '브랜딩'],
       description:
         'UI/UX 디자인을 중심으로 웹·모바일 프로젝트를 20건 이상 리드하며 사용자 중심 디자인을 실현해왔습니다.Figma, Adobe XD, Zeplin 등을 활용해 개발자',
-      category: ['UI/UX', '웹디자인'],
+      category: ['UI/UX', '앱디자인'],
       summary:
         '모바일 앱 초기 UI 구성안 필요해요. 헬스케어 앱이고 직관적인 UX, 밝고 신뢰감 있는 색감으로 부탁드려요!',
     },

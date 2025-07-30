@@ -3,6 +3,8 @@ import { useState } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import MatchingInput from './components/MatchingInput';
+import { RequestListMocks } from '../../mocks/RequestListMocks';
+import RequestDetailPage from './components/RequestDetailPage';
 
 const ASIDE_BAR = [
   {
@@ -47,10 +49,27 @@ const STATE_BTN = [
 
 export default function RequestListPage() {
   const [checkState, setCheckState] = useState('matching');
+  const [selectedButton, setSelectedButton] = useState({
+    id: null,
+    action: ' ',
+  });
+
+  const currentList = RequestListMocks[checkState] || [];
+  const selectedRequestDetail = currentList.find(
+    (item) => item.id === selectedButton.id
+  );
+
+  const selectedButtonClick = (id, action) => {
+    setSelectedButton({ id, action });
+  };
+  const closeScreen = () => {
+    setSelectedButton({ id: null, action: '' });
+  };
+
   return (
     <MainLayout>
       <div className="bg-[#f1f2f8] min-h-[calc(100vh-64px)] flex justify-center items-center py-[30px]">
-        <div className="w-[100%] lg:w-[70%] h-[710px] flex items-center mx-auto">
+        <div className="w-[100%] lg:w-[70%] h-[710px] flex mx-auto  ">
           <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
             <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">
               <div className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] bg-red-300 rounded-[50%] mb-[12px]" />
@@ -84,56 +103,98 @@ export default function RequestListPage() {
               ))}
             </div>
           </div>
-          <div className="w-[70%] flex flex-col items-center ">
-            <div className="w-[95%] h-[710px] flex flex-col justify-between">
-              <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
-                {STATUS.map((item, idx) => (
-                  <div className="flex items-center" key={idx}>
-                    <h1 className="text-[11px] sm:text-[18px] md:text-[20px] text-[rgba(82,84,102,1)] mr-[7px] sm:mr-[12px] md:mr-[15px] xl:mr-[25px] 2xl:mr-[45px] ">
-                      {item.title}
-                    </h1>
-                    <h2
-                      className={`text-[17px] sm:text-[26px] md:text-[28px] ${item.count > 0 ? 'text-[#687AFE] font-bold ' : 'text-[rgba(195,196,206)] '}`}
-                    >
-                      {item.count}
-                    </h2>
-                    {idx < 3 ? (
-                      <div className="inline-block w-[1px] h-[42px] bg-[rgba(195,196,206)] mr-[6px] sm:mr-[18px] xl:mr-[25px] 2xl:mr-[40px] ml-[6px] sm:ml-[14px] md:ml-[20px] xl:ml-[25px] 2xl:ml-[40px]" />
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
-                <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
-                  <div className="flex gap-[10px]">
-                    {STATE_BTN.map((item) => (
-                      <label
-                        key={item.title}
-                        className="gap-[6px] flex items-center cursor-pointer"
+          <div className="w-[70%] flex flex-col items-center  ">
+            {selectedButton.action === '상세' && (
+              <RequestDetailPage
+                profile={selectedRequestDetail.profile}
+                designer={selectedRequestDetail.designer}
+                closeScreen={closeScreen}
+              />
+            )}
+            {selectedButton.action === '의뢰 상세' && (
+              <RequestDetailPage
+                id={selectedButton.id}
+                profile={selectedRequestDetail.profile}
+                designer={selectedRequestDetail.designer}
+                category={selectedRequestDetail.category}
+                closeScreen={closeScreen}
+              />
+            )}
+            {selectedButton.action === 'AI 피드백' && (
+              <RequestDetailPage
+                profile={selectedRequestDetail.profile}
+                designer={selectedRequestDetail.designer}
+                closeScreen={closeScreen}
+              />
+            )}
+            {selectedButton.action === '중간 결과 / 피드백' && (
+              <RequestDetailPage
+                profile={selectedRequestDetail.profile}
+                designer={selectedRequestDetail.designer}
+                closeScreen={closeScreen}
+              />
+            )}
+            {selectedButton.action === '최종 결과' && (
+              <RequestDetailPage
+                profile={selectedRequestDetail.profile}
+                designer={selectedRequestDetail.designer}
+                closeScreen={closeScreen}
+              />
+            )}
+            {selectedButton.id === null && (
+              <div className="w-[95%] h-[710px] flex flex-col justify-between">
+                <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
+                  {STATUS.map((item, idx) => (
+                    <div className="flex items-center" key={idx}>
+                      <h1 className="text-[11px] sm:text-[18px] md:text-[20px] text-[rgba(82,84,102,1)] mr-[7px] sm:mr-[12px] md:mr-[15px] xl:mr-[25px] 2xl:mr-[45px] ">
+                        {item.title}
+                      </h1>
+                      <h2
+                        className={`text-[17px] sm:text-[26px] md:text-[28px] ${item.count > 0 ? 'text-[#687AFE] font-bold ' : 'text-[rgba(195,196,206)] '}`}
                       >
-                        <input
-                          type="radio"
-                          name="requestState"
-                          value={item.state}
-                          className="w-[16px] h-[16px] hidden peer"
-                          checked={checkState === item.state}
-                          onChange={(e) => setCheckState(e.target.value)}
-                        />
-                        <span className="block w-[16px] h-[16px] border-[1px] border-[#DFE1ED] rounded-[4px] peer-checked:bg-[#DFE1ED]" />
-                        <span className="text-[13px] text-[#525466]">
-                          {item.title}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px]">
-                    <MatchingInput state={checkState} />
+                        {item.count}
+                      </h2>
+                      {idx < 3 ? (
+                        <div className="inline-block w-[1px] h-[42px] bg-[rgba(195,196,206)] mr-[6px] sm:mr-[18px] xl:mr-[25px] 2xl:mr-[40px] ml-[6px] sm:ml-[14px] md:ml-[20px] xl:ml-[25px] 2xl:ml-[40px]" />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
+                  <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
+                    <div className="flex gap-[10px]">
+                      {STATE_BTN.map((item) => (
+                        <label
+                          key={item.title}
+                          className="gap-[6px] flex items-center cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="requestState"
+                            value={item.state}
+                            className="w-[16px] h-[16px] hidden peer"
+                            checked={checkState === item.state}
+                            onChange={(e) => setCheckState(e.target.value)}
+                          />
+                          <span className="block w-[16px] h-[16px] border-[1px] border-[#DFE1ED] rounded-[4px] peer-checked:bg-[#DFE1ED]" />
+                          <span className="text-[13px] text-[#525466]">
+                            {item.title}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px] custom-scrollbar">
+                      <MatchingInput
+                        state={checkState}
+                        selectedButtonClick={selectedButtonClick}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
