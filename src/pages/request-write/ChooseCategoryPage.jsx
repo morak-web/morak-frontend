@@ -5,7 +5,6 @@ import shoppingIcon from '../../assets/RequestWrite/shopping-icon.png';
 import posIcon from '../../assets/RequestWrite/POS-icon.png';
 import graphicIcon from '../../assets/RequestWrite/graphic-icon.png';
 import moreIcon from '../../assets/RequestWrite/more-icon.png';
-import aiIcon from '../../assets/RequestWrite/ai-icon.png';
 
 import { Link } from 'react-router-dom';
 
@@ -64,12 +63,6 @@ export default function ChooseCategoryPage() {
             </Link>
           </div>
         </div>
-        <button>
-          <img
-            src={aiIcon}
-            className="absolute bottom-2 right-6 w-[80px] cursor-pointer"
-          />
-        </button>
       </div>
     </MainLayout>
   );
