@@ -1,12 +1,33 @@
 import desginer1 from '../assets/RequestList/designer1.png';
 import desginer2 from '../assets/RequestList/designer2.png';
+import project from '../assets/RequestList/RequestDetail/temp-picture.png';
 
 export const RequestListMocks = {
   doing: [
     {
       id: 1,
       profile: desginer1,
-      designer: '김락모',
+      designer: {
+        name: '김락모',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['웹디자인', '브랜딩'],
       description:
         'UI/UX 디자인을 중심으로 웹·모바일 프로젝트를 20건 이상 리드하며 사용자 중심 디자인을 실현해왔습니다.Figma, Adobe XD, Zeplin 등을 활용해 개발자',
@@ -17,7 +38,27 @@ export const RequestListMocks = {
     {
       id: 2,
       profile: desginer1,
-      designer: '이락모',
+      designer: {
+        name: '이락모',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['웹디자인', '브랜딩'],
       description:
         'UI/UX 디자인을 중심으로 웹·모바일 프로젝트를 20건 이상 리드하며 사용자 중심 디자인을 실현해왔습니다.Figma, Adobe XD, Zeplin 등을 활용해 개발자',
@@ -28,7 +69,27 @@ export const RequestListMocks = {
     {
       id: 3,
       profile: desginer1,
-      designer: '박락모',
+      designer: {
+        name: '박락모',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['웹디자인', '브랜딩'],
       description:
         'UI/UX 디자인을 중심으로 웹·모바일 프로젝트를 20건 이상 리드하며 사용자 중심 디자인을 실현해왔습니다.Figma, Adobe XD, Zeplin 등을 활용해 개발자',
@@ -67,7 +128,27 @@ export const RequestListMocks = {
     {
       id: 7,
       profile: desginer2,
-      designer: '김몰락',
+      designer: {
+        name: '김몰락',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['인터렉션', '3D'],
       description:
         'SNS 콘텐츠부터 프로모션 영상, 인터랙션 모션까지 다양한 디지털 콘텐츠 디자인 경험이 있습니다. After Effects와 Lottie를 활용한 마이크로 인터랙션 ',
@@ -78,7 +159,27 @@ export const RequestListMocks = {
     {
       id: 8,
       profile: desginer2,
-      designer: '이몰락',
+      designer: {
+        name: '이몰락',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['인터렉션', '3D'],
       description:
         'SNS 콘텐츠부터 프로모션 영상, 인터랙션 모션까지 다양한 디지털 콘텐츠 디자인 경험이 있습니다. After Effects와 Lottie를 활용한 마이크로 인터랙션 ',
@@ -89,7 +190,27 @@ export const RequestListMocks = {
     {
       id: 9,
       profile: desginer2,
-      designer: '박몰락',
+      designer: {
+        name: '박몰락',
+        job: 'UI/UX 중심 디자이너',
+        personalHistory: 3,
+        description:
+          '3년차 UI 디자이너 | 앱 · 웹 중심 | “보기 쉬운 디자인, 쓰기 쉬운 경험”을 만듭니다. 실용성과 감성을 조화롭게 담아내는 UI/UX 디자이너입니다. 사용자의 여정을 고려한 직관적 인터페이스를 설계하며, 스타트업부터 서비스 리디자인까지 다양한 경험을 갖추고 있습니다.',
+        project: [
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+          {
+            title: '미니멀 앱 디자인',
+            picture: project,
+          },
+        ],
+      },
       field: ['인터렉션', '3D'],
       description:
         'SNS 콘텐츠부터 프로모션 영상, 인터랙션 모션까지 다양한 디지털 콘텐츠 디자인 경험이 있습니다. After Effects와 Lottie를 활용한 마이크로 인터랙션 ',

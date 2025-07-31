@@ -46,7 +46,10 @@ export default function RequestDetailNoDesignerPage({
                 </h3>
                 <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
                   {category.map((item) => (
-                    <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap">
+                    <p
+                      className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap"
+                      key={item}
+                    >
                       {item}
                     </p>
                   ))}
@@ -81,8 +84,12 @@ export default function RequestDetailNoDesignerPage({
                 첨부 자료
               </h2>
               <div className="flex justify-between pl-4">
-                {data.tempPicture.map((item) => (
-                  <img src={item} className="w-[32%] rounded-[10px]" />
+                {data.tempPicture.map((item, idx) => (
+                  <img
+                    src={item}
+                    key={idx}
+                    className="w-[32%] rounded-[10px]"
+                  />
                 ))}
               </div>
             </div>

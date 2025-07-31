@@ -55,7 +55,7 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                   <div className="flex flex-col gap-[7px]">
                     <h1 className="text-[14px] font-light">
                       <span className="text-[17px] font-semibold">
-                        {item.designer}
+                        {item.designer.name}
                       </span>{' '}
                       님과의 프로젝트
                     </h1>
@@ -74,7 +74,10 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                 <p className="text-[13px] text-[#525466] whitespace-pre-line mb-[13px] text-center px-[18%]">
                   {item.description}
                 </p>
-                <Link className="w-[70%] h-[38px] bg-[#DFE1ED] rounded-[19px] text-[#525466] text-[15px] font-semibold flex justify-center items-center">
+                <Link
+                  onClick={() => selectedButtonClick(item.id, '포트폴리오')}
+                  className="w-[70%] h-[38px] bg-[#DFE1ED] rounded-[19px] text-[#525466] text-[15px] font-semibold flex justify-center items-center"
+                >
                   포트폴리오 보기
                 </Link>
               </div>
@@ -140,7 +143,7 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                         : undefined
                     }
                   >
-                    {item}
+                    {label}
                   </button>
                 ))}
               </div>
