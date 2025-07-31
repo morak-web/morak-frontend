@@ -28,7 +28,7 @@ export default function RequestDetailPage({
           <div className="flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
             <h1 className="text-[10px] sm:text-[20px] whitespace-nowrap">
               <span className="font-bold text-[15px] sm:text-[22px]">
-                {designer}
+                {designer.name}
               </span>{' '}
               님과의 프로젝트
             </h1>
@@ -56,7 +56,10 @@ export default function RequestDetailPage({
                 </h3>
                 <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
                   {category.map((item) => (
-                    <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap">
+                    <p
+                      className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap "
+                      key={item}
+                    >
                       {item}
                     </p>
                   ))}
@@ -91,8 +94,12 @@ export default function RequestDetailPage({
                 첨부 자료
               </h2>
               <div className="flex justify-between pl-4">
-                {data.tempPicture.map((item) => (
-                  <img src={item} className="w-[32%] rounded-[10px]" />
+                {data.tempPicture.map((item, idx) => (
+                  <img
+                    src={item}
+                    className="w-[32%] rounded-[10px]"
+                    key={idx}
+                  />
                 ))}
               </div>
             </div>
