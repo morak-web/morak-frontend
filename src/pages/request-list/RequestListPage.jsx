@@ -6,6 +6,7 @@ import MatchingInput from './components/MatchingInput';
 import { RequestListMocks } from '../../mocks/RequestListMocks';
 import RequestDetailPage from './components/RequestDetailPage';
 import RequestDetailNoDesignerPage from './components/RequestDetailNoDesignerPage';
+import DesignerPortfolioPage from './components/DesignerPortfolioPage';
 
 const ASIDE_BAR = [
   {
@@ -105,6 +106,13 @@ export default function RequestListPage() {
             </div>
           </div>
           <div className="w-[70%] flex flex-col items-center  ">
+            {selectedButton.action === '포트폴리오' && (
+              <DesignerPortfolioPage
+                id={selectedButton.id}
+                requestState={checkState}
+                closeScreen={closeScreen}
+              />
+            )}
             {selectedButton.action === '상세' && (
               <RequestDetailNoDesignerPage
                 id={selectedButton.id}

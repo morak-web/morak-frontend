@@ -120,7 +120,7 @@ export default function HomePage() {
           </div>
           <div className="flex justify-between gap-[10%]">
             {TRAIT.map((item) => (
-              <div className="flex flex-col gap-[15px]">
+              <div className="flex flex-col gap-[15px]" key={item.title}>
                 <img src={item.icon} alt="icon" className="w-[73px] h-[73px]" />
                 <h1 className="text-[15px] whitespace-nowrap sm:text-[20px]">
                   {item.title}
