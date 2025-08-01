@@ -10,7 +10,7 @@ import RequestWritePage from '../pages/request-write/RequestWritePage';
 import RequestWriteCompletePage from '../pages/request-write/RequestWriteCompletePage';
 import AIRequestPage from '../pages/request-write/AIRequestPage';
 import RequirementSummaryPage from '../pages/request-write/RequirementSummaryPage';
-
+import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
 export default function Router() {
   return (
     <BrowserRouter>
@@ -32,6 +32,10 @@ export default function Router() {
           element={<RequestWriteCompletePage />}
         />
         <Route path="/request-list" element={<RequestListPage />} />
+        <Route
+          path="/request-list/final-feedback"
+          element={<FinalFeedbackPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

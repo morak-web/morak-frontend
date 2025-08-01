@@ -4,6 +4,7 @@ import { RequestListMocks } from '../../../mocks/RequestListMocks';
 import matchingIcon from '../../../assets/RequestList/matching-icon.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const MATCHING_AND_COMPLETE_BTN = [
   '의뢰 상세',
@@ -21,6 +22,8 @@ const MATCHING_AND_COMPLETE_BTN = [
  */
 
 export default function MatchingInput({ state, selectedButtonClick }) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-[24px]">
       {RequestListMocks[state].map((item) => (
@@ -118,8 +121,17 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                   <button
                     key={label}
                     onClick={() => selectedButtonClick(item.id, label)}
-                    className={`w-[100%] h-[28px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} `}
+                    className={`w-[100%] h-[28px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} ${label === 'AI 피드백' ? ' text-white' : ''}`}
                     disabled={label === '최종 결과'}
+                    style={
+                      label === 'AI 피드백'
+                        ? {
+                            backgroundImage: `url(${AIBtn})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }
+                        : undefined
+                    }
                   >
                     {label}
                   </button>
@@ -131,7 +143,12 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                 {MATCHING_AND_COMPLETE_BTN.map((label) => (
                   <button
                     key={label}
-                    onClick={() => selectedButtonClick(item.id, label)}
+                    onClick={() => {
+                      if (label === '최종 결과') {
+                        navigate('/request-list/final-feedback');
+                      }
+                      return selectedButtonClick(item.id, label);
+                    }}
                     className={`w-[100%] h-[28px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}
                     style={
                       label === 'AI 피드백'

@@ -8,6 +8,7 @@ import RequestDetailPage from './components/RequestDetailPage';
 import RequestDetailNoDesignerPage from './components/RequestDetailNoDesignerPage';
 import DesignerPortfolioPage from './components/DesignerPortfolioPage';
 import IntermediateFeedbackModal from './IntermediateFeedback/IntermediateFeedbackModal';
+import FinalFeedbackPage from './FinalFeedback/FinalFeedbackPage';
 
 const ASIDE_BAR = [
   {
@@ -65,7 +66,11 @@ export default function RequestListPage() {
 
   const selectedButtonClick = (id, action) => {
     setSelectedButton({ id, action });
-    if (action === 'AI 피드백') {
+    if (
+      action === '중간 결과 / 피드백' ||
+      action === 'AI 피드백' ||
+      action === '최종 결과'
+    ) {
       setFeedbackModalOpen(true);
     }
   };
@@ -134,7 +139,7 @@ export default function RequestListPage() {
                 closeScreen={closeScreen}
               />
             )}
-            {selectedButton.action === 'AI 피드백' && (
+            {selectedButton.action === '중간 결과 / 피드백' && (
               <IntermediateFeedbackModal
                 feedbackModalOpen={feedbackModalOpen}
                 onClose={() => {
@@ -143,16 +148,9 @@ export default function RequestListPage() {
                 }}
               />
             )}
-            {selectedButton.action === '중간 결과 / 피드백' && (
+            {selectedButton.action === 'AI 피드백' && (
               <RequestDetailPage
                 id={selectedButton.id}
-                profile={selectedRequestDetail.profile}
-                designer={selectedRequestDetail.designer}
-                closeScreen={closeScreen}
-              />
-            )}
-            {selectedButton.action === '최종 결과' && (
-              <RequestDetailPage
                 profile={selectedRequestDetail.profile}
                 designer={selectedRequestDetail.designer}
                 closeScreen={closeScreen}
