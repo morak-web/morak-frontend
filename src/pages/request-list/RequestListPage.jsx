@@ -8,8 +8,7 @@ import RequestDetailPage from './components/RequestDetailPage';
 import RequestDetailNoDesignerPage from './components/RequestDetailNoDesignerPage';
 import DesignerPortfolioPage from './components/DesignerPortfolioPage';
 import IntermediateFeedbackModal from './IntermediateFeedback/IntermediateFeedbackModal';
-import FinalFeedbackPage from './FinalFeedback/FinalFeedbackPage';
-
+import AIFeedbackPage from './AIFeedback/AIFeedbackPage';
 const ASIDE_BAR = [
   {
     title: '의뢰서 작성',
@@ -149,11 +148,12 @@ export default function RequestListPage() {
               />
             )}
             {selectedButton.action === 'AI 피드백' && (
-              <RequestDetailPage
-                id={selectedButton.id}
-                profile={selectedRequestDetail.profile}
-                designer={selectedRequestDetail.designer}
-                closeScreen={closeScreen}
+              <AIFeedbackPage
+                feedbackModalOpen={feedbackModalOpen}
+                onClose={() => {
+                  setFeedbackModalOpen(false);
+                  closeScreen();
+                }}
               />
             )}
             {selectedButton.id === null && (
