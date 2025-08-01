@@ -20,7 +20,9 @@ export default function AIFeedbackPage({ feedbackModalOpen, onClose }) {
             className=" w-full h-[65px]"
           />
           <div className="px-[33px] absolute top-[28%] flex justify-between items-center w-full">
-            <h1 className="text-[#6072FF] text-[20px] font-bold">AI 피드백</h1>
+            <h1 className="text-[#6072FF] text-[20px] font-medium">
+              AI 피드백
+            </h1>
             <button className="w-[20px] h-[20px]">
               <img src={closeBtn} alt="closeBtn" className="a" />
             </button>
@@ -34,7 +36,7 @@ export default function AIFeedbackPage({ feedbackModalOpen, onClose }) {
             <p className="text-[#525466] text-[16px] font-light">2025.08.23</p>
           </div>
           <div className="w-full h-[1px] bg-[#D9D9D9] my-[10px]" />
-          <div className="w-full h-[90%]">
+          <div className="w-full h-[90%] pl-[20px]">
             <AIChatPage />
           </div>
         </div>
