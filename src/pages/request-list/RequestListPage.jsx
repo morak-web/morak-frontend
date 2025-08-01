@@ -7,6 +7,7 @@ import { RequestListMocks } from '../../mocks/RequestListMocks';
 import RequestDetailPage from './components/RequestDetailPage';
 import RequestDetailNoDesignerPage from './components/RequestDetailNoDesignerPage';
 import DesignerPortfolioPage from './components/DesignerPortfolioPage';
+import IntermediateFeedbackModal from './IntermediateFeedback/IntermediateFeedbackModal';
 
 const ASIDE_BAR = [
   {
@@ -55,6 +56,7 @@ export default function RequestListPage() {
     id: null,
     action: ' ',
   });
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
   const currentList = RequestListMocks[checkState] || [];
   const selectedRequestDetail = currentList.find(
@@ -63,6 +65,9 @@ export default function RequestListPage() {
 
   const selectedButtonClick = (id, action) => {
     setSelectedButton({ id, action });
+    if (action === 'AI 피드백') {
+      setFeedbackModalOpen(true);
+    }
   };
   const closeScreen = () => {
     setSelectedButton({ id: null, action: '' });
@@ -130,11 +135,12 @@ export default function RequestListPage() {
               />
             )}
             {selectedButton.action === 'AI 피드백' && (
-              <RequestDetailPage
-                id={selectedButton.id}
-                profile={selectedRequestDetail.profile}
-                designer={selectedRequestDetail.designer}
-                closeScreen={closeScreen}
+              <IntermediateFeedbackModal
+                feedbackModalOpen={feedbackModalOpen}
+                onClose={() => {
+                  setFeedbackModalOpen(false);
+                  closeScreen();
+                }}
               />
             )}
             {selectedButton.action === '중간 결과 / 피드백' && (
