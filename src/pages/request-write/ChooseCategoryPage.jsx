@@ -6,6 +6,7 @@ import posIcon from '../../assets/RequestWrite/POS-icon.png';
 import graphicIcon from '../../assets/RequestWrite/graphic-icon.png';
 import moreIcon from '../../assets/RequestWrite/more-icon.png';
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const CATEGORY = [
@@ -35,6 +36,7 @@ const CATEGORY = [
   },
 ];
 export default function ChooseCategoryPage() {
+  const [isClicked, setIsClicked] = useState('');
   return (
     <MainLayout>
       <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] flex items-center py-[30px]">
@@ -42,10 +44,16 @@ export default function ChooseCategoryPage() {
           <h1 className="text-[24px] font-bold mb-[30px]">프로젝트 카테고리</h1>
           <div className="grid grid-cols-3 gap-13 h-[80%] mt-[10px] mb-[20px]">
             {CATEGORY.map((item) => (
-              <div className="bg-[#F7F8FC] rounded-[20px] shadow-[3px_0px_3px_rgba(0,0,0,0.1),0_4px_3px_rgba(0,0,0,0.1)] px-[21px] py-[12px] cursor-pointer">
-                <h2 className=" text-[10px] lg:text-[16px]">{item.title}</h2>
-                <div className="w-[100%] h-[1px] bg-[#BFC2D3] mt-[8px] mb-[10px] " />
-                <div className="bg-white w-[100%] h-[77%] rounded-[20px] flex justify-center items-center">
+              <div
+                key={item.title}
+                className={`${item.title === isClicked ? 'shadow-[0_0_7px_5px_#BDCFFF]' : 'shadow-[3px_0px_3px_rgba(0,0,0,0.1),0_4px_3px_rgba(0,0,0,0.1)]'} bg-[#F7F8FC] rounded-[20px]  px-[21px] py-[12px] cursor-pointer hover:shadow-[0_0_7px_5px_#BDCFFF] `}
+                onClick={() => setIsClicked(item.title)}
+              >
+                <h2 className=" text-[10px] md:text-[16px] lg:text-[13px] xl:text-[15px] 2xl:text-[16px]">
+                  {item.title}
+                </h2>
+                <div className="w-[100%] h-[1px] bg-[#BFC2D3] mt-[8px] mb-[10px] sm:hidden lg:flex" />
+                <div className="bg-white w-[100%] h-[77%] rounded-[20px] flex justify-center items-center sm:hidden lg:flex">
                   <img src={item.icon} className="w-[70%]" />
                 </div>
               </div>
@@ -57,7 +65,11 @@ export default function ChooseCategoryPage() {
             </Link>
             <Link
               to="/request/write"
-              className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer"
+              className={`${
+                isClicked
+                  ? 'bg-[#BDCFFF]' // 선택된 상태에만 활성화
+                  : 'bg-gray-300 pointer-events-none' // 미선택 시 비활성화
+              } px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer`}
             >
               다음
             </Link>
