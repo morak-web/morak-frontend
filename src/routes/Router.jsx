@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import RequestListPage from '../pages/request-list/RequestListPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
@@ -10,6 +11,8 @@ import RequestWriteCompletePage from '../pages/request-write/RequestWriteComplet
 import AIRequestPage from '../pages/request-write/AIRequestPage';
 import RequirementSummaryPage from '../pages/request-write/RequirementSummaryPage';
 import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
+import DesignerPage from '../pages/Designer/DesignerPage';
+import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
 export default function Router() {
   return (
     <BrowserRouter>
@@ -34,6 +37,10 @@ export default function Router() {
           path="/request-list/final-feedback"
           element={<FinalFeedbackPage />}
         />
+        <Route path="/designer-page" element={<DesignerPage />}>
+          <Route index element={<Navigate to="register" replace />} />
+          <Route path="register" element={<DesignerRegisterPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
