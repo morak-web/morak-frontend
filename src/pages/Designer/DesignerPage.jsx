@@ -1,23 +1,25 @@
 import { Link, Outlet } from 'react-router-dom';
+import { useState } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 
 const ASIDE_BAR = [
   {
     title: '프로젝트 매칭 대기',
-    link: '/request/category',
+    link: 'project-matching-wait',
   },
   {
     title: '내 작업 목록',
-    link: '/request-list',
+    link: 'my-work-list',
   },
   {
     title: '포트폴리오 관리',
-    link: '',
+    link: 'register',
   },
 ];
 
 function LeftSection() {
+  const [clicked, setClicked] = useState('포트폴리오 관리');
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
       <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">
@@ -41,7 +43,8 @@ function LeftSection() {
           <Link
             key={item.title}
             to={item.link}
-            className={` border-t-[2px] w-[80px] sm:w-[152px] h-[50px] text-[13px] sm:text-[15px] pt-[10px] font-bold text-left ${item.title === '내 의뢰 목록' ? 'text-[#474858] border-[rgba(195,196,206)] ' : 'text-[rgba(195,196,206)]'}`}
+            className={` border-t-[2px] w-[80px] sm:w-[152px] h-[50px] text-[13px] sm:text-[15px] pt-[10px] font-bold text-left ${item.title === clicked ? 'text-[#474858] border-[rgba(195,196,206)] ' : 'text-[rgba(195,196,206)]'}`}
+            onClick={() => setClicked(item.title)}
           >
             {item.title}
           </Link>
