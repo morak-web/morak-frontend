@@ -13,6 +13,7 @@ import RequirementSummaryPage from '../pages/request-write/RequirementSummaryPag
 import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
 import DesignerPage from '../pages/Designer/DesignerPage';
 import MyWorkListPage from '../pages/Designer/MyWorkListPage';
+import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage';
 import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
 export default function Router() {
   return (
@@ -42,6 +43,14 @@ export default function Router() {
           <Route index element={<Navigate to="register" replace />} />
           {/* <Route path="project-matching-wait" /> */}
           <Route path="my-work-list" element={<MyWorkListPage />} />
+          <Route
+            path="request-doing/:id"
+            element={<DesignerRequestDoingPage />}
+          />
+          <Route
+            path="request-complete/:id"
+            element={<DesignerRequestDoingPage />}
+          />
           <Route path="register" element={<DesignerRegisterPage />} />
         </Route>
       </Routes>
