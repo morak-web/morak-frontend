@@ -14,6 +14,7 @@ import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedback
 import DesignerPage from '../pages/Designer/DesignerPage';
 import MyWorkListPage from '../pages/Designer/MyWorkListPage';
 import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage';
+import DesignerRequestCompletePage from '../pages/Designer/DesignerRequestCompletePage';
 import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
 export default function Router() {
   return (
@@ -49,7 +50,7 @@ export default function Router() {
           />
           <Route
             path="request-complete/:id"
-            element={<DesignerRequestDoingPage />}
+            element={<DesignerRequestCompletePage />}
           />
           <Route path="register" element={<DesignerRegisterPage />} />
         </Route>
