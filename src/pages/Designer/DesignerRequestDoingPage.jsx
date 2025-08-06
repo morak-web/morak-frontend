@@ -1,10 +1,13 @@
 import { ProjectListMocks } from '../../mocks/ProjectList';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import goBackIcon from '../../assets/RequestList/RequestDetail/back-icon.png';
+import SubmitRequestModal from './Submit/SubmitRequestModal';
 
 export default function DesignerRequestDoingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
 
   const doingData = ProjectListMocks['doing'];
   const useDoingData = doingData.find((item) => String(item.id) === id);
@@ -76,7 +79,10 @@ export default function DesignerRequestDoingPage() {
           ))}
         </div>
         <div className="w-[100%] h-[38px] flex justify-around">
-          <button className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px]">
+          <button
+            className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
+            onClick={() => setSubmitModalOpen(true)}
+          >
             결과물 제출하기
           </button>
           <button className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px]">
@@ -84,6 +90,10 @@ export default function DesignerRequestDoingPage() {
           </button>
         </div>
       </div>
+      <SubmitRequestModal
+        submitModalOpen={submitModalOpen}
+        onClose={() => setSubmitModalOpen(false)}
+      />
     </div>
   );
 }
