@@ -1,11 +1,14 @@
 import { ProjectListMocks } from '../../mocks/ProjectList';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import leftScrollButton from '../../assets/Designer/left-scroll-button.png'
 import rightScrollButton from '../../assets/Designer/right-scroll-button.png';
 
 export default function MyWorkListPage() {
   const doingRef = useRef(null);
   const finishRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const scrollNext = (ref) => {
     if (!ref.current) return;
@@ -30,7 +33,13 @@ export default function MyWorkListPage() {
           "
         >
           {ProjectListMocks.doing.map((item) => (
-            <div key={item.id} className="flex-shrink-0 cursor-pointer">
+            <div
+              key={item.id}
+              className="flex-shrink-0 cursor-pointer"
+              onClick={() =>
+                navigate(`/designer-page/request-doing/${item.id}`)
+              }
+            >
               <div className="w-[260px] h-[172px] rounded-[11px] bg-[#DFE1ED] mb-[9px]" />
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
@@ -72,7 +81,13 @@ export default function MyWorkListPage() {
           "
         >
           {ProjectListMocks.finish.map((item) => (
-            <div key={item.id} className="flex-shrink-0 cursor-pointer">
+            <div
+              key={item.id}
+              className="flex-shrink-0 cursor-pointer"
+              onClick={() =>
+                navigate(`/designer-page/request-complete/${item.id}`)
+              }
+            >
               <div className="w-[260px] h-[172px] rounded-[11px] bg-[#DFE1ED] mb-[9px]" />
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
