@@ -3,11 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import goBackIcon from '../../assets/RequestList/RequestDetail/back-icon.png';
 import SubmitRequestModal from './Submit/SubmitRequestModal';
+import FeedbackCheckModal from './Feedback/FeedbackCheckModal';
 
 export default function DesignerRequestDoingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
   const doingData = ProjectListMocks['doing'];
   const useDoingData = doingData.find((item) => String(item.id) === id);
@@ -85,7 +87,10 @@ export default function DesignerRequestDoingPage() {
           >
             결과물 제출하기
           </button>
-          <button className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px]">
+          <button
+            className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
+            onClick={() => setFeedbackModalOpen(true)}
+          >
             피드백 확인
           </button>
         </div>
@@ -93,6 +98,10 @@ export default function DesignerRequestDoingPage() {
       <SubmitRequestModal
         submitModalOpen={submitModalOpen}
         onClose={() => setSubmitModalOpen(false)}
+      />
+      <FeedbackCheckModal
+        feedbackModalOpen={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
       />
     </div>
   );
