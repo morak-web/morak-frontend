@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import DesignerPortfolioModal from './Porfolio/DesignerPortfolioModal';
+
 export default function DesignerRegisterPage() {
+  const [portfolioModalOpen, setPortfolioModalOpen] = useState(false);
+
   return (
     <div className="bg-white w-[95%] min-h-[577px] rounded-[11px] px-[36px] py-[26px] flex flex-col justify-between">
       <section className="mb-[40px]">
@@ -42,7 +47,10 @@ export default function DesignerRegisterPage() {
           </h1>
           <div className="flex flex-col gap-[14px] w-[70%] ">
             <textarea className="h-[180px] bg-[#F2F3FA] rounded-[19px]  resize-none py-[16px] px-[20px] text-black text-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]" />
-            <button className="w-[100%] md:w-[300px] h-[38px] rounded-[19px] shadow-md  text-[10px] sm:text-[15px] cursor-pointer text-[#525466]">
+            <button
+              className="w-[100%] md:w-[300px] h-[38px] rounded-[19px] shadow-md  text-[10px] sm:text-[15px] cursor-pointer text-[#525466]"
+              onClick={() => setPortfolioModalOpen(true)}
+            >
               포트폴리오 등록하기
             </button>
           </div>
@@ -53,6 +61,10 @@ export default function DesignerRegisterPage() {
           등록/수정 완료
         </button>
       </section>
+      <DesignerPortfolioModal
+        portfolioModalOpen={portfolioModalOpen}
+        onClose={() => setPortfolioModalOpen(false)}
+      />
     </div>
   );
 }
