@@ -124,6 +124,7 @@ export default function HomePage() {
 
             <Link
               className="relative block mt-[-45px] lg:mt-[-63px]"
+              to={'/designer-page'}
               onMouseEnter={() => setHoverDesignerBtn(true)}
               onMouseLeave={() => setHoverDesignerBtn(false)}
             >
