@@ -12,6 +12,7 @@ import AIRequestPage from '../pages/request-write/AIRequestPage';
 import RequirementSummaryPage from '../pages/request-write/RequirementSummaryPage';
 import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
 import DesignerPage from '../pages/Designer/DesignerPage';
+import ProjectMatchingList from '../pages/Designer/matching/ProjectMatchingList';
 import MyWorkListPage from '../pages/Designer/MyWorkListPage';
 import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage';
 import DesignerRequestCompletePage from '../pages/Designer/DesignerRequestCompletePage';
@@ -42,7 +43,10 @@ export default function Router() {
         />
         <Route path="/designer-page" element={<DesignerPage />}>
           <Route index element={<Navigate to="register" replace />} />
-          {/* <Route path="project-matching-wait" /> */}
+          <Route
+            path="project-matching-wait"
+            element={<ProjectMatchingList />}
+          />
           <Route path="my-work-list" element={<MyWorkListPage />} />
           <Route
             path="request-doing/:id"
