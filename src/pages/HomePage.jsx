@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import MainLayout from '../components/layout/MainLayout';
@@ -35,9 +35,18 @@ export default function HomePage() {
         'AI 피드백으로 중간 점검\n -> 진행 중인 결과물, AI가 검토해드려요',
     },
   ];
+
+  // useEffect(() => {
+  //   const prev = document.body.style.overflow;
+  //   document.body.style.overflow = 'hidden';
+  //   return () => {
+  //     document.body.style.overflow = prev;
+  //   };
+  // }, []);
+
   return (
     <MainLayout>
-      <div className="w-[100%] min-h-[calc(100vh-64px)] mb-[100px] ">
+      <div className="w-[100%] h-[100%] overflow-hidden ">
         <img
           src={mainImage}
           alt="mainImage"
@@ -116,7 +125,7 @@ export default function HomePage() {
                 <h1
                   className={` ${isHover ? 'text-[#93A8ED]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap`}
                 >
-                  의뢰 시작하기
+                  의뢰 시작하기(버튼수정)
                 </h1>
                 <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px]" />
               </div>
@@ -137,14 +146,14 @@ export default function HomePage() {
                 <h1
                   className={`${hoverDesignerBtn ? 'text-[#7E8EFC]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap  `}
                 >
-                  디자이너 등록하기
+                  디자이너 등록하기(버튼수정)
                 </h1>
                 <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px] " />
               </div>
             </Link>
           </div>
         </div>
-        <div className="flex flex-col px-[10%] gap-[50px]">
+        <div className="flex flex-col px-[10%] gap-[50px] mb-[80px]">
           <div>
             <p className="text-[20px]">우리의 고민</p>
             <h1 className="text-[30px] sm:text-[40px]">
