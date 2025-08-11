@@ -27,3 +27,7 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+html {
+  overflow-y: scroll; /* 항상 스크롤바 공간 확보 */
+}
