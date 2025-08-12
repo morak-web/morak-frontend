@@ -1,8 +1,11 @@
 import MainLayout from '../../../components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import DownLoadModal from './Payment/DownloadModal';
 
 export default function FinalFeedbackPage() {
   const navigate = useNavigate();
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   return (
     <MainLayout>
       <div className="bg-[#F2F3FA] py-[30px] w-full min-h-[calc(100vh-64px)] flex flex-col justify-center items-center">
@@ -114,9 +117,16 @@ export default function FinalFeedbackPage() {
                 >
                   의뢰 목록 돌아가기
                 </button>
-                <button className="bg-[#6072FF] w-[220px] h-[40px] text-white text-[11px] sm:text-[16px] rounded-[20px] py-[11px] cursor-pointer flex justify-center items-center">
+                <button
+                  className="bg-[#6072FF] w-[220px] h-[40px] text-white text-[11px] sm:text-[16px] rounded-[20px] py-[11px] cursor-pointer flex justify-center items-center"
+                  onClick={() => setDownloadModalOpen(true)}
+                >
                   결과물 다운로드
                 </button>
+                <DownLoadModal
+                  downloadModalOpen={downloadModalOpen}
+                  onClose={() => setDownloadModalOpen(false)}
+                />
               </div>
             </div>
           </div>
