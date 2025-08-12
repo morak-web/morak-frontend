@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   return (
-    <nav className="h-[64px] pl-[32px] pr-[24px] py-[20px] flex justify-between items-center">
+    <nav className="h-[64px] pl-[32px] pr-[24px] py-[20px] flex justify-between items-center ">
       <Link to="/">
         <img src={morakLogo} alt="morakLogo" />
       </Link>
@@ -22,7 +22,10 @@ export default function Header() {
               <img src={notificationIcon} alt="notificationIcon" />
             </Link>
           </div>
-          <div className="w-8 h-8 rounded-[50%] bg-fuchsia-600" />
+          <Link
+            className="w-8 h-8 rounded-[50%] bg-fuchsia-600 cursor-pointer"
+            to="/client-page/request-list"
+          />
         </div>
       ) : (
         <div className="flex gap-[22px] items-center">
