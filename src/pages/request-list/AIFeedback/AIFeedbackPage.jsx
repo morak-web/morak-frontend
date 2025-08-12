@@ -2,8 +2,8 @@ import closeBtn from '../../../assets/RequestList/AIFeedback/close-button.png';
 import titleBackground from '../../../assets/RequestList/AIFeedback/title-background.png';
 import AIChatPage from './AIChatPage';
 
-export default function AIFeedbackPage({ feedbackModalOpen, onClose }) {
-  if (!feedbackModalOpen) return null;
+export default function AIFeedbackPage({ AIFeedbackModalOpen, onClose }) {
+  if (!AIFeedbackModalOpen) return null;
   return (
     <div
       onClick={onClose}
@@ -23,8 +23,11 @@ export default function AIFeedbackPage({ feedbackModalOpen, onClose }) {
             <h1 className="text-[#6072FF] text-[20px] font-medium">
               AI 피드백
             </h1>
-            <button className="w-[20px] h-[20px]">
-              <img src={closeBtn} alt="closeBtn" className="a" />
+            <button
+              className="w-[20px] h-[20px] cursor-pointer"
+              onClick={onClose}
+            >
+              <img src={closeBtn} alt="closeBtn" />
             </button>
           </div>
         </div>

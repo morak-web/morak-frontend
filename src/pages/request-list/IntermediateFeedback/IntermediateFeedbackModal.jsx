@@ -2,10 +2,10 @@ import closeBtn from '../../../assets/RequestList/close-button.png';
 import ChatPage from './ChatPage';
 
 export default function IntermediateFeedbackModal({
-  feedbackModalOpen,
+  interFeedbackModalOpen,
   onClose,
 }) {
-  if (!feedbackModalOpen) return null;
+  if (!interFeedbackModalOpen) return null;
   return (
     <div
       onClick={onClose}
@@ -17,7 +17,7 @@ export default function IntermediateFeedbackModal({
       >
         <div className="flex justify-between ">
           <h1 className="text-[20px] font-bold">중간 결과 / 피드백</h1>
-          <button>
+          <button className="cursor-pointer">
             <img
               src={closeBtn}
               alt="closeBtn"
