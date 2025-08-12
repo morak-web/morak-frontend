@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
+import ClientPage from '../pages/Client/ClientPage';
 import RequestListPage from '../pages/request-list/RequestListPage';
+import PaymentListPage from '../pages/Client/Payment/PaymentListPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
 import Login from '../pages/Login';
 import SignUpPage from '../pages/SignUpPage';
@@ -36,7 +38,11 @@ export default function Router() {
           path="/request/write/complete"
           element={<RequestWriteCompletePage />}
         />
-        <Route path="/request-list" element={<RequestListPage />} />
+        <Route path="/client-page" element={<ClientPage />}>
+          <Route index element={<Navigate to="request-list" replace />} />
+          <Route path="request-list" element={<RequestListPage />} />
+          <Route path="payment-list" element={<PaymentListPage />} />
+        </Route>
         <Route
           path="/request-list/final-feedback"
           element={<FinalFeedbackPage />}
