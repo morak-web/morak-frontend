@@ -1,7 +1,6 @@
 /** @ts-check */
 
 import { RequestListMocks } from '../../../mocks/RequestListMocks';
-import matchingIcon from '../../../assets/RequestList/matching-icon.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -32,21 +31,6 @@ export default function MatchingInput({ state, selectedButtonClick }) {
           className="w-[100%] py-[30px] bg-[#F7F8FC] rounded-[30px] flex"
         >
           <div className="w-[38%]">
-            {state === 'matching' && (
-              <div className="w-[100%] h-[100%] flex flex-col justify-center items-center border-r-[1px] border-[#D9D9D9]">
-                <img
-                  src={matchingIcon}
-                  alt="matchingIcon"
-                  className="w-[30%] mb-[5px]"
-                />
-                <p className="text-[13px] text-[#525466] whitespace-pre-line mb-[13px] text-center">
-                  {item.description}
-                </p>
-                <Link className="w-[70%] h-[38px] bg-[#DFE1ED] rounded-[19px] text-[#525466] text-[15px] font-semibold flex justify-center items-center">
-                  AI 매칭 바로가기
-                </Link>
-              </div>
-            )}
             {(state === 'doing' || state === 'complete') && (
               <div className=" w-[100%] h-[100%] flex flex-col  justify-between items-center border-r-[1px] border-[#D9D9D9]">
                 <div className="flex gap-[20px]">
@@ -105,66 +89,7 @@ export default function MatchingInput({ state, selectedButtonClick }) {
                 {item.summary}
               </p>
             </div>
-            {state === 'matching' && (
-              <div className="h-[50%] flex justify-end items-end">
-                <button
-                  onClick={() => selectedButtonClick(item.id, '상세')}
-                  className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer"
-                >
-                  상세 {'>'}
-                </button>
-              </div>
-            )}
-            {state === 'doing' && (
-              <div className="grid grid-cols-2 gap-x-2 gap-y-2 px-[5%]">
-                {MATCHING_AND_COMPLETE_BTN.map((label) => (
-                  <button
-                    key={label}
-                    onClick={() => selectedButtonClick(item.id, label)}
-                    className={`w-[100%] h-[28px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} ${label === 'AI 피드백' ? ' text-white' : ''}`}
-                    disabled={label === '최종 결과'}
-                    style={
-                      label === 'AI 피드백'
-                        ? {
-                            backgroundImage: `url(${AIBtn})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                          }
-                        : undefined
-                    }
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {state === 'complete' && (
-              <div className="grid grid-cols-2 gap-x-2 gap-y-2  px-[5%]">
-                {MATCHING_AND_COMPLETE_BTN.map((label) => (
-                  <button
-                    key={label}
-                    onClick={() => {
-                      if (label === '최종 결과') {
-                        navigate('/request-list/final-feedback');
-                      }
-                      return selectedButtonClick(item.id, label);
-                    }}
-                    className={`w-[100%] h-[28px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}
-                    style={
-                      label === 'AI 피드백'
-                        ? {
-                            backgroundImage: `url(${AIBtn})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                          }
-                        : undefined
-                    }
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
+            )} )}
           </div>
         </div>
       ))}
