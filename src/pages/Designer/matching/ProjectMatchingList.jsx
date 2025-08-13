@@ -43,6 +43,7 @@ export default function ProjectMatchingList() {
         ))}
       </div>
       <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+        {/* MatchingCard 안에 map 코드 작성 */}
         <MatchingCard />
         <MatchingCard />
         <MatchingCard />

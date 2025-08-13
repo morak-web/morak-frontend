@@ -1,5 +1,8 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import clientImg from '../../../assets/RequestList/designer1.png';
 export default function MatchingCard() {
+  const navigate = useNavigate();
+  const { id } = useParams();
   return (
     <div className="bg-[#EAECF5] w-[100%] min-h-[230px] rounded-[10px] flex">
       {/* left content */}
@@ -37,7 +40,13 @@ export default function MatchingCard() {
       </div>
       {/* right content */}
       <div className="w-[25%] border-l-[1px] border-[#52546648] flex flex-col justify-between px-[18px] my-[14px]">
-        <button className="w-[56px] h-[24px] rounded-[10px] bg-white border-[1px] border-[#0000007a] text-[10px] text-[#525466] self-end cursor-pointer">
+        <button
+          className="w-[56px] h-[24px] rounded-[10px] bg-white border-[1px] border-[#0000007a] text-[10px] text-[#525466] self-end cursor-pointer"
+          onClick={
+            () => navigate(`/designer-page/project`)
+            // navigate(`/designer-page/project-matching-wait/project/${id}`)
+          }
+        >
           상세보기
         </button>
         <div className="h-[44px] bg-white rounded-[10px] flex justify-center py-[9px] gap-[6px]">
