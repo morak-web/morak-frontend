@@ -1,19 +1,16 @@
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
+import { useNavigate } from 'react-router-dom';
+import desingerImg from '../../../assets/RequestList/designer1.png';
 
-export default function RequestDetailPage({
-  id,
-  profile,
-  designer,
-  category,
-  closeScreen,
-}) {
-  const data = RequestDetailMocks[id];
+export default function RequestDetailPage() {
+  const navigate = useNavigate();
+  const data = RequestDetailMocks[1];
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
         className="cursor-pointer text-[#d8dae5] text-[12px] flex items-center gap-2"
-        onClick={() => closeScreen()}
+        onClick={() => navigate(-1)}
       >
         <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
         의뢰 목록
@@ -21,18 +18,21 @@ export default function RequestDetailPage({
       <div className=" px-[4%] py-[1%]">
         <div className="flex justify-around gap-[10px]">
           <img
-            src={profile}
-            alt="profile"
+            src={desingerImg}
+            alt="desingerImg"
             className="w-[12%] h-[12%] rounded-[50%]"
           />
           <div className="flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
             <h1 className="text-[10px] sm:text-[20px] whitespace-nowrap">
               <span className="font-bold text-[15px] sm:text-[22px]">
-                {designer.name}
+                김락모
               </span>{' '}
               님과의 프로젝트
             </h1>
-            <button className="w-[90%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[13px] font-semibold  ">
+            <button
+              className="w-[90%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[13px] font-semibold cursor-pointer"
+              onClick={() => navigate('/client-page/designer-portfolio')}
+            >
               포트폴리오 보기
             </button>
           </div>
@@ -44,7 +44,7 @@ export default function RequestDetailPage({
             <div className="flex flex-col md:flex md:flex-row md:px-[5%] xl:px-[15%] justify-between gap-[10px]">
               <div className="flex flex-col ">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  프로젝트 명
+                  제목
                 </h3>
                 <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
                   {data.projectName}
@@ -52,17 +52,14 @@ export default function RequestDetailPage({
               </div>
               <div className="flex flex-col">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold">
-                  프로젝트 카테고리
+                  카테고리
                 </h3>
                 <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
-                  {category.map((item) => (
-                    <p
-                      className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap "
-                      key={item}
-                    >
-                      {item}
-                    </p>
-                  ))}
+                  {/* {category.map((item) => ( */}
+                  <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap ">
+                    UI/UX 앱디자인{' '}
+                  </p>
+                  {/* ))} */}
                 </div>
               </div>
             </div>

@@ -15,7 +15,10 @@ export default function WritingPage() {
           <p>작성이 완료되지 않은 의뢰입니다.</p>
           <p>의뢰서 작성을 완료해주세요!</p>
         </div>
-        <Link className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center">
+        <Link
+          className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
+          to="/request/category"
+        >
           작성하러 가기
         </Link>
       </div>

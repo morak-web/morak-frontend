@@ -1,20 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import facebookIcon from '../../../assets/RequestList/SocialIcon/facebook.png';
 import youtubeIcon from '../../../assets/RequestList/SocialIcon/youtube.png';
 import figmaIcon from '../../../assets/RequestList/SocialIcon/figma.png';
 import { RequestListMocks } from '../../../mocks/RequestListMocks';
-export default function DesignerPortfolioPage({
-  id,
-  requestState,
-  closeScreen,
-}) {
-  const data = RequestListMocks[requestState];
-  const useData = data.find((item) => item.id === id);
+export default function DesignerPortfolioPage() {
+  const useData = RequestListMocks['doing'][0];
+  const navigate = useNavigate();
+
   return (
     <div className=" w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%] flex flex-col gap-3">
       <button
         className="cursor-pointer text-[#d8dae5] text-[12px] flex items-center gap-2"
-        onClick={() => closeScreen()}
+        onClick={() => navigate(-1)}
       >
         <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
         의뢰 목록

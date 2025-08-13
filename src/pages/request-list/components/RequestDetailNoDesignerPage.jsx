@@ -1,17 +1,15 @@
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
+import { useNavigate } from 'react-router-dom';
 
-export default function RequestDetailNoDesignerPage({
-  id,
-  category,
-  closeScreen,
-}) {
-  const data = RequestDetailMocks[id];
+export default function RequestDetailNoDesignerPage() {
+  const navigate = useNavigate();
+  const data = RequestDetailMocks[1];
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
         className="cursor-pointer text-[#d8dae5] text-[12px] flex items-center gap-2"
-        onClick={() => closeScreen()}
+        onClick={() => navigate(-1)}
       >
         <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
         의뢰 목록
@@ -34,7 +32,7 @@ export default function RequestDetailNoDesignerPage({
             <div className="flex flex-col md:flex md:flex-row md:px-[5%] xl:px-[15%] justify-between gap-[10px]">
               <div className="flex flex-col ">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  프로젝트 명
+                  제목
                 </h3>
                 <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
                   {data.projectName}
@@ -42,17 +40,14 @@ export default function RequestDetailNoDesignerPage({
               </div>
               <div className="flex flex-col">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold">
-                  프로젝트 카테고리
+                  카테고리
                 </h3>
                 <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
-                  {category.map((item) => (
-                    <p
-                      className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap"
-                      key={item}
-                    >
-                      {item}
-                    </p>
-                  ))}
+                  {/* {category.map((item) => ( */}
+                  <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap">
+                    UI/UX 앱디자인
+                  </p>
+                  {/* ))} */}
                 </div>
               </div>
             </div>

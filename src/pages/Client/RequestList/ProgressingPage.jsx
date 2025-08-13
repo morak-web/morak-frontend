@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import designerImg from '../../../assets/RequestList/designer1.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
@@ -20,6 +20,7 @@ const MATCHING_AND_COMPLETE_BTN = [
 export default function ProgressingPage() {
   const [AIFeedbackModalOpen, setAIFeedbackModalOpen] = useState(false);
   const [interFeedbackModalOpen, setInterFeedbackModalOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     // api 연결 시 여기에 map 사용해서 수정하기
     <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
@@ -62,7 +63,10 @@ export default function ProgressingPage() {
             />
           </button>
         </div>
-        <Link className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center">
+        <Link
+          className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
+          to="/client-page/designer-portfolio"
+        >
           포트폴리오 보기
         </Link>
       </div>
@@ -114,6 +118,8 @@ export default function ProgressingPage() {
                   setAIFeedbackModalOpen(true);
                 } else if (label === '중간 결과 / 피드백') {
                   setInterFeedbackModalOpen(true);
+                } else if (label === '의뢰 상세') {
+                  navigate('/client-page/request-detail');
                 }
               }}
               className={`w-[100%] h-[30px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} ${label === 'AI 피드백' ? ' text-white' : ''}`}
