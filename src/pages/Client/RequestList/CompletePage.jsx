@@ -65,7 +65,10 @@ export default function CompletePage() {
             />
           </button>
         </div>
-        <Link className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center">
+        <Link
+          className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
+          to="/client-page/designer-portfolio"
+        >
           포트폴리오 보기
         </Link>
       </div>
@@ -122,6 +125,8 @@ export default function CompletePage() {
                   setAIFeedbackModalOpen(true);
                 } else if (label === '중간 결과 / 피드백') {
                   setInterFeedbackModalOpen(true);
+                } else if (label === '의뢰 상세') {
+                  navigate('/client-page/request-detail');
                 }
               }}
               className={`w-[100%] h-[30px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}

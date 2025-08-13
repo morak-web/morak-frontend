@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import matchingIcon from '../../../assets/RequestList/matching-icon.png';
-import RequestDetailNoDesignerPage from '../../request-list/components/RequestDetailNoDesignerPage';
 export default function MatchingPage() {
-  // const [clickedBtn, setClickedBtn] = useState(false);
+  const navigate = useNavigate();
   return (
     // api 연결 시 여기에 map 사용해서 수정하기
     <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
@@ -63,7 +62,7 @@ export default function MatchingPage() {
         </div>
         <div className="flex justify-end itmes-end">
           <button
-            // onClick={() => setClickedBtn(item.id, '상세')}
+            onClick={() => navigate('/client-page/matching-detail')}
             className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer"
           >
             상세 {'>'}

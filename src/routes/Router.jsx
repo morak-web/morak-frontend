@@ -37,6 +37,9 @@ import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage
 import DesignerRequestCompletePage from '../pages/Designer/DesignerRequestCompletePage';
 import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
 import MatchingDetailPage from '../pages/Designer/matching/MatchingDetailPage';
+import RequestDetailNoDesignerPage from '../pages/request-list/components/RequestDetailNoDesignerPage';
+import RequestDetailPage from '../pages/request-list/components/RequestDetailPage';
+import DesignerPortfolioPage from '../pages/request-list/components/DesignerPortfolioPage';
 
 export default function Router() {
   return (
@@ -62,12 +65,25 @@ export default function Router() {
         {/* client  */}
         <Route path="/client-page" element={<ClientPage />}>
           <Route index element={<Navigate to="request-list" replace />} />
+          {/* request-list */}
           <Route path="request-list" element={<RequestListPage />}>
+            <Route index element={<Navigate to="writing" replace />} />
             <Route path="writing" element={<WritingPage />} />
             <Route path="matching" element={<MatchingPage />} />
             <Route path="progressing" element={<ProgressingPage />} />
             <Route path="complete" element={<CompletePage />} />
           </Route>
+          {/* matching-detail */}
+          <Route
+            path="matching-detail"
+            element={<RequestDetailNoDesignerPage />}
+          />
+          {/* progressing-deatil */}
+          <Route
+            path="designer-portfolio"
+            element={<DesignerPortfolioPage />}
+          />
+          <Route path="request-detail" element={<RequestDetailPage />} />
           <Route path="payment-list" element={<PaymentListPage />} />
         </Route>
         <Route

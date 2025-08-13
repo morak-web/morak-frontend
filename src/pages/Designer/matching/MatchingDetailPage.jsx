@@ -4,7 +4,6 @@ import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import moneyIcon from '../../../assets/Designer/matching/money.png';
 import timeIcon from '../../../assets/Designer/matching/time.png';
 import lockIcon from '../../../assets/Designer/matching/lock.png';
-
 export default function MatchingDetailPage() {
   const navigate = useNavigate();
   return (
