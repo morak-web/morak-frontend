@@ -36,6 +36,8 @@ import MyWorkListPage from '../pages/Designer/MyWorkListPage';
 import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage';
 import DesignerRequestCompletePage from '../pages/Designer/DesignerRequestCompletePage';
 import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
+import MatchingDetailPage from '../pages/Designer/matching/MatchingDetailPage';
+
 export default function Router() {
   return (
     <BrowserRouter>
@@ -80,6 +82,8 @@ export default function Router() {
             path="project-matching-wait"
             element={<ProjectMatchingList />}
           />
+          {/* <Route path="project/:id" element={<MatchingDetailPage />} /> */}
+          <Route path="project" element={<MatchingDetailPage />} />
           <Route path="my-work-list" element={<MyWorkListPage />} />
           <Route
             path="request-doing/:id"
