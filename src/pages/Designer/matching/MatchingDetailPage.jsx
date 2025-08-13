@@ -30,9 +30,14 @@ export default function MatchingDetailPage() {
             </div>
           </div>
         </div>
-        <div className="flex text-[#525466] text-[12px] font-light">
-          <p>등록일자</p>
-          <p>2025. 08. 04</p>
+        <div className="flex flex-col text-[#525466] text-[12px] font-light items-end justify-between gap-[10px]">
+          <div className="flex gap-[10px]">
+            <p>등록일자</p>
+            <p>2025. 08. 04</p>
+          </div>
+          <button className="bg-[#668df7] text-white w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] cursor-pointer">
+            지원하기
+          </button>
         </div>
       </div>
       {/* money, time */}
