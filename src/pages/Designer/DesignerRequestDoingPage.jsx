@@ -4,12 +4,14 @@ import { useState } from 'react';
 import goBackIcon from '../../assets/RequestList/RequestDetail/back-icon.png';
 import SubmitRequestModal from './Submit/SubmitRequestModal';
 import FeedbackCheckModal from './Feedback/FeedbackCheckModal';
+import FinalSubmitModal from './Submit/FinalSubmitModal';
 
 export default function DesignerRequestDoingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [finalModalOpen, setFinalModalOpen] = useState(false);
 
   const doingData = ProjectListMocks['doing'];
   const useDoingData = doingData.find((item) => String(item.id) === id);
@@ -82,16 +84,22 @@ export default function DesignerRequestDoingPage() {
         </div>
         <div className="w-[100%] h-[38px] flex justify-around">
           <button
-            className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
+            className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setSubmitModalOpen(true)}
           >
             결과물 제출하기
           </button>
           <button
-            className="flex justify-center items-center w-[33%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
+            className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFeedbackModalOpen(true)}
           >
             피드백 확인
+          </button>
+          <button
+            className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#6072FF] text-white text-[12px] sm:text-[16px] cursor-pointer"
+            onClick={() => setFinalModalOpen(true)}
+          >
+            최종 결과 제출
           </button>
         </div>
       </div>
@@ -102,6 +110,10 @@ export default function DesignerRequestDoingPage() {
       <FeedbackCheckModal
         feedbackModalOpen={feedbackModalOpen}
         onClose={() => setFeedbackModalOpen(false)}
+      />
+      <FinalSubmitModal
+        finalModalOpen={finalModalOpen}
+        onClose={() => setFinalModalOpen(false)}
       />
     </div>
   );
