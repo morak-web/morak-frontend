@@ -22,9 +22,9 @@ import RequirementSummaryPage from '../pages/request-write/RequirementSummaryPag
 import RequestWriteCompletePage from '../pages/request-write/RequestWriteCompletePage';
 
 // 의뢰 목록 페이지
-import WritingPage from '../pages/Client/RequestList/WritingPage';
+import DraftPage from '../pages/Client/RequestList/DraftPage';
 import MatchingPage from '../pages/Client/RequestList/MatchingPage';
-import ProgressingPage from '../pages/Client/RequestList/ProgressingPage';
+import WorkingPage from '../pages/Client/RequestList/WorkingPage';
 import CompletePage from '../pages/Client/RequestList/CompletePage';
 // 의뢰 목록 페이지 - 완료
 import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
@@ -67,10 +67,10 @@ export default function Router() {
           <Route index element={<Navigate to="request-list" replace />} />
           {/* request-list */}
           <Route path="request-list" element={<RequestListPage />}>
-            <Route index element={<Navigate to="writing" replace />} />
-            <Route path="writing" element={<WritingPage />} />
+            <Route index element={<Navigate to="draft" replace />} />
+            <Route path="draft" element={<DraftPage />} />
             <Route path="matching" element={<MatchingPage />} />
-            <Route path="progressing" element={<ProgressingPage />} />
+            <Route path="working" element={<WorkingPage />} />
             <Route path="complete" element={<CompletePage />} />
           </Route>
           {/* matching-detail */}
