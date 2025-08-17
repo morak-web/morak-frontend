@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
-import useMyProjectList from '../../../hooks/useMyProjectList';
+// api
+import useMyProjectList from '../../../hooks/useMyProject';
 import designerImg from '../../../assets/RequestList/designer2.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
@@ -34,7 +34,10 @@ export default function CompletePage() {
     // api 연결 시 여기에 map 사용해서 수정하기
     <div className=" flex flex-col gap-[24px] ">
       {completeData.map((item) => (
-        <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
+        <div
+          key={item.projectId}
+          className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+        >
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
             <div className="flex gap-[20px]">
