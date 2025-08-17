@@ -1,9 +1,9 @@
 import { Outlet, NavLink } from 'react-router-dom';
 
 const STATUS = [
-  { title: '작성 중', count: 0, state: 'writing' },
+  { title: '작성 중', count: 0, state: 'draft' },
   { title: '매칭 중', count: 1, state: 'matching' },
-  { title: '진행 중', count: 0, state: 'progressing' },
+  { title: '진행 중', count: 0, state: 'working' },
   { title: '완료', count: 0, state: 'complete' },
 ];
 
@@ -62,7 +62,7 @@ export default function RequestListPage() {
       <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
         <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
           <ContentTopSide />
-          <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px] custom-scrollbar">
+          <div className="bg-red-300 w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-[27px]">
             <Outlet />
           </div>
         </div>
