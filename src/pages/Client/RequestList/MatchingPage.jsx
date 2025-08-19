@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import useMyProjectList from '../../../hooks/useMyProjectList';
+
 import matchingIcon from '../../../assets/RequestList/matching-icon.png';
 export default function MatchingPage() {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ export default function MatchingPage() {
 
   const list = Array.isArray(data) ? data : [];
   const matchingData = list.filter((item) => item.status === 'MATCHING');
+  console.log(matchingData);
+
   return (
     // api 연결 시 여기에 map 사용해서 수정하기
     <div className=" flex flex-col gap-[24px] ">
@@ -68,15 +71,14 @@ export default function MatchingPage() {
                     예상 기간 60일
                   </h1>
                 </div>
-                <p className="text-[#525466] text-[13px]">
-                  스타트업 브랜드 로고 제작 요청 – 친환경·테크 느낌의 심플한
-                  로고 원해요. 단색 혹은 2컬러 정도로.
-                </p>
+                <p className="text-[#525466] text-[13px]">{item.aiSummary}</p>
               </div>
             </div>
             <div className="flex justify-end items-end">
               <button
-                onClick={() => navigate('/client-page/matching-detail')}
+                onClick={() =>
+                  navigate(`/client-page/matching-detail/${item.projectId}`)
+                }
                 className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer"
               >
                 상세 {'>'}

@@ -1,10 +1,16 @@
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
 import { useNavigate } from 'react-router-dom';
+import { useMyProjectDetail } from '../../../hooks/useMyProjectList';
+import { useParams } from 'react-router-dom';
 
 export default function RequestDetailNoDesignerPage() {
   const navigate = useNavigate();
   const data = RequestDetailMocks[1];
+  const { id } = useParams(); // 항상 문자열
+  const projectId = Number(id);
+  const { data: detailData } = useMyProjectDetail(projectId);
+  console.log(detailData);
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
@@ -35,7 +41,7 @@ export default function RequestDetailNoDesignerPage() {
                   제목
                 </h3>
                 <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
-                  {data.projectName}
+                  {detailData.title}
                 </p>
               </div>
               <div className="flex flex-col">
@@ -60,7 +66,7 @@ export default function RequestDetailNoDesignerPage() {
                 의뢰 상세
               </h2>
               <div className="pl-4 ">
-                {data.detailSections.map((section) => (
+                {/* {data.detailSections.map((section) => (
                   <section key={section.header} className="mb-2">
                     <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
                       - {section.header}
@@ -71,7 +77,10 @@ export default function RequestDetailNoDesignerPage() {
                       ))}
                     </ul>
                   </section>
-                ))}
+                ))} */}
+                <h2 className="text-sm mb-1 text-[#525466d3]">
+                  {detailData.userRequirements}
+                </h2>
               </div>
             </div>
             <div>
