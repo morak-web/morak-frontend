@@ -36,14 +36,15 @@ export default function CreateRequestPage() {
       budgetEstimate: Number(formData.budgetEstimate),
     });
     alert('제출 성공!');
-    setFormData({
-      categoryId: '',
-      title: '',
-      userRequirements: '',
-      createdAt: '',
-      dueDate: '',
-      budgetEstimate: '',
-    });
+    setStep(5);
+    // setFormData({
+    //   categoryId: '',
+    //   title: '',
+    //   userRequirements: '',
+    //   createdAt: '',
+    //   dueDate: '',
+    //   budgetEstimate: '',
+    // });
   };
 
   return (
