@@ -9,15 +9,15 @@ export default function RequirementSummaryPage({ prev, onSubmit, data }) {
         </h1>
         <div className="flex flex-col gap-[6px] overflow-y-auto custom-scrollbar pr-[40px] mb-[56px]">
           <div>
-            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
+            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]  pl-[7px]">
               프로젝트 제목
             </h1>
             <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-              퍼스널 헬스케어 플랫폼
+              {data.title}
             </p>
           </div>
           <div>
-            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
+            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]  pl-[7px]">
               지출 가능 예산
             </h1>
             <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
@@ -26,16 +26,21 @@ export default function RequirementSummaryPage({ prev, onSubmit, data }) {
           </div>
           <div>
             <div>
-              <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
-                예상 시작일
-              </h1>
-              <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-                퍼스널 헬스케어 플랫폼
-              </p>
+              <div className=" border-b-[1px] border-[#5254665e] pb-[4px]  flex gap-[90px]">
+                <h1 className="text-[#525466] text-[17px]  pl-[7px]">
+                  예상 시작일
+                </h1>
+                <h1 className="text-[#525466] text-[17px]">마감일</h1>
+              </div>
+              <div className="flex border-[#5254665e]  pb-[23px] border-b-[1px] pl-[7px] pt-[9px] gap-[49px]">
+                <p className="text-[#525466] text-[13px]">{data.createdAt}</p>
+                <p className="text-[#525466] text-[13px]">-</p>
+                <p className="text-[#525466] text-[13px] ">{data.dueDate}</p>
+              </div>
             </div>
           </div>
           <div>
-            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
+            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]  pl-[7px]">
               상세 요구 사항
             </h1>
             <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
@@ -43,7 +48,7 @@ export default function RequirementSummaryPage({ prev, onSubmit, data }) {
             </p>
           </div>
           <div className="mb-[24px]">
-            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
+            <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]  pl-[7px]">
               참고 자료
             </h1>
             <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px] flex">

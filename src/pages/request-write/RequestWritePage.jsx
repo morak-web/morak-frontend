@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 
 export default function RequestWritePage({ next, prev, value, onChange }) {
-  const [projectTitle, setProjectTitle] = useState('');
+  const [projectTitle, setProjectTitle] = useState(value?.title || '');
   const [budget, setBudget] = useState(value?.budgetEstimate || '');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(value?.dueDate || null);
+  const [startDate, setStartDate] = useState(
+    value?.createdAt ? new Date(value.createdAt) : null
+  );
+  const [endDate, setEndDate] = useState(
+    value?.dueDate ? new Date(value.dueDate) : null
+  );
   const [detail, setDetail] = useState(value?.userRequirements || '');
   const [warning, setWarning] = useState(false);
 
@@ -26,12 +30,23 @@ export default function RequestWritePage({ next, prev, value, onChange }) {
     setWarning(!requiredFilled);
   }, [projectTitle, budget, startDate, endDate, detail]);
 
+  // 날짜 정확하게 뽑기
+  const toDateOnly = (d) => {
+    if (!d) return undefined;
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}.${m}.${day}`;
+  };
+
   const goNext = () => {
     if (warning) return;
     onChange({
       userRequirements: detail,
+      title: projectTitle,
+      createdAt: toDateOnly(startDate),
+      dueDate: toDateOnly(endDate),
       budgetEstimate: budget ? Number(budget) : undefined,
-      dueDate: endDate,
     });
     next();
   };
@@ -63,7 +78,7 @@ export default function RequestWritePage({ next, prev, value, onChange }) {
               className="w-[200px] bg-[#F7F8FC] rounded-[8px] h-[40px] text-black font-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694] 
                 pl-8 text-[15px]"
               value={budget}
-              onChange={(e) => setBudget(e.target.value)}
+              onChange={handleBudgetChange}
             />
             <p className="text-[#B0B3C6] text-[14px] absolute bottom-2 left-[10px]">
               ₩

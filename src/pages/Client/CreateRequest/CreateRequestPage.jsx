@@ -14,7 +14,9 @@ export default function CreateRequestPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     categoryId: '',
+    title: '',
     userRequirements: '',
+    createdAt: '',
     dueDate: '',
     budgetEstimate: '',
   });
@@ -36,7 +38,9 @@ export default function CreateRequestPage() {
     alert('제출 성공!');
     setFormData({
       categoryId: '',
+      title: '',
       userRequirements: '',
+      createdAt: '',
       dueDate: '',
       budgetEstimate: '',
     });
@@ -56,7 +60,9 @@ export default function CreateRequestPage() {
           next={next}
           prev={prev}
           value={{
+            title: formData.title,
             userRequirements: formData.userRequirements,
+            createdAt: formData.createdAt,
             dueDate: formData.dueDate,
             budgetEstimate: formData.budgetEstimate,
           }}
