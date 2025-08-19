@@ -19,6 +19,7 @@ export default function CreateRequestPage() {
     createdAt: '',
     dueDate: '',
     budgetEstimate: '',
+    status: 'DRAFT',
   });
 
   const next = () => {
@@ -31,9 +32,12 @@ export default function CreateRequestPage() {
   const handleSubmit = async () => {
     await mutateAsync({
       categoryId: Number(formData.categoryId),
+      title: formData.title?.trim(),
       userRequirements: formData.userRequirements,
+      createdAt: formData.createdAt,
       dueDate: formData.dueDate,
       budgetEstimate: Number(formData.budgetEstimate),
+      status: 'MATCHING',
     });
     alert('제출 성공!');
     setStep(5);
