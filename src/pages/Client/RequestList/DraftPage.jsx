@@ -10,7 +10,7 @@ export default function WritingPage() {
 
   const list = Array.isArray(data) ? data : [];
   const draftData = list.filter((item) => item.status === 'DRAFT');
-
+  console.log(draftData);
   return (
     // api 연결 시 여기에 map 사용해서 수정하기
     <div className=" flex flex-col gap-[24px]">
@@ -32,7 +32,7 @@ export default function WritingPage() {
             </div>
             <Link
               className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
-              to="/request/category"
+              to="/create-request"
             >
               작성하러 가기
             </Link>

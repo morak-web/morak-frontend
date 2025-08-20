@@ -12,6 +12,7 @@ export const createProject = async (data) => {
   const res = await client.post('/projects', data, {
     headers: { 'Content-Type': 'application/json' },
   });
+  return res.data;
 };
 
 // 3. 프로젝트 목록 조회
@@ -31,6 +32,16 @@ export const projectList = async (status) => {
 export const projectDetailInquiry = async (projectId) => {
   try {
     const res = await client.get(`/projects/${projectId}`);
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// 프로젝트 status 변경
+export const changeProjectStatus = async (projectId) => {
+  try {
+    const res = await client.patch(`/projects/${projectId}/submit`);
     return res.data;
   } catch (err) {
     throw err;

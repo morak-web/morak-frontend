@@ -6,7 +6,7 @@ import MainLayout from '../../components/layout/MainLayout';
 const ASIDE_BAR = [
   {
     title: '의뢰서 작성',
-    link: '/request/category',
+    link: '/create-request',
   },
   {
     title: '내 의뢰 목록',
