@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import useMyProjectList from '../../../hooks/useMyProjectList';
+// api
+import useMyProjectList from '../../../hooks/useMyProject';
+// 이미지
 import designerImg from '../../../assets/RequestList/designer1.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';

@@ -7,7 +7,14 @@ const client = axios.create({
   headers: { 'Cache-Control': 'no-cache' }, // 304 오류 방지
 });
 
-// 프로젝트 목록 조회
+// 1. 프로젝트 생성
+export const createProject = async (data) => {
+  const res = await client.post('/projects', data, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
+// 3. 프로젝트 목록 조회
 export const projectList = async (status) => {
   try {
     const normalized = status ? String(status).toUpperCase() : undefined;

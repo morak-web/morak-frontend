@@ -15,6 +15,7 @@ import RequestListPage from '../pages/Client/RequestList/RequestListPage';
 // 거래 내역 페이지
 import PaymentListPage from '../pages/Client/Payment/PaymentListPage';
 // 의뢰 작성 페이지 (카테고리-직접 작성-AI-요약-완료)
+import CreateRequestPage from '../pages/Client/CreateRequest/CreateRequestPage';
 import ChooseCategoryPage from '../pages/request-write/ChooseCategoryPage';
 import RequestWritePage from '../pages/request-write/RequestWritePage';
 import AIRequestPage from '../pages/request-write/AIRequestPage';
@@ -49,7 +50,9 @@ export default function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/request/category" element={<ChooseCategoryPage />} />
+        {/* create-request */}
+        <Route path="/create-request" element={<CreateRequestPage />} />
+        {/* <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
 
         <Route path="/request/AI-question" element={<AIRequestPage />} />
@@ -60,7 +63,7 @@ export default function Router() {
         <Route
           path="/request/write/complete"
           element={<RequestWriteCompletePage />}
-        />
+        /> */}
 
         {/* client  */}
         <Route path="/client-page" element={<ClientPage />}>

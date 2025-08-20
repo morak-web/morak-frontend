@@ -112,7 +112,7 @@ export default function HomePage() {
           <div className="hidden md:flex flex-col md:w-[500px] h-[100%] items-end md:mr-[-12%] lg:mr-[-12%] xl:mr-[-7%] 2xl:mr-0 md:mt-[10px] lg:mt-0">
             <Link
               className="relative block"
-              to={'request/category'}
+              to={'create-request'}
               onMouseEnter={() => setIsHover(true)}
               onMouseLeave={() => setIsHover(false)}
             >

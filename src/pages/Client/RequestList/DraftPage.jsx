@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import useMyProjectList from '../../../hooks/useMyProjectList';
+// api
+import useMyProjectList from '../../../hooks/useMyProject';
 import writingPencilIcon from '../../../assets/RequestList/writing-pencil-icon.png';
 export default function WritingPage() {
   const { data, isLoading, isError } = useMyProjectList('DRAFT');
