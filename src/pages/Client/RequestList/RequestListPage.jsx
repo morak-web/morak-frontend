@@ -62,7 +62,7 @@ export default function RequestListPage() {
       <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
         <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
           <ContentTopSide />
-          <div className="bg-red-300 w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-[27px]">
+          <div className="w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-[27px]">
             <Outlet />
           </div>
         </div>
