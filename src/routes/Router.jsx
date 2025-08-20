@@ -81,12 +81,12 @@ export default function Router() {
             path="matching-detail/:id"
             element={<RequestDetailNoDesignerPage />}
           />
-          {/* progressing-deatil */}
+          {/* working-deatil */}
           <Route
             path="designer-portfolio"
             element={<DesignerPortfolioPage />}
           />
-          <Route path="request-detail" element={<RequestDetailPage />} />
+          <Route path="request-detail/:id" element={<RequestDetailPage />} />
           <Route path="payment-list" element={<PaymentListPage />} />
         </Route>
         <Route

@@ -1,18 +1,17 @@
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
-import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
 import { useNavigate } from 'react-router-dom';
-import { useMyProjectDetail } from '../../../hooks/useMyProjectList';
+import { useMyProjectDetail } from '../../../hooks/useMyProject';
 import { useParams } from 'react-router-dom';
 
 export default function RequestDetailNoDesignerPage() {
   const navigate = useNavigate();
-  const data = RequestDetailMocks[1];
   const { id } = useParams(); // 항상 문자열
   const projectId = Number(id);
-  const { data: detailData } = useMyProjectDetail(projectId, {
+  const { data: detailData, isError } = useMyProjectDetail(projectId, {
     enabled: Number.isFinite(projectId),
   });
   console.log(detailData);
+  if (isError) return <p>오류!</p>;
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
@@ -35,22 +34,21 @@ export default function RequestDetailNoDesignerPage() {
           <div className="w-[35%] md:w-[45%] flex flex-col justify-between">
             <div className=" border-b-[1px] border-[#D9D9D9] text-end text-[#525466] text-[13px] font-light md:pb-[3%] md:mb-[3%]">
               진행중 ...
-              {/* 이부분 고쳐야함 */}
             </div>
-            <div className="flex flex-col md:flex md:flex-row md:px-[5%] xl:px-[15%] justify-between gap-[10px]">
+            <div className="flex flex-col md:flex md:flex-row px-[5%]  justify-between gap-[5px]">
               <div className="flex flex-col ">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  제목
+                  프로젝트 제목
                 </h3>
                 <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
-                  {detailData.title}
+                  {detailData?.title}
                 </p>
               </div>
-              <div className="flex flex-col">
-                <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold">
-                  카테고리
+              <div className="flex flex-col ">
+                <h3 className="text-[#525466] text-[9px] md:text-[13px] whitespace-nowrap font-semibold">
+                  프로젝트 카테고리
                 </h3>
-                <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
+                <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px] ">
                   {/* {category.map((item) => ( */}
                   <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap">
                     UI/UX 앱디자인
@@ -81,7 +79,7 @@ export default function RequestDetailNoDesignerPage() {
                   </section>
                 ))} */}
                 <h2 className="text-sm mb-1 text-[#525466d3]">
-                  {detailData.userRequirements}
+                  {detailData?.userRequirements}
                 </h2>
               </div>
             </div>
@@ -89,13 +87,18 @@ export default function RequestDetailNoDesignerPage() {
               <h2 className="text-[16px] font-bold text-[#525466] mb-[10px]">
                 첨부 자료
               </h2>
-              <div className="flex justify-between pl-4">
-                {data.tempPicture.map((item, idx) => (
-                  <img
-                    src={item}
-                    key={idx}
-                    className="w-[32%] rounded-[10px]"
-                  />
+              <div className="flex flex-col pl-4">
+                {detailData?.referenceUrls.map((item, idx) => (
+                  <div className="flex gap-2 text-[#525466] text-[14px]">
+                    <h1>{idx + 1} : </h1>
+                    <a
+                      target="_blank"
+                      href={item}
+                      className="text-[#525466] text-[14px]"
+                    >
+                      {item}
+                    </a>
+                  </div>
                 ))}
               </div>
             </div>

@@ -11,9 +11,9 @@ export default function useMyProjectList(status) {
 }
 
 export function useMyProjectDetail(projectId) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['project-details', projectId],
     queryFn: () => projectDetailInquiry(projectId),
   });
-  return { data, isLoading };
+  return { data, isLoading, isError };
 }

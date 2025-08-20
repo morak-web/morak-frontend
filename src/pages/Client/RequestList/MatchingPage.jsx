@@ -8,6 +8,7 @@ export default function MatchingPage() {
   const { data, isLoading, isError } = useMyProjectList('MATCHING');
 
   if (isLoading) return <p>로딩 중...</p>;
+  if (isError) return <p>오류!!</p>;
 
   const list = Array.isArray(data) ? data : [];
   const matchingData = list.filter((item) => item.status === 'MATCHING');
