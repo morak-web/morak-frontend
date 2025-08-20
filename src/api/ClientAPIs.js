@@ -37,3 +37,13 @@ export const projectDetailInquiry = async (projectId) => {
     throw err;
   }
 };
+
+// 프로젝트 status 변경
+export const changeProjectStatus = async (projectId) => {
+  try {
+    const res = await client.patch(`/projects/${projectId}/submit`);
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
+};

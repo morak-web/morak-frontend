@@ -9,7 +9,11 @@ export default function useCreateProject() {
       // result: projectId, title
       // variables : body
       const projectId = result?.projectId;
-      const statusApi = 'MATCHING';
+      const statusApi = (
+        result?.status ||
+        variables?.status ||
+        'DRAFT'
+      ).toUpperCase();
       if (!projectId) {
         // projectId가 없으면 리스트/상세 시드하지 않음
         return;
@@ -17,13 +21,13 @@ export default function useCreateProject() {
 
       // 상세 캐시 시드(project-detail)
       qc.setQueryData(['project-details', projectId], (prev) => ({
-        ...(prev ?? []),
+        ...(prev ?? {}),
         projectId,
         categoryId: variables?.categoryId,
         title: variables?.title ?? '',
         userRequirements: variables?.userRequirements ?? '',
         status: statusApi,
-        createdAt: variables?.createdAt,
+        createdAt: variables?.createdAt || new Date().toISOString(),
         dueDate: variables?.dueDate,
         budgetEstimate: variables?.budgetEstimate,
       }));
@@ -42,9 +46,7 @@ export default function useCreateProject() {
       });
       // qc.invalidateQueries({ queryKey: ['my-projects', statusApi] });
 
-      setTimeout(() => {
-        qc.invalidateQueries({ queryKey: ['my-projects', statusApi] });
-      }, 500);
+      qc.invalidateQueries({ queryKey: ['my-projects', statusApi] });
     },
   });
 

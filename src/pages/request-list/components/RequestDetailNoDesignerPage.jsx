@@ -99,7 +99,10 @@ export default function RequestDetailNoDesignerPage() {
               </h2>
               <div className="flex flex-col pl-4">
                 {detailData?.referenceUrls.map((item, idx) => (
-                  <div className="flex gap-2 text-[#525466] text-[14px]">
+                  <div
+                    className="flex gap-2 text-[#525466] text-[14px]"
+                    key={idx}
+                  >
                     <h1>{idx + 1} : </h1>
                     <a
                       target="_blank"
