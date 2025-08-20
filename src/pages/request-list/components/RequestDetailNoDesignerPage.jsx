@@ -9,7 +9,9 @@ export default function RequestDetailNoDesignerPage() {
   const data = RequestDetailMocks[1];
   const { id } = useParams(); // 항상 문자열
   const projectId = Number(id);
-  const { data: detailData } = useMyProjectDetail(projectId);
+  const { data: detailData } = useMyProjectDetail(projectId, {
+    enabled: Number.isFinite(projectId),
+  });
   console.log(detailData);
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
