@@ -78,7 +78,7 @@ export default function Router() {
           </Route>
           {/* matching-detail */}
           <Route
-            path="matching-detail"
+            path="matching-detail/:id"
             element={<RequestDetailNoDesignerPage />}
           />
           {/* progressing-deatil */}

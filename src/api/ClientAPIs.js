@@ -26,3 +26,13 @@ export const projectList = async (status) => {
     throw err;
   }
 };
+
+// 프로젝트 상세 조회
+export const projectDetailInquiry = async (projectId) => {
+  try {
+    const res = await client.get(`/projects/${projectId}`);
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
+};
