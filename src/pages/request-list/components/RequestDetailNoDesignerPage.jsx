@@ -25,15 +25,25 @@ export default function RequestDetailNoDesignerPage() {
         <div className="flex sm:justify-around items-center gap-[20px] sm:gap-[0px]">
           <div className="w-[45%] sm:w-[30%] flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
             <h1 className="text-[8px] sm:text-[12px] text-[#525466] text-center whitespace-nowrap">
-              모락 AI로 함께 프로젝트를 진행 할<br /> 디자이너를 만나보세요!
+              매칭이 완료될 때까지 잠시 기다려주세요!
             </h1>
-            <button className="w-[100%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[10px] md:text-[13px] font-semibold  ">
-              AI 매칭 바로가기
-            </button>
           </div>
           <div className="w-[35%] md:w-[45%] flex flex-col justify-between">
-            <div className=" border-b-[1px] border-[#D9D9D9] text-end text-[#525466] text-[13px] font-light md:pb-[3%] md:mb-[3%]">
-              진행중 ...
+            <div className="flex border-b-[1px] border-[#D9D9D9] justify-between items-end px-[10px] pb-[5px]">
+              <h1 className="text-[#525466] text-[12px] font-light">
+                예상 기간 50일
+              </h1>
+              <h1 className="text-[#525466] text-[12px] font-light">
+                2025.09.27-2025.11.16
+              </h1>
+              <div className="  text-end">
+                <h1 className="text-[#525466] text-[10px] font-semibold">
+                  ₩ 300,000
+                </h1>
+                <h1 className="text-[#525466] text-[12px] font-light">
+                  진행중...
+                </h1>
+              </div>
             </div>
             <div className="flex flex-col md:flex md:flex-row px-[5%]  justify-between gap-[5px]">
               <div className="flex flex-col ">

@@ -1,13 +1,31 @@
 import { Outlet, NavLink } from 'react-router-dom';
-
-const STATUS = [
-  { title: '작성 중', count: 0, state: 'draft' },
-  { title: '매칭 중', count: 1, state: 'matching' },
-  { title: '진행 중', count: 0, state: 'working' },
-  { title: '완료', count: 0, state: 'complete' },
-];
+import useMyProjectList from '../../../hooks/useMyProject';
 
 function TopSide() {
+  const { data: draftList } = useMyProjectList('DRAFT');
+  const { data: matchingList } = useMyProjectList('MATCHING');
+  const { data: workingList } = useMyProjectList('WORKING');
+  const { data: completeList } = useMyProjectList('COMPLETE');
+  const draftCount = draftList?.filter(
+    (item) => item.status === 'DRAFT'
+  ).length;
+  const matchingCount = matchingList?.filter(
+    (item) => item.status === 'MATCHING'
+  ).length;
+  const workingCount = workingList?.filter(
+    (item) => item.status === 'WORKING'
+  ).length;
+  const completeCount = completeList?.filter(
+    (item) => item.status === 'COMPLETE'
+  ).length;
+
+  const STATUS = [
+    { title: '작성 중', count: draftCount, state: 'draft' },
+    { title: '매칭 중', count: matchingCount, state: 'matching' },
+    { title: '진행 중', count: workingCount, state: 'working' },
+    { title: '완료', count: completeCount, state: 'complete' },
+  ];
+
   return (
     <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
       {STATUS.map((item, idx) => (
@@ -32,6 +50,12 @@ function TopSide() {
 }
 
 function ContentTopSide() {
+  const STATUS = [
+    { title: '작성 중', state: 'draft' },
+    { title: '매칭 중', state: 'matching' },
+    { title: '진행 중', state: 'working' },
+    { title: '완료', state: 'complete' },
+  ];
   return (
     <div className="flex gap-[10px]">
       {STATUS.map((item) => (

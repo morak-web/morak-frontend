@@ -12,6 +12,7 @@ export const createProject = async (data) => {
   const res = await client.post('/projects', data, {
     headers: { 'Content-Type': 'application/json' },
   });
+  return res.data;
 };
 
 // 3. 프로젝트 목록 조회

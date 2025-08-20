@@ -19,7 +19,7 @@ export default function MatchingPage() {
     <div className=" flex flex-col gap-[24px] ">
       {matchingData.map((item) => (
         <div
-          key={item.projectId}
+          key={item.title}
           className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
         >
           {/* left content */}
@@ -30,14 +30,12 @@ export default function MatchingPage() {
               className="w-[76px] h-[76px] mb-[14px]"
             />
             <div className="text-[#525466] text-[12px] mb-[19px] flex flex-col items-center text-center">
-              <p>
-                아직 매칭이 되지 않은 의뢰입니다. 모락 AI로 함께 프로젝트를 진행
-                할 디자이너를 만나보세요!
+              <p className="whitespace">
+                아직 매칭이 되지 않은 의뢰입니다.
+                <br />
+                매칭이 완료될 때까지 잠시 기다려주세요!
               </p>
             </div>
-            <Link className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center">
-              AI 매칭 바로가기
-            </Link>
           </div>
           {/* right content */}
           <div className="flex-1 px-[24px] py-[6px] flex flex-col justify-between">
