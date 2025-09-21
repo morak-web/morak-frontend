@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import matchingIcon from '../../../assets/RequestList/matching-icon.png';
 
@@ -19,12 +19,9 @@ export default function MatchingPage() {
   if (error) return <div>error!! {String(error.message || error)}</div>;
 
   return (
-    // api 연결 시 여기에 map 사용해서 수정하기
-    <div className="bg-red-200 w-full h-[470px] gap-[15px]">
+    <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {matchingData.map((item) => (
         <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
-          {console.log(item)}
-
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
             <img
@@ -47,7 +44,7 @@ export default function MatchingPage() {
                   <h1 className="text-[#525466] text-[14px] font-semibold">
                     프로젝트 제목
                   </h1>
-                  <div className="flex items-end gap-[4px]">
+                  <div className="flex items-end gap-[6px]">
                     <p className="text-[#525466] text-[12px] font-light">
                       {item.title}
                     </p>
@@ -71,13 +68,12 @@ export default function MatchingPage() {
                   <h1 className="text-[#525466] text-[14px] font-semibold">
                     요구사항 요약
                   </h1>
-                  <h1 className="text-[#525466] text-[14px] font-semibold">
-                    예상 기간 60일
-                  </h1>
+                  {/* <h1 className="text-[#525466] text-[14px] font-semibold">
+                    예상 기간 일
+                  </h1> */}
                 </div>
                 <p className="text-[#525466] text-[12px] font-light">
-                  {/* 스타트업 브랜드 로고 제작 요청 – 친환경·테크 느낌의 심플한
-                  로고 원해요. 단색 혹은 2컬러 정도로. */}
+                  {item.aiSummary}
                 </p>
               </div>
             </div>

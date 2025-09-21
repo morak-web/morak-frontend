@@ -40,7 +40,7 @@ import MatchingDetailPage from '../pages/Designer/matching/MatchingDetailPage';
 
 import MatchingSeeDetailPage from '../components/RequestList/Matching/MatchingSeeDetailPage';
 
-import RequestDetailPage from '../pages/request-list/components/RequestDetailPage';
+import ProgressingSeeDetailPage from '../components/RequestList/Progressing/ProgressingSeeDetailPage.jsx';
 import DesignerPortfolioPage from '../pages/request-list/components/DesignerPortfolioPage';
 
 export default function Router() {
@@ -85,7 +85,10 @@ export default function Router() {
             path="designer-portfolio"
             element={<DesignerPortfolioPage />}
           />
-          <Route path="request-detail" element={<RequestDetailPage />} />
+          <Route
+            path="working-detail/:id"
+            element={<ProgressingSeeDetailPage />}
+          />
           <Route path="payment-list" element={<PaymentListPage />} />
         </Route>
         <Route
