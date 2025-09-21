@@ -1,5 +1,5 @@
-import MainLayout from '../../components/layout/MainLayout';
-import completeIcon from '../../assets/RequestWrite/request-write-complete-icon.png';
+import MainLayout from '../../../components/layout/MainLayout';
+import completeIcon from '../../../assets/RequestWrite/request-write-complete-icon.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function RequestWriteCompletePage() {

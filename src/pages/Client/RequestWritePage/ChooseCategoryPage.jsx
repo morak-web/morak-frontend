@@ -1,10 +1,10 @@
-import MainLayout from '../../components/layout/MainLayout';
-import websiteIcon from '../../assets/RequestWrite/website-icon.png';
-import appIcon from '../../assets/RequestWrite/app-icon.png';
-import shoppingIcon from '../../assets/RequestWrite/shopping-icon.png';
-import posIcon from '../../assets/RequestWrite/POS-icon.png';
-import graphicIcon from '../../assets/RequestWrite/graphic-icon.png';
-import moreIcon from '../../assets/RequestWrite/more-icon.png';
+import MainLayout from '../../../components/layout/MainLayout';
+import websiteIcon from '../../../assets/RequestWrite/website-icon.png';
+import appIcon from '../../../assets/RequestWrite/app-icon.png';
+import shoppingIcon from '../../../assets/RequestWrite/shopping-icon.png';
+import posIcon from '../../../assets/RequestWrite/POS-icon.png';
+import graphicIcon from '../../../assets/RequestWrite/graphic-icon.png';
+import moreIcon from '../../../assets/RequestWrite/more-icon.png';
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

@@ -1,11 +1,11 @@
-import MainLayout from '../components/layout/MainLayout';
-import Input from '../components/Input';
+import MainLayout from '../../components/layout/MainLayout';
+import Input from '../../components/Input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import checkIcon from '../assets/Login/check-icon.png';
+import checkIcon from '../../assets/Login/check-icon.png';
 
-export default function Login() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [loginBtnState, setLoginBtnState] = useState(false);
   const [idInput, setIdInput] = useState('');

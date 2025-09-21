@@ -1,6 +1,6 @@
-import MainLayout from '../../components/layout/MainLayout';
+import MainLayout from '../../../components/layout/MainLayout';
 import { Link } from 'react-router-dom';
-import folderImg from '../../assets/RequestWrite/folder.png';
+import folderImg from '../../../assets/RequestWrite/folder.png';
 
 export default function RequirementSummaryPage() {
   return (

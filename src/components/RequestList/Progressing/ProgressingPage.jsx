@@ -1,15 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import designerImg from '../../../assets/RequestList/designer2.png';
+import { useState, useEffect } from 'react';
+import designerImg from '../../../assets/RequestList/designer1.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
-
 // 디자이너 포트폴리오
-// import DesignerPortfolioPage from '../../request-list/components/DesignerPortfolioPage';
-// // button 4
-// import RequestDetailPage from '../../request-list/components/RequestDetailPage';
-import AIFeedbackPage from '../../request-list/AIFeedback/AIFeedbackPage';
-import IntermediateFeedbackModal from '../../request-list/IntermediateFeedback/IntermediateFeedbackModal';
+import DesignerPortfolioPage from '../../../pages/request-list/components/DesignerPortfolioPage';
+// button 3
+import RequestDetailPage from '../../../pages/request-list/components/RequestDetailPage';
+import AIFeedbackPage from '../../../pages/request-list/AIFeedback/AIFeedbackPage';
+import IntermediateFeedbackModal from '../../../pages/request-list/IntermediateFeedback/IntermediateFeedbackModal';
 
 const MATCHING_AND_COMPLETE_BTN = [
   '의뢰 상세',
@@ -18,10 +17,10 @@ const MATCHING_AND_COMPLETE_BTN = [
   '최종 결과',
 ];
 
-export default function CompletePage() {
-  const navigate = useNavigate();
+export default function ProgressingPage() {
   const [AIFeedbackModalOpen, setAIFeedbackModalOpen] = useState(false);
   const [interFeedbackModalOpen, setInterFeedbackModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     // api 연결 시 여기에 map 사용해서 수정하기
@@ -42,19 +41,19 @@ export default function CompletePage() {
             {/* map 사용하기 */}
             <div className="flex gap-[10px]">
               <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                인터렉션
+                웹디자인
               </div>
               <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                3D
+                브랜딩
               </div>
             </div>
           </div>
         </div>
         <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
           <p className="text-[12px] text-[#525466] text-center">
-            SNS 콘텐츠부터 프로모션 영상, 인터랙션 모션까지 다양한 디지털 콘텐츠
-            디자인 경험이 있습니다. After Effects와 Lottie를 활용한 마이크로
-            인터랙션
+            UI/UX 디자인을 중심으로 웹·모바일 프로젝트를 20건 이상 리드하며
+            사용자 중심 디자인을 실현해왔습니다.Figma, Adobe XD, Zeplin 등을
+            활용해 개발자
           </p>
           <button className="text-[#525466] font-bold text-[10px] flex gap-[2px] cursor-pointer">
             자세히 보기
@@ -92,36 +91,31 @@ export default function CompletePage() {
                 프로젝트 카테고리
               </h1>
               {/* 이 부분은 map 사용해서 구현하기 */}
-              <p className="text-[#525466] text-[13px]">
-                SNS 콘텐츠 모션그래픽
-              </p>
+              <p className="text-[#525466] text-[13px]">로고 디자인 브랜딩</p>
             </div>
           </div>
-          <div className="flex flex-col gap-[7px] mb-[7px]">
+          <div className="flex flex-col gap-[7px]  mb-[7px]">
             <div className="flex justify-between">
               <h1 className="text-[#525466] text-[14px] font-semibold">
                 요구사항 요약
               </h1>
               <h1 className="text-[#525466] text-[14px] font-semibold">
-                D - day
+                D - 75
               </h1>
             </div>
             <p className="text-[#525466] text-[13px]">
-              SNS 광고용 짧은 모션 영상이 필요합니다. 브랜드 톤에 맞는 컬러감과
-              부드러운 전환 효과 중심으로 구성해주세요. 텍스트 강조 애니메이션과
-              간단한 로고 모션도 포함되면 좋겠습니다.
+              모바일 앱 초기 UI 구성안 필요해요. 헬스케어 앱이고 직관적인 UX,
+              밝고 신뢰감 있는 색감으로 부탁드려요!
             </p>
           </div>
         </div>
         {/* button */}
-        <div className="grid grid-cols-2 gap-x-2 gap-y-2  px-[5%]">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-2 px-[5%]">
           {MATCHING_AND_COMPLETE_BTN.map((label) => (
             <button
               key={label}
               onClick={() => {
-                if (label === '최종 결과') {
-                  navigate('final-feedback');
-                } else if (label === 'AI 피드백') {
+                if (label === 'AI 피드백') {
                   setAIFeedbackModalOpen(true);
                 } else if (label === '중간 결과 / 피드백') {
                   setInterFeedbackModalOpen(true);
@@ -129,7 +123,8 @@ export default function CompletePage() {
                   navigate('/client-page/request-detail');
                 }
               }}
-              className={`w-[100%] h-[30px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}
+              className={`w-[100%] h-[30px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} ${label === 'AI 피드백' ? ' text-white' : ''}`}
+              disabled={label === '최종 결과'}
               style={
                 label === 'AI 피드백'
                   ? {
@@ -145,7 +140,6 @@ export default function CompletePage() {
           ))}
         </div>
       </div>
-      {/* <RequestDetailPage /> */}
       <AIFeedbackPage
         AIFeedbackModalOpen={AIFeedbackModalOpen}
         onClose={() => setAIFeedbackModalOpen(false)}

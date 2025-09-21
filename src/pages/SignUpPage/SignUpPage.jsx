@@ -1,5 +1,5 @@
-import MainLayout from '../components/layout/MainLayout';
-import Input from '../components/Input';
+import MainLayout from '../../components/layout/MainLayout';
+import Input from '../../components/Input';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

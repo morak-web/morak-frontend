@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import MainLayout from '../components/layout/MainLayout';
-import mainImage from '../assets/Home/background-picture.png';
-import startRequestBtn from '../assets/Home/button1-icon.png';
-import registerDesignerBtn from '../assets/Home/button2-icon.png';
-import goIcon from '../assets/Home/go-icon.png';
+import MainLayout from '../../components/layout/MainLayout';
+import mainImage from '../../assets/Home/background-picture.png';
+import startRequestBtn from '../../assets/Home/button1-icon.png';
+import registerDesignerBtn from '../../assets/Home/button2-icon.png';
+import goIcon from '../../assets/Home/go-icon.png';
 
-import machingIcon from '../assets/Home/matching-icon.png';
-import writeIcon from '../assets/Home/write-icon.png';
-import task from '../assets/Home/task.png';
-import hoverButton from '../assets/Home/hover-button.png';
+import machingIcon from '../../assets/Home/matching-icon.png';
+import writeIcon from '../../assets/Home/write-icon.png';
+import task from '../../assets/Home/task.png';
+import hoverButton from '../../assets/Home/hover-button.png';
 
 export default function HomePage() {
   const [isHover, setIsHover] = useState(false);
