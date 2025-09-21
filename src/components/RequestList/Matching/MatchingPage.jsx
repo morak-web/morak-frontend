@@ -38,12 +38,6 @@ export default function MatchingPage() {
                 할 디자이너를 만나보세요!
               </p>
             </div>
-            <Link
-              to="/"
-              className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
-            >
-              AI 매칭 바로가기
-            </Link>
           </div>
           {/* right content */}
           <div className="flex-1 px-[24px] py-[6px] flex flex-col justify-between">
@@ -68,7 +62,7 @@ export default function MatchingPage() {
                   </h1>
                   {/* 이 부분은 map 사용해서 구현하기 */}
                   <p className="text-[#525466] text-[12px] font-ligth">
-                    로고 디자인 브랜딩
+                    {/* 로고 디자인 브랜딩 */}
                   </p>
                 </div>
               </div>
@@ -82,8 +76,8 @@ export default function MatchingPage() {
                   </h1>
                 </div>
                 <p className="text-[#525466] text-[12px] font-light">
-                  스타트업 브랜드 로고 제작 요청 – 친환경·테크 느낌의 심플한
-                  로고 원해요. 단색 혹은 2컬러 정도로.
+                  {/* 스타트업 브랜드 로고 제작 요청 – 친환경·테크 느낌의 심플한
+                  로고 원해요. 단색 혹은 2컬러 정도로. */}
                 </p>
               </div>
             </div>
