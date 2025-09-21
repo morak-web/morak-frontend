@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import facebookIcon from '../../../assets/RequestList/SocialIcon/facebook.png';
@@ -8,6 +8,7 @@ import { RequestListMocks } from '../../../mocks/RequestListMocks';
 export default function DesignerPortfolioPage() {
   const useData = RequestListMocks['doing'][0];
   const navigate = useNavigate();
+  const { id } = useParams();
 
   return (
     <div className=" w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%] flex flex-col gap-3">

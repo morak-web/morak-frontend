@@ -74,12 +74,15 @@ export default function CompletePage() {
                 />
               </button>
             </div>
-            <Link
+            <button
               className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
-              to="/client-page/designer-portfolio"
+              onClick={() => {
+                const id = item?.designer?.designerId;
+                navigate(`/client-page/designer-portfolio/${id}`);
+              }}
             >
               포트폴리오 보기
-            </Link>
+            </button>
           </div>
           {/* right content */}
           <div className="flex-1 px-[24px] py-[6px] flex flex-col justify-between">
@@ -130,7 +133,8 @@ export default function CompletePage() {
                     } else if (label === '중간 결과 / 피드백') {
                       setInterFeedbackModalOpen(true);
                     } else if (label === '의뢰 상세') {
-                      navigate('/client-page/request-detail');
+                      const id = item?.projectId;
+                      navigate(`/client-page/working-detail/${id}`);
                     }
                   }}
                   className={`w-[100%] h-[30px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}

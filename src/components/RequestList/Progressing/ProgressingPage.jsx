@@ -75,12 +75,15 @@ export default function ProgressingPage() {
                 />
               </button>
             </div>
-            <Link
+            <button
               className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
-              to="/client-page/designer-portfolio"
+              onClick={() => {
+                const id = item?.designer?.designerId;
+                navigate(`/client-page/designer-portfolio/${id}`);
+              }}
             >
               포트폴리오 보기
-            </Link>
+            </button>
           </div>
           {/* right content */}
           <div className="flex-1 px-[24px] py-[6px] flex flex-col justify-between">

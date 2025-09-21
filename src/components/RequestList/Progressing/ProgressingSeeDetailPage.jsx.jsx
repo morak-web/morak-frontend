@@ -2,7 +2,6 @@ import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import desingerImg from '../../../assets/RequestList/designer1.png';
 
 // api
 import { useProject } from '../../../context/ProjectContext';
@@ -15,6 +14,14 @@ export default function ProgressingSeeDetailPage() {
   useEffect(() => {
     fetchProjectDetail(id);
   }, []);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>error!! {String(error.message || error)}</div>;
+  // date
+  const start = new Date(projectDetail?.createdAt);
+  const end = new Date(projectDetail?.dueDate);
+  const diffMs = end - start;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
@@ -40,28 +47,42 @@ export default function ProgressingSeeDetailPage() {
             </h1>
             <button
               className="w-[90%] bg-[#DFE1ED] rounded-[19px] h-[38px] text-[#525466] text-[13px] font-semibold cursor-pointer"
-              onClick={() => navigate('/client-page/designer-portfolio')}
+              onClick={() => {
+                const id = projectDetail?.designer?.designerId;
+                navigate(`/client-page/designer-portfolio/${id}`);
+              }}
             >
               포트폴리오 보기
             </button>
           </div>
           <div className="w-[35%] md:w-[45%] flex flex-col justify-between">
-            <div className=" border-b-[1px] border-[#D9D9D9] text-end text-[#525466] text-[13px] font-light md:pb-[3%] md:mb-[3%]">
-              진행중 ...
-              {/* 이부분 고쳐야함 */}
+            <div className="flex justify-between border-b-[1px] border-[#D9D9D9] text-end text-[#525466] pb-[5px] mb-[5px] px-[10px]">
+              <div className="flex gap-[10px] justify-end">
+                <p className="font-light text-[10px]">
+                  {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')} ~{' '}
+                  {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}
+                </p>
+                <p className="font-normal text-[10px]">
+                  예상 기간{' '}
+                  <span className="font-normal">{diffDays.toFixed(0)}</span>일
+                </p>
+              </div>
+              <p className="font-semibold text-[10px] ">
+                ₩ {projectDetail?.budgetEstimate.toLocaleString()}
+              </p>
             </div>
             <div className="flex flex-col md:flex md:flex-row md:px-[5%] xl:px-[15%] justify-between gap-[10px]">
               <div className="flex flex-col ">
                 <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  제목
+                  프로젝트 명
                 </h3>
                 <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
                   {projectDetail?.title}
                 </p>
               </div>
               <div className="flex flex-col">
-                <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold">
-                  카테고리
+                <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
+                  프로젝트 카테고리
                 </h3>
                 <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
                   <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap ">
@@ -103,7 +124,10 @@ export default function ProgressingSeeDetailPage() {
               </h2>
               <div className="flex flex-col pl-4 ">
                 {projectDetail?.referenceUrls.map((item, idx) => (
-                  <div className="flex font-light text-[13px] text-[#525466] gap-[5px]">
+                  <div
+                    key={idx}
+                    className="flex font-light text-[13px] text-[#525466] gap-[5px]"
+                  >
                     <p>{idx + 1}. </p>
                     <a
                       href={item}

@@ -13,7 +13,7 @@ import SignUpPage from '../pages/SignUpPage/SignUpPage';
 import ClientPage from '../pages/Client/ClientPage';
 import RequestListPage from '../pages/Client/RequestListPage/RequestListPage';
 // 거래 내역 페이지
-import PaymentListPage from '../pages/Client/PaymentPage/PaymentListPage';
+import PaymentListPage from '../pages/Client/PaymentPage/PaymentListPage.jsx';
 // 의뢰 작성 페이지 (카테고리-직접 작성-AI-요약-완료)
 import ChooseCategoryPage from '../pages/Client/RequestWritePage/ChooseCategoryPage';
 import RequestWritePage from '../pages/Client/RequestWritePage/RequestWritePage';
@@ -41,7 +41,7 @@ import MatchingDetailPage from '../pages/Designer/matching/MatchingDetailPage';
 import MatchingSeeDetailPage from '../components/RequestList/Matching/MatchingSeeDetailPage';
 
 import ProgressingSeeDetailPage from '../components/RequestList/Progressing/ProgressingSeeDetailPage.jsx';
-import DesignerPortfolioPage from '../pages/request-list/components/DesignerPortfolioPage';
+import DesignerPortfolioPage from '../components/RequestList/portfolio/DesignerPortfolioPage.jsx';
 
 export default function Router() {
   return (
@@ -82,7 +82,7 @@ export default function Router() {
           />
           {/* progressing-deatil */}
           <Route
-            path="designer-portfolio"
+            path="designer-portfolio/:id"
             element={<DesignerPortfolioPage />}
           />
           <Route
