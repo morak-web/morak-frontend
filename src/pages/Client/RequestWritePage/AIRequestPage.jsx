@@ -1,4 +1,4 @@
-import MainLayout from '../../components/layout/MainLayout';
+import MainLayout from '../../../components/layout/MainLayout';
 import { Link } from 'react-router-dom';
 
 export default function AIRequestPage() {

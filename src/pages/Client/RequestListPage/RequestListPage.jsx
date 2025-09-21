@@ -1,10 +1,10 @@
 import { Outlet, NavLink } from 'react-router-dom';
 
 const STATUS = [
-  { title: '작성 중', count: 0, state: 'writing' },
-  { title: '매칭 중', count: 1, state: 'matching' },
-  { title: '진행 중', count: 0, state: 'progressing' },
-  { title: '완료', count: 0, state: 'complete' },
+  { title: '작성 중', count: 0, status: 'writing' },
+  { title: '매칭 중', count: 1, status: 'matching' },
+  { title: '진행 중', count: 0, status: 'progressing' },
+  { title: '완료', count: 0, status: 'complete' },
 ];
 
 function TopSide() {
@@ -35,7 +35,7 @@ function ContentTopSide() {
   return (
     <div className="flex gap-[10px]">
       {STATUS.map((item) => (
-        <NavLink key={item.title} to={item.state} className="no-underline">
+        <NavLink key={item.title} to={item.status} className="no-underline">
           {({ isActive }) => (
             <label className="gap-[6px] flex items-center cursor-pointer">
               <input
