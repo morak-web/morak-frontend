@@ -1,3 +1,7 @@
+import { useDesigner } from '../../../context/DesignerContext';
+import MatchingCard from '../../../components/Designer/Matching/MatchingCard';
+import { useEffect } from 'react';
+
 const TYPE = [
   {
     title: 'ALL',
@@ -22,9 +26,15 @@ const TYPE = [
   },
 ];
 
-import MatchingCard from './MatchingCard';
-
 export default function ProjectMatchingList() {
+  const { matchingWaitingList, fetchMatchingWaiting, loading, error } =
+    useDesigner();
+  useEffect(() => {
+    fetchMatchingWaiting();
+  }, []);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>error!! {String(error.message || error)}</div>;
+  console.log(matchingWaitingList);
   return (
     <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px]">
       <div className="mb-[11px]">
@@ -43,14 +53,11 @@ export default function ProjectMatchingList() {
         ))}
       </div>
       <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
-        {/* MatchingCard 안에 map 코드 작성 */}
-        <MatchingCard />
-        <MatchingCard />
-        <MatchingCard />
-        <MatchingCard />
-        <MatchingCard />
-        <MatchingCard />
-        <MatchingCard />
+        {matchingWaitingList?.map((item) => (
+          <div key={item.projectId}>
+            <MatchingCard {...item} />
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ export default function Router() {
             element={<ProjectMatchingList />}
           />
           {/* <Route path="project/:id" element={<MatchingDetailPage />} /> */}
-          <Route path="project" element={<MatchingDetailPage />} />
+          <Route path="project/:id" element={<MatchingDetailPage />} />
           <Route path="my-work-list" element={<MyWorkListPage />} />
           <Route
             path="request-doing/:id"

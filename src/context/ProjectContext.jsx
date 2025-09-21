@@ -20,7 +20,6 @@ export function ProjectProvider({ children }) {
     if (!projectId) return null;
     setLoading(true);
     setError(null);
-    console.log(projectId);
     try {
       const data = await getProjectDetail(projectId);
       setProjectDetail(data);

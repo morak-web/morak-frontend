@@ -22,7 +22,7 @@ export function PaymentProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  });
+  }, []);
   const value = { payment, fetchPayment, loading, error };
   return (
     <PaymentContext.Provider value={value}>{children}</PaymentContext.Provider>
