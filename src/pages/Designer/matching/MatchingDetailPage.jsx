@@ -13,7 +13,10 @@ export default function MatchingDetailPage() {
   useEffect(() => {
     fetchProjectDetail(id);
   }, []);
-  console.log(projectDetail);
+  const start = new Date(projectDetail?.createdAt);
+  const end = new Date(projectDetail?.expectedEndDate);
+  const ms = end - start;
+  const daysFloor = Math.floor(ms / 86400000);
   return (
     <div className="bg-white w-[95%] min-h-[710px] rounded-[11px]">
       <button
@@ -73,7 +76,7 @@ export default function MatchingDetailPage() {
           <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
             에상 기간
           </p>
-          <p className="text-[#525466] text-[13px] font-light">api일</p>
+          <p className="text-[#525466] text-[13px] font-light">{daysFloor}일</p>
         </div>
         <div className="text-[#525466] text-[13px] font-light flex items-center">
           <img
@@ -159,11 +162,8 @@ export default function MatchingDetailPage() {
           <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
             모집 요건
           </h1>
-          <ul className="text-[#525466] text-[13px] list-disc pl-7 space-y-1 ">
-            <li>Figma / Adobe XD 사용 가능자</li>
-            <li>반응형 디자인 경험 필수</li>
-            <li>협업 툴 사용 가능</li>
-            <li>최신 웹 트렌드 이해</li>
+          <ul className="text-[#525466] text-[13px]  pl-7 space-y-1 ">
+            <li>{projectDetail?.designerRequirements}</li>
           </ul>
         </div>
       </div>

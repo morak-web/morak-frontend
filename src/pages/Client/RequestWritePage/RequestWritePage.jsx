@@ -101,6 +101,19 @@ export default function RequestWritePage() {
                 onChange={(e) => setDetail(e.target.value)}
               ></textarea>
             </div>
+            <div>
+              <h1 className="text-[#525466] text-[17px]">
+                <span className="text-red-600">*</span> 모집 요건
+              </h1>
+              <p className="text-[#525466] text-[12px] mb-[6px]">
+                원하는 디자이너의 필수 역량, 사용 툴 등을 적어주세요.
+              </p>
+              <textarea
+                className="w-[100%] h-[125px] bg-[#F7F8FC] rounded-[20px] resize-none py-[10px] px-4 text-black text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
+                value={detail}
+                onChange={(e) => setDetail(e.target.value)}
+              ></textarea>
+            </div>
             <div className="mb-[140px]">
               <h1 className="text-[#525466] text-[17px]">
                 <span className="text-red-600">*</span> 참고 자료

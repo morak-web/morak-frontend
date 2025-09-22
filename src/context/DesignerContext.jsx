@@ -1,6 +1,7 @@
 import { createContext, useContext, useCallback, useState } from 'react';
 import { getMatchingWaiting } from '../api/designer/matchingWaitingApi';
 import { getDesignerProject } from '../api/designer/designerProjectApi';
+import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
 
 const DesignerContext = createContext(null);
 
@@ -10,6 +11,8 @@ export function DesignerProvider({ children }) {
   // 작업 중인 프로젝트 목록
   const [workingList, setWorkingList] = useState([]);
   const [completeList, setCompleteList] = useState([]);
+  // designer portfolio
+  const [designerPortfolio, setDesignerPortfolio] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,11 +51,32 @@ export function DesignerProvider({ children }) {
       return data;
     } catch (e) {
       setError(e);
+      setWorkingList([]);
+      setCompleteList({});
       return null;
     } finally {
       setLoading(false);
     }
   }, []);
+
+  // 디자이너 포트폴리오
+  const fetchDesignerPortfolio = useCallback(async (designerId) => {
+    if (!designerId) return null;
+    setLoading(true);
+    setError(false);
+    try {
+      const data = await getDesignerPortfolio(designerId);
+      setDesignerPortfolio(data);
+      return data;
+    } catch (e) {
+      setError(e);
+      setDesignerPortfolio([]);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const value = {
     // matching 대기
     matchingWaitingList,
@@ -61,6 +85,9 @@ export function DesignerProvider({ children }) {
     workingList,
     completeList,
     fetchDesignerProject,
+    // designer portfolio
+    designerPortfolio,
+    fetchDesignerPortfolio,
     loading,
     error,
   };

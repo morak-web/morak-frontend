@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 const STATUS = {
   PAID: '결제 완료',
+  PENDING: '결제 예정',
 };
 export default function PaymentListPage() {
   const { payment, fetchPayment, loading, error } = usePayment();
