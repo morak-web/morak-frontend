@@ -43,16 +43,17 @@ export function DesignerProvider({ children }) {
       if (status === 'WORKING') {
         const data = await getDesignerProject('WORKING');
         setWorkingList(data);
+        return data;
       }
       if (status === 'COMPLETE') {
         const data = await getDesignerProject('COMPLETE');
         setCompleteList(data);
+        return data;
       }
-      return data;
     } catch (e) {
       setError(e);
       setWorkingList([]);
-      setCompleteList({});
+      setCompleteList([]);
       return null;
     } finally {
       setLoading(false);

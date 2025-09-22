@@ -1,4 +1,3 @@
-import { ProjectListMocks } from '../../../mocks/ProjectList';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import rightScrollButton from '../../../assets/Designer/right-scroll-button.png';
@@ -22,6 +21,7 @@ export default function MyWorkListPage() {
     fetchDesignerProject('WORKING');
     fetchDesignerProject('COMPLETE');
   }, []);
+  console.log(workingList);
 
   const STATUS = {
     WORKING: '작업 중',
@@ -94,7 +94,7 @@ export default function MyWorkListPage() {
             gap-[48px]
           "
         >
-          {completeList.map((item) => (
+          {completeList?.map((item) => (
             <div
               key={item.projectId}
               className="flex-shrink-0 cursor-pointer"
