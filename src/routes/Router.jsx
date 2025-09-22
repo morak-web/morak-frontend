@@ -32,9 +32,9 @@ import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedback
 // Designer 페이지
 import DesignerPage from '../pages/Designer/DesignerPage';
 import ProjectMatchingList from '../pages/Designer/matching/ProjectMatchingList';
-import MyWorkListPage from '../pages/Designer/MyWorkListPage';
-import DesignerRequestDoingPage from '../pages/Designer/DesignerRequestDoingPage';
-import DesignerRequestCompletePage from '../pages/Designer/DesignerRequestCompletePage';
+import MyWorkListPage from '../pages/Designer/MyWorkList/MyWorkListPage.jsx';
+import DesignerRequestDoingPage from '../pages/Designer/MyWorkList/DesignerRequestDoingPage.jsx';
+import DesignerRequestCompletePage from '../pages/Designer/MyWorkList/DesignerRequestCompletePage.jsx';
 import DesignerRegisterPage from '../pages/Designer/DesignerRegisterPage';
 import MatchingDetailPage from '../pages/Designer/matching/MatchingDetailPage';
 

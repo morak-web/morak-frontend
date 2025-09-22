@@ -1,13 +1,18 @@
-import { ProjectListMocks } from '../../mocks/ProjectList';
 import { useParams, useNavigate } from 'react-router-dom';
-import goBackIcon from '../../assets/RequestList/RequestDetail/back-icon.png';
+import goBackIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
+
+// api
+import { useProject } from '../../../context/ProjectContext';
 
 export default function DesignerRequestCompletePage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const finishData = ProjectListMocks['finish'];
-  const useFinishData = finishData.find((item) => String(item.id) === id);
+  const { projectDetail, fetchProjectDetail } = useProject();
+  useEffect(() => {
+    fetchProjectDetail(id);
+  }, []);
+  console.log(projectDetail);
 
   return (
     <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] flex flex-col gap-[20px]">
@@ -30,38 +35,42 @@ export default function DesignerRequestCompletePage() {
             <h1 className="text-[#525466] text-[11px] sm:text-[13px] md:text-[16px]">
               {useFinishData.title}
             </h1>
+          </div>
+          <div className="text-[11px] sm:text-[13px] md:text-[15px]">
+            <p>api 님과의 프로젝트</p>
             <p className=" text-[10px] md:text-[13px] font-normal text-green-600">
               완료됨
             </p>
-          </div>
-          <div className="text-[11px] sm:text-[13px] md:text-[15px]">
-            {useFinishData.user} 님과의 프로젝트
+            <p className="font-light text-[10px] text-[#525466]">
+              {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')} ~{' '}
+              {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}{' '}
+            </p>
           </div>
         </div>
       </div>
       <div className="px-[6%] gap-[20px] w-[100%] h-[600px] flex flex-col justify-between">
         <div className="flex justify-between w-[100%] h-[210px]">
-          <img
-            src={useFinishData.thumbnail}
-            alt="thumbnail"
-            className="w-[32%] h-[100%] rounded-[11px]"
+          <div
+            // src={useDoingData.thumbnail}
+            // alt="thumbnail"
+            className="w-[32%] h-[100%] rounded-[11px] bg-purple-200"
           />
-          <img
-            src={useFinishData.thumbnail}
-            alt="thumbnail"
-            className="w-[32%] h-[100%] rounded-[11px]"
+          <div
+            // src={useDoingData.thumbnail}
+            // alt="thumbnail"
+            className="w-[32%] h-[100%] rounded-[11px] bg-purple-200"
           />
-          <img
-            src={useFinishData.thumbnail}
-            alt="thumbnail"
-            className="w-[32%] h-[100%] rounded-[11px]"
+          <div
+            // src={useDoingData.thumbnail}
+            // alt="thumbnail"
+            className="w-[32%] h-[100%] rounded-[11px] bg-purple-200"
           />
         </div>
         <div className="overflow-y-auto h-[85%] pl-[8px] pr-[15px] custom-scrollbar">
           <h1 className="text-[#525466] text-[16px] font-bold mb-[5px]">
             요구사항 확인
           </h1>
-          {useFinishData.detailSections.map((item) => (
+          {/* {useFinishData.detailSections.map((item) => (
             <div className="text-[#525466] text-[13px] mb-[8px]">
               <p className="font-semibold text-[#525466d3] text-[14px]">
                 -{item.header}
@@ -73,11 +82,15 @@ export default function DesignerRequestCompletePage() {
                 ))}
               </ul>
             </div>
-          ))}
+          ))} */}
+          <p className="font-light text-[13px] text-[#525466]">
+            {projectDetail?.userRequirements}
+          </p>
         </div>
         <div className="w-[100%] flex justify-center">
           <p className="text-[#52546663] text-[13px] ">
-            {useFinishData.date} 완료된 프로젝트 입니다.
+            {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')} 완료된
+            프로젝트 입니다.
           </p>
         </div>
       </div>

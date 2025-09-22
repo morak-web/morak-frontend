@@ -1,6 +1,6 @@
 import closeBtn from '../../../assets/RequestList/close-button.png';
 import plusBtn from '../../../assets/Designer/plus.png';
-import PortfolioCard from './PortfolioCard';
+import PortfolioCard from '../../../components/Designer/Portfolio/PortfolioCard';
 import { useState, useRef, useEffect } from 'react';
 
 export default function DesignerPortfolioModal({

@@ -1,8 +1,8 @@
-import { ProjectListMocks } from '../../mocks/ProjectList';
-import { useRef } from 'react';
+import { ProjectListMocks } from '../../../mocks/ProjectList';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import leftScrollButton from '../../assets/Designer/left-scroll-button.png'
-import rightScrollButton from '../../assets/Designer/right-scroll-button.png';
+import rightScrollButton from '../../../assets/Designer/right-scroll-button.png';
+import { useDesigner } from '../../../context/DesignerContext';
 
 export default function MyWorkListPage() {
   const doingRef = useRef(null);
@@ -15,6 +15,17 @@ export default function MyWorkListPage() {
     // 한 번에 뷰포트 너비의 80% 만큼 스크롤
     const amount = ref.current.clientWidth * 0.8;
     ref.current.scrollBy({ left: amount, behavior: 'smooth' });
+  };
+
+  const { workingList, completeList, fetchDesignerProject } = useDesigner();
+  useEffect(() => {
+    fetchDesignerProject('WORKING');
+    fetchDesignerProject('COMPLETE');
+  }, []);
+
+  const STATUS = {
+    WORKING: '작업 중',
+    COMPLETE: '완료',
   };
 
   return (
@@ -32,22 +43,25 @@ export default function MyWorkListPage() {
             gap-[48px]
           "
         >
-          {ProjectListMocks.doing.map((item) => (
+          {workingList.map((item) => (
             <div
-              key={item.id}
+              key={item.projectId}
               className="flex-shrink-0 cursor-pointer"
               onClick={() =>
-                navigate(`/designer-page/request-doing/${item.id}`)
+                navigate(`/designer-page/request-doing/${item.projectId}`)
               }
             >
               <div className="w-[260px] h-[172px] rounded-[11px] bg-[#DFE1ED] mb-[9px]" />
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
                 <div className="flex items-center gap-[16px]">
-                  <p className="text-[13px] text-[#525466]">{item.status}</p>
+                  <p className="text-[13px] text-[#525466] font-light">
+                    {STATUS[item.status]}
+                  </p>
                   <span className="text-[#525466]">|</span>
-                  <p className="text-[13px] text-[#525466]">
-                    {item.finishDate}
+                  <p className="text-[13px] text-[#525466] font-light">
+                    {item.createdAt.slice(0, 10).replaceAll('-', '.')} ~{' '}
+                    {item.dueDate.slice(0, 10).replaceAll('-', '.')}
                   </p>
                 </div>
               </div>
@@ -80,20 +94,25 @@ export default function MyWorkListPage() {
             gap-[48px]
           "
         >
-          {ProjectListMocks.finish.map((item) => (
+          {completeList.map((item) => (
             <div
-              key={item.id}
+              key={item.projectId}
               className="flex-shrink-0 cursor-pointer"
               onClick={() =>
-                navigate(`/designer-page/request-complete/${item.id}`)
+                navigate(`/designer-page/request-complete/${item.projectId}`)
               }
             >
               <div className="w-[260px] h-[172px] rounded-[11px] bg-[#DFE1ED] mb-[9px]" />
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
                 <div className="flex items-center gap-[5px]">
-                  <p className="text-[13px] text-[#525466]">{item.date}</p>
-                  <p className="text-[13px] text-[#525466] font-medium">완료</p>
+                  <p className="text-[13px] text-[#525466]">
+                    날짜 어떻게 가져올 지
+                  </p>
+                  <p className="text-[13px] text-[#525466] font-medium">
+                    {' '}
+                    {STATUS[item.status]}
+                  </p>
                 </div>
               </div>
             </div>
