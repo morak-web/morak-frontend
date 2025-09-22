@@ -1,27 +1,62 @@
 import MainLayout from '../../../components/layout/MainLayout';
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
+import { useProject } from '../../../context/ProjectContext';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function RequestWritePage() {
-  const [projectTitle, setProjectTitle] = useState('');
-  const [money, setMoney] = useState('');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [detail, setDetail] = useState('');
   const [warning, setWarning] = useState(false);
+  const navigate = useNavigate();
+
+  // api
+  const { create } = useProject();
+  const [title, setTitle] = useState('');
+  const [budgetEstimate, setBudgetEstimate] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [userRequirements, setUserRequirements] = useState('');
+  const [designerRequirements, setDesignerRequirements] = useState('');
+  const startDate = new Date();
+  function toDateString(d) {
+    if (!d) return null;
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      title: title.trim(),
+      budgetEstimate: Number(budgetEstimate),
+      dueDate: toDateString(dueDate),
+      userRequirements: userRequirements.trim(),
+      designerRequirements: designerRequirements.trim(),
+    };
+    try {
+      const created = await create(payload);
+    } catch (e) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    if (!projectTitle || !money || !startDate || !endDate || !detail) {
+    if (
+      !title ||
+      !budgetEstimate ||
+      !dueDate ||
+      !userRequirements ||
+      !designerRequirements
+    ) {
       setWarning(true);
     } else {
       setWarning(false);
     }
-  }, [projectTitle, money, startDate, endDate, detail]);
+  }, [title, budgetEstimate, dueDate, userRequirements, designerRequirements]);
 
   return (
     <MainLayout>
-      <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center">
+      <form
+        onSubmit={onSubmit}
+        className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center"
+      >
         <div className=" w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
           <h1 className="text-[24px] font-bold flex flex-col mb-[30px]">
             의뢰서 직접 작성
@@ -34,8 +69,8 @@ export default function RequestWritePage() {
               <input
                 type="text"
                 className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[100%] text-black font-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694] px-4 text-[15px]"
-                value={projectTitle}
-                onChange={(e) => setProjectTitle(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
             <div className="relative">
@@ -46,8 +81,8 @@ export default function RequestWritePage() {
                 type="text"
                 className="w-[200px] bg-[#F7F8FC] rounded-[8px] h-[40px] text-black font-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694] 
                 pl-8 text-[15px]"
-                value={money}
-                onChange={(e) => setMoney(e.target.value)}
+                value={budgetEstimate}
+                onChange={(e) => setBudgetEstimate(e.target.value)}
               />
               <p className="text-[#B0B3C6] text-[14px] absolute bottom-2 left-[10px]">
                 ₩
@@ -63,8 +98,7 @@ export default function RequestWritePage() {
                   selected={startDate}
                   onChange={(data) => setStartDate(data)}
                   startDate={startDate}
-                  endDate={endDate}
-                  placeholderText="YYYY. MM. DD"
+                  endDate={dueDate}
                   dateFormat="yyyy. MM. dd"
                   className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[121px] text-[14px] text-center outline-none focus:border-[1px] focus:border-[#d6d6d694]"
                   popperPlacement="bottom-start"
@@ -75,10 +109,10 @@ export default function RequestWritePage() {
               <div>
                 <h1 className="text-[#525466] text-[17px] mb-2">마감일</h1>
                 <DatePicker
-                  selected={endDate}
-                  onChange={(data) => setEndDate(data)}
+                  selected={dueDate}
+                  onChange={(data) => setDueDate(data)}
                   startDate={startDate}
-                  endDate={endDate}
+                  endDate={dueDate}
                   placeholderText="YYYY. MM. DD"
                   dateFormat="yyyy. MM. dd"
                   className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[121px] text-[14px] text-center outline-none focus:border-[1px] focus:border-[#d6d6d694]"
@@ -97,8 +131,8 @@ export default function RequestWritePage() {
               </p>
               <textarea
                 className="w-[100%] h-[125px] bg-[#F7F8FC] rounded-[20px] resize-none py-[10px] px-4 text-black text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
-                value={detail}
-                onChange={(e) => setDetail(e.target.value)}
+                value={userRequirements}
+                onChange={(e) => setUserRequirements(e.target.value)}
               ></textarea>
             </div>
             <div>
@@ -110,8 +144,8 @@ export default function RequestWritePage() {
               </p>
               <textarea
                 className="w-[100%] h-[125px] bg-[#F7F8FC] rounded-[20px] resize-none py-[10px] px-4 text-black text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
-                value={detail}
-                onChange={(e) => setDetail(e.target.value)}
+                value={designerRequirements}
+                onChange={(e) => setDesignerRequirements(e.target.value)}
               ></textarea>
             </div>
             <div className="mb-[140px]">
@@ -127,21 +161,22 @@ export default function RequestWritePage() {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Link
-              to="/request/category"
-              className=" text-[18px] cursor-pointer"
+            <button
+              onClick={() => navigate('/request/category')}
+              className="text-[18px] cursor-pointer"
             >
               이전
-            </Link>
-            <Link
-              to="/request/AI-question"
+            </button>
+            <button
+              type="submit"
+              onClick={() => navigate('/request/AI-question')}
               className={`${warning ? 'bg-gray-300 pointer-events-none' : 'bg-[#BDCFFF]'} px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer`}
             >
               다음
-            </Link>
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </MainLayout>
   );
 }

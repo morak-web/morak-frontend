@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import { getProjectDetail } from '../api/client/projectDetailApi';
 import { getProjectList } from '../api/client/projectListApi';
+import { createProject } from '../api/client/createProjectApi';
 
 // 컨텍스트 생성
 const ProjectContext = createContext(null);
@@ -14,7 +15,10 @@ export function ProjectProvider({ children }) {
   const [projectList, setProjectList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // project create
+  const [currentData, setCurrentData] = useState(null);
 
+  // --------------------[ GET ]------------------------
   // 상세 조회
   const fetchProjectDetail = useCallback(async (projectId) => {
     if (!projectId) return null;
@@ -38,7 +42,6 @@ export function ProjectProvider({ children }) {
     if (!status) return null;
     setLoading(true);
     setError(null);
-    console.log(status);
     try {
       const data = await getProjectList(status);
       setProjectList(data);
@@ -51,6 +54,22 @@ export function ProjectProvider({ children }) {
       setLoading(false);
     }
   }, []);
+
+  // ----------------------------[ POST ]--------------------------
+  // 프로젝트 생성
+  const create = useCallback(async (payload) => {
+    if (!payload) return null;
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await createProject(payload);
+      setCurrentData(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
 
   const resetProject = useCallback(() => {
     setProjectDetail(null);
@@ -68,6 +87,9 @@ export function ProjectProvider({ children }) {
     // Project List
     projectList,
     fetchProjectList,
+    // create project
+    create,
+    currentData,
   };
 
   return (
