@@ -1,8 +1,28 @@
 import MainLayout from '../../../components/layout/MainLayout';
 import { Link } from 'react-router-dom';
 import folderImg from '../../../assets/RequestWrite/folder.png';
+import { useProject } from '../../../context/ProjectContext';
 
 export default function RequirementSummaryPage() {
+  const { responseData } = useProject();
+  const startDate = new Date(); // 예: 2025-09-23T23:10:00+09:00
+
+  // 숫자만 뽑기
+  const year = startDate.getFullYear();
+  const month = startDate.getMonth() + 1;
+  const day = startDate.getDate();
+  const pad = (n) => String(n).padStart(2, '0');
+  const ymdDot = `${year}. ${pad(month)}. ${pad(day)}`;
+
+  const CATEGORY = {
+    1: '웹사이트',
+    2: '앱',
+    3: '쇼핑몰/스마트스토어',
+    4: '키오스크/POS',
+    5: '그래픽/영상',
+    6: '기타',
+  };
+
   return (
     <MainLayout>
       <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center">
@@ -13,10 +33,10 @@ export default function RequirementSummaryPage() {
           <div className="flex flex-col gap-[6px] overflow-y-auto custom-scrollbar pr-[40px] mb-[56px]">
             <div>
               <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
-                프로젝트 제목
+                프로젝트 제목 / 카테고리
               </h1>
               <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-                퍼스널 헬스케어 플랫폼
+                {responseData?.title} / {CATEGORY[responseData?.categoryId]}
               </p>
             </div>
             <div>
@@ -24,16 +44,16 @@ export default function RequirementSummaryPage() {
                 지출 가능 예산
               </h1>
               <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-                30,000,000{' '}
+                {responseData?.budgetEstimate.toLocaleString()} 원
               </p>
             </div>
             <div>
               <div>
                 <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
-                  예상 시작일
+                  기간
                 </h1>
                 <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-                  퍼스널 헬스케어 플랫폼
+                  {ymdDot} ~ {responseData?.dueDate.replaceAll('-', '.')}
                 </p>
               </div>
             </div>
@@ -42,7 +62,7 @@ export default function RequirementSummaryPage() {
                 상세 요구 사항
               </h1>
               <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
-                -주요기능 [사용자의 건강 데이터를 통합 관리하고, 목표 달성을
+                {/* -주요기능 [사용자의 건강 데이터를 통합 관리하고, 목표 달성을
                 지원하는 퍼스널 헬스케어 플랫폼] 건강 상태 트래킹 (예: 수면,
                 운동, 심박수, 혈압 등) 건강 목표 설정 및 진행률 확인 맞춤형 건강
                 피드백 및 알림 제공 식단 및 물 섭취 기록 기능 타겟 사용자:
@@ -56,7 +76,16 @@ export default function RequirementSummaryPage() {
                 흐름으로 구성되어야 합니다 자주 사용하는 기능은 하단 탭바 또는
                 메인화면 상단에 고정하여 접근성을 높여주세요 피드백이나 알림은
                 부드러운 애니메이션 또는 아이콘 강조로 거부감 없이 전달되게 구성
-                바랍니다
+                바랍니다 */}
+                {responseData?.userRequirements}
+              </p>
+            </div>
+            <div>
+              <h1 className="text-[#525466] text-[17px] border-b-[1px] border-[#5254665e] pb-[4px]">
+                모집 요건
+              </h1>
+              <p className="text-[#525466] text-[13px] pb-[23px] border-b-[1px] border-[#5254665e] pl-[7px] pt-[9px]">
+                {responseData?.designerRequirements}
               </p>
             </div>
             <div className="mb-[24px]">

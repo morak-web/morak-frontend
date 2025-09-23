@@ -17,6 +17,7 @@ export function ProjectProvider({ children }) {
   const [error, setError] = useState(null);
   // project create
   const [currentData, setCurrentData] = useState(null);
+  const [responseData, setReponseData] = useState(null);
 
   // --------------------[ GET ]------------------------
   // 상세 조회
@@ -62,8 +63,10 @@ export function ProjectProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
+      setReponseData(payload);
       const data = await createProject(payload);
       setCurrentData(data);
+      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
@@ -90,6 +93,7 @@ export function ProjectProvider({ children }) {
     // create project
     create,
     currentData,
+    responseData,
   };
 
   return (

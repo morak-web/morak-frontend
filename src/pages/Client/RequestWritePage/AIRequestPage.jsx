@@ -1,7 +1,8 @@
 import MainLayout from '../../../components/layout/MainLayout';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function AIRequestPage() {
+  const navigate = useNavigate();
   return (
     <MainLayout>
       <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center">
@@ -14,15 +15,19 @@ export default function AIRequestPage() {
             placeholder="의뢰 내용을 작성해주세요."
           ></textarea>
           <div className="flex justify-between items-center">
-            <Link to="/request/write" className=" text-[18px] cursor-pointer">
+            <button
+              onClick={() => navigate('/request/write')}
+              className=" text-[18px] cursor-pointer"
+            >
               이전
-            </Link>
-            <Link
-              to="/request/requirement-summary"
+            </button>
+            <button
+              type="submit"
+              onClick={() => navigate('/request/requirement-summary')}
               className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer"
             >
               다음
-            </Link>
+            </button>
           </div>
         </div>
       </div>

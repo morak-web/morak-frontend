@@ -9,7 +9,7 @@ export default function RequestWritePage() {
   const navigate = useNavigate();
 
   // api
-  const { create } = useProject();
+  const { create, responseData } = useProject();
   const [title, setTitle] = useState('');
   const [budgetEstimate, setBudgetEstimate] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -23,7 +23,10 @@ export default function RequestWritePage() {
   }
   const onSubmit = async (e) => {
     e.preventDefault();
+    const categoryId = responseData?.categoryId;
+
     const payload = {
+      categoryId: Number(categoryId),
       title: title.trim(),
       budgetEstimate: Number(budgetEstimate),
       dueDate: toDateString(dueDate),
