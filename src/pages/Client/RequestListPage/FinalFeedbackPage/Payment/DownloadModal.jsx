@@ -1,7 +1,7 @@
-import closeBtn from '../../../../assets/RequestList/AIFeedback/close-btn.png';
-import downloadBtn from '../../../../assets/RequestList/AIFeedback/download.png';
-import nextBtn from '../../../../assets/RequestList/AIFeedback/next.png';
-import completeIcon from '../../../../assets/RequestWrite/request-write-complete-icon.png';
+import closeBtn from '../../../../../assets/RequestList/AIFeedback/close-btn.png';
+import downloadBtn from '../../../../../assets/RequestList/AIFeedback/download.png';
+import nextBtn from '../../../../../assets/RequestList/AIFeedback/next.png';
+import completeIcon from '../../../../../assets/RequestWrite/request-write-complete-icon.png';
 import { useState } from 'react';
 
 export default function DownLoadModal({ downloadModalOpen, onClose }) {

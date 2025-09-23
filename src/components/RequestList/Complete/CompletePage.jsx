@@ -1,10 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import designerImg from '../../../assets/RequestList/designer2.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 
-import AIFeedbackPage from '../../../pages/request-list/AIFeedback/AIFeedbackPage';
+import AIFeedBackPage from '../../../pages/Client/RequestListPage/AIFeedbackPage/AIFeedBackPage';
 import IntermediateFeedbackModal from '../../../pages/request-list/IntermediateFeedback/IntermediateFeedbackModal';
 
 // api
@@ -127,7 +127,8 @@ export default function CompletePage() {
                   key={label}
                   onClick={() => {
                     if (label === '최종 결과') {
-                      navigate('final-feedback');
+                      const id = item?.projectId;
+                      navigate(`final-feedback/${id}`);
                     } else if (label === 'AI 피드백') {
                       setAIFeedbackModalOpen(true);
                     } else if (label === '중간 결과 / 피드백') {
@@ -154,7 +155,7 @@ export default function CompletePage() {
             </div>
           </div>
           {/* <RequestDetailPage /> */}
-          <AIFeedbackPage
+          <AIFeedBackPage
             AIFeedbackModalOpen={AIFeedbackModalOpen}
             onClose={() => setAIFeedbackModalOpen(false)}
           />

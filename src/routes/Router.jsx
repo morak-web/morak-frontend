@@ -27,7 +27,7 @@ import MatchingPage from '../components/RequestList/Matching/MatchingPage';
 import ProgressingPage from '../components/RequestList/Progressing/ProgressingPage';
 import CompletePage from '../components/RequestList/Complete/CompletePage';
 // 의뢰 목록 페이지 - 완료
-import FinalFeedbackPage from '../pages/request-list/FinalFeedback/FinalFeedbackPage';
+import FinalFeedbackPage from '../pages/Client/RequestListPage/FinalFeedbackPage/FinalFeedbackPage.jsx';
 
 // Designer 페이지
 import DesignerPage from '../pages/Designer/DesignerPage';
@@ -92,7 +92,7 @@ export default function Router() {
           <Route path="payment-list" element={<PaymentListPage />} />
         </Route>
         <Route
-          path="/client-page/request-list/complete/final-feedback"
+          path="/client-page/request-list/complete/final-feedback/:id"
           element={<FinalFeedbackPage />}
         />
 

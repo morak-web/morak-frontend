@@ -1,11 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import designerImg from '../../../assets/RequestList/designer1.png';
 import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 
 // button 3
-import AIFeedbackPage from '../../../pages/request-list/AIFeedback/AIFeedbackPage';
+import AIFeedBackPage from '../../../pages/Client/RequestListPage/AIFeedbackPage/AIFeedBackPage';
 import IntermediateFeedbackModal from '../../../pages/request-list/IntermediateFeedback/IntermediateFeedbackModal';
 
 // api
@@ -35,7 +35,10 @@ export default function ProgressingPage() {
   return (
     <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {workingData.map((item) => (
-        <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
+        <div
+          key={item.designer.name}
+          className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+        >
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
             <div className="flex gap-[20px]">
@@ -155,9 +158,10 @@ export default function ProgressingPage() {
               ))}
             </div>
           </div>
-          <AIFeedbackPage
+          <AIFeedBackPage
             AIFeedbackModalOpen={AIFeedbackModalOpen}
             onClose={() => setAIFeedbackModalOpen(false)}
+            projectId={item.projectId}
           />
           <IntermediateFeedbackModal
             interFeedbackModalOpen={interFeedbackModalOpen}

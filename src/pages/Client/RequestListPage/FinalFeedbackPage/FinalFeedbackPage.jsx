@@ -1,10 +1,18 @@
-import MainLayout from '../../../components/layout/MainLayout';
+import MainLayout from '../../../../components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DownLoadModal from './Payment/DownloadModal';
+import { useAIFeedback } from '../../../../context/AIFeedbackContext';
+import { useParams } from 'react-router-dom';
 
 export default function FinalFeedbackPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { finalAIFeedback, fetchAIFeedback } = useAIFeedback();
+  useEffect(() => {
+    fetchAIFeedback(id, 'FINAL');
+  }, []);
+  console.log(finalAIFeedback);
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   return (
     <MainLayout>
@@ -13,45 +21,17 @@ export default function FinalFeedbackPage() {
           <div className="bg-red-200 h-[49%]">사진</div>
           <div className="flex justify-between h-[49%]">
             <div className="flex flex-col w-[48%] h-full justify-between gap-[10px]">
-              <div className="flex flex-col gap-[10px] h-[60%]">
+              <div className="flex flex-col gap-[10px] h-[100%]">
                 <h1 className="text-[#6072FF] text-[20px]  font-medium">
                   AI 설명
                 </h1>
                 <div className="overflow-y-auto max-h-[100%] custom-scrollbar pr-[20px]">
                   <p className="text-[#525466] text-[16px]">
-                    브랜드의 신뢰성과 안정감을 강조하기 위해 네이비 계열의
-                    색상을 메인으로 활용했습니다.곡선형 로고는 부드러운 사용자
-                    경험을, 명확한 레이아웃은 직관적인 접근성을
-                    강조합니다.20-30대 직장인 대상 B2B SaaS 서비스에 적합한
-                    톤앤매너로 판단됩니다. 전체 UI는 사용자의 시선 흐름을 고려해
-                    CTA 버튼을 상단에 배치하고, 주요 정보 위주로 레이아웃을
-                    정리했습니다.차분한 색상 조합은 시각적 피로도를 낮추며, 둥근
-                    요소와 충분한 여백을 통해 접근성과 가독성을 동시에
-                    확보했습니다.디자인 스타일은 실용적이며, 생산성 도구나 일정
-                    관리 앱과 같은 기능 중심 서비스에 적합합니다.\ 브랜드의
-                    신뢰성과 안정감을 강조하기 위해 네이비 계열의 색상을
-                    메인으로 활용했습니다.곡선형 로고는 부드러운 사용자 경험을,
-                    명확한 레이아웃은 직관적인 접근성을 강조합니다.20-30대
-                    직장인 대상 B2B SaaS 서비스에 적합한 톤앤매너로 판단됩니다.
-                    전체 UI는 사용자의 시선 흐름을 고려해 CTA 버튼을 상단에
-                    배치하고, 주요 정보 위주로 레이아웃을 정리했습니다.차분한
-                    색상 조합은 시각적 피로도를 낮추며, 둥근 요소와 충분한
-                    여백을 통해 접근성과 가독성을 동시에 확보했습니다.디자인
-                    스타일은 실용적이며, 생산성 도구나 일정 관리 앱과 같은 기능
-                    중심 서비스에 적합합니다.브랜드의 신뢰성과 안정감을 강조하기
-                    위해 네이비 계열의 색상을 메인으로 활용했습니다.곡선형
-                    로고는 부드러운 사용자 경험을, 명확한 레이아웃은 직관적인
-                    접근성을 강조합니다.20-30대 직장인 대상 B2B SaaS 서비스에
-                    적합한 톤앤매너로 판단됩니다. 전체 UI는 사용자의 시선 흐름을
-                    고려해 CTA 버튼을 상단에 배치하고, 주요 정보 위주로
-                    레이아웃을 정리했습니다.차분한 색상 조합은 시각적 피로도를
-                    낮추며, 둥근 요소와 충분한 여백을 통해 접근성과 가독성을
-                    동시에 확보했습니다.디자인 스타일은 실용적이며, 생산성
-                    도구나 일정 관리 앱과 같은 기능 중심 서비스에 적합합니다.
+                    {finalAIFeedback?.content}
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-[10px] h-[35%]">
+              {/* <div className="flex flex-col gap-[10px] h-[35%]">
                 <h1 className="text-[#6072FF] text-[20px]  font-medium">
                   AI 요약
                 </h1>
@@ -67,7 +47,7 @@ export default function FinalFeedbackPage() {
                     <li>"터치 편의성과 정보 전달 중심의 실용적인 UI입니다."</li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col h-full justify-between w-[48%]">
               <div className="h-[85%] flex flex-col gap-[10px]">
