@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import MessageBubble from './MessageBubble';
 
-import arrowIcon from '../../../assets/RequestList/IntermediateFeedback/arrow-icon.png';
-import folderIcon from '../../../assets/RequestList/IntermediateFeedback/folder-icon.png';
+import arrowIcon from '../../../../assets/RequestList/IntermediateFeedback/arrow-icon.png';
+import folderIcon from '../../../../assets/RequestList/IntermediateFeedback/folder-icon.png';
 
 export default function ChatPage() {
   const [input, setInput] = useState('');

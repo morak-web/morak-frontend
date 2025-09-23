@@ -6,7 +6,7 @@ import AIBtn from '../../../assets/RequestList/btn-style.png';
 
 // button 3
 import AIFeedBackPage from '../../../pages/Client/RequestListPage/AIFeedbackPage/AIFeedBackPage';
-import IntermediateFeedbackModal from '../../../pages/request-list/IntermediateFeedback/IntermediateFeedbackModal';
+import IntermediateFeedbackModal from '../../../pages/Client/RequestListPage/IntermediateFeedback/IntermediateFeedbackModal';
 
 // api
 import { useProject } from '../../../context/ProjectContext';
@@ -166,6 +166,7 @@ export default function ProgressingPage() {
           <IntermediateFeedbackModal
             interFeedbackModalOpen={interFeedbackModalOpen}
             onClose={() => setInterFeedbackModalOpen(false)}
+            projectId={item.projectId}
           />
         </div>
       ))}

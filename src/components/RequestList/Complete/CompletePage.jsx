@@ -5,7 +5,7 @@ import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 
 import AIFeedBackPage from '../../../pages/Client/RequestListPage/AIFeedbackPage/AIFeedBackPage';
-import IntermediateFeedbackModal from '../../../pages/request-list/IntermediateFeedback/IntermediateFeedbackModal';
+import IntermediateFeedbackModal from '../../../pages/Client/RequestListPage/IntermediateFeedback/IntermediateFeedbackModal';
 
 // api
 import { useProject } from '../../../context/ProjectContext';

@@ -1,18 +1,24 @@
 import MainLayout from '../../../../components/layout/MainLayout';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import DownLoadModal from './Payment/DownloadModal';
 import { useAIFeedback } from '../../../../context/AIFeedbackContext';
-import { useParams } from 'react-router-dom';
+import { useProject } from '../../../../context/ProjectContext';
 
 export default function FinalFeedbackPage() {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // AI Feedback
+  // result file
   const { finalAIFeedback, fetchAIFeedback } = useAIFeedback();
+  const { finalResultFile, fetchResultFile } = useProject();
   useEffect(() => {
     fetchAIFeedback(id, 'FINAL');
+    fetchResultFile(id, 'FINAL');
   }, []);
-  console.log(finalAIFeedback);
+  console.log(finalResultFile);
+
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   return (
     <MainLayout>
@@ -54,39 +60,7 @@ export default function FinalFeedbackPage() {
                 <h1 className="text-[20px] font-medium">디자이너 설명</h1>
                 <div className="overflow-y-auto max-h-[100%] custom-scrollbar pr-[20px]">
                   <p className="text-[#525466] text-[16px]">
-                    주요 목표는 정보 우선 + 사용 흐름 단순화였습니다.메인 화면
-                    첫 진입 시 원하는 기능을 빠르게 선택할 수 있도록 카드형
-                    구조로 설계했고, 버튼 크기와 여백을 충분히 주어 터치
-                    편의성을 고려했습니다.배경 컬러는 아이보리 톤을 사용해 시각
-                    피로를 줄였고, 액션 요소는 브랜드 메인 컬러로 명확히
-                    강조했습니다.텍스트가 잘 보이도록 대비를 충분히 주고, 시선
-                    유도를 위해 타이포 정렬을 중앙 정렬로 맞췄습니다.버튼은
-                    시각적으로 튀지 않으면서도 클릭을 유도할 수 있도록
-                    라운드형으로 배치했습니다.주요 목표는 정보 우선 + 사용 흐름
-                    단순화였습니다.메인 화면 첫 진입 시 원하는 기능을 빠르게
-                    선택할 수 있도록 카드형 구조로 설계했고, 버튼 크기와 여백을
-                    충분히 주어 터치 편의성을 고려했습니다.배경 컬러는 아이보리
-                    톤을 사용해 시각 피로를 줄였고, 액션 요소는 브랜드 메인
-                    컬러로 명확히 강조했습니다.텍스트가 잘 보이도록 대비를
-                    충분히 주고, 시선 유도를 위해 타이포 정렬을 중앙 정렬로
-                    맞췄습니다.버튼은 시각적으로 튀지 않으면서도 클릭을 유도할
-                    수 있도록 라운드형으로 배치했습니다.주요 목표는 정보 우선 +
-                    사용 흐름 단순화였습니다.메인 화면 첫 진입 시 원하는 기능을
-                    빠르게 선택할 수 있도록 카드형 구조로 설계했고, 버튼 크기와
-                    여백을 충분히 주어 터치 편의성을 고려했습니다.배경 컬러는
-                    아이보리 톤을 사용해 시각 피로를 줄였고, 액션 요소는 브랜드
-                    메인 컬러로 명확히 강조했습니다.텍스트가 잘 보이도록 대비를
-                    충분히 주고, 시선 유도를 위해 타이포 정렬을 중앙 정렬로
-                    맞췄습니다.버튼은 시각적으로 튀지 않으면서도 클릭을 유도할
-                    수 있도록 라운드형으로 배치했습니다.주요 목표는 정보 우선 +
-                    사용 흐름 단순화였습니다.메인 화면 첫 진입 시 원하는 기능을
-                    빠르게 선택할 수 있도록 카드형 구조로 설계했고, 버튼 크기와
-                    여백을 충분히 주어 터치 편의성을 고려했습니다.배경 컬러는
-                    아이보리 톤을 사용해 시각 피로를 줄였고, 액션 요소는 브랜드
-                    메인 컬러로 명확히 강조했습니다.텍스트가 잘 보이도록 대비를
-                    충분히 주고, 시선 유도를 위해 타이포 정렬을 중앙 정렬로
-                    맞췄습니다.버튼은 시각적으로 튀지 않으면서도 클릭을 유도할
-                    수 있도록 라운드형으로 배치했습니다.
+                    {finalResultFile?.description}
                   </p>
                 </div>
               </div>
@@ -97,15 +71,21 @@ export default function FinalFeedbackPage() {
                 >
                   의뢰 목록 돌아가기
                 </button>
-                <button
+                <a
+                  href={finalResultFile?.fileUrl}
+                  target="_blank"
+                  rel="noopener"
                   className="bg-[#6072FF] w-[220px] h-[40px] text-white text-[11px] sm:text-[16px] rounded-[20px] py-[11px] cursor-pointer flex justify-center items-center"
-                  onClick={() => setDownloadModalOpen(true)}
+                  onClick={() => {
+                    setDownloadModalOpen(true);
+                  }}
                 >
                   결과물 다운로드
-                </button>
+                </a>
                 <DownLoadModal
                   downloadModalOpen={downloadModalOpen}
                   onClose={() => setDownloadModalOpen(false)}
+                  id={id}
                 />
               </div>
             </div>

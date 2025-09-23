@@ -2,7 +2,9 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import { getProjectDetail } from '../api/client/projectDetailApi';
 import { getProjectList } from '../api/client/projectListApi';
+import { getResultFile } from '../api/client/resultFileApi';
 import { createProject } from '../api/client/createProjectApi';
+import { createClientFeedback } from '../api/client/ProjectList/FeedbackRegister';
 
 // 컨텍스트 생성
 const ProjectContext = createContext(null);
@@ -15,9 +17,15 @@ export function ProjectProvider({ children }) {
   const [projectList, setProjectList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // 결과 파일
+  const [midResultFile, setMidResultFile] = useState('');
+  const [finalResultFile, setFinalResultFile] = useState('');
   // project create
   const [currentData, setCurrentData] = useState(null);
   const [responseData, setReponseData] = useState(null);
+  // client feedback
+  const [midFeedback, setMidFeedback] = useState(null);
+  const [finalFeedback, setFinalFeedback] = useState(null);
 
   // --------------------[ GET ]------------------------
   // 상세 조회
@@ -56,6 +64,22 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
+  const fetchResultFile = useCallback(async (projectId, phase) => {
+    try {
+      if (phase === 'MID') {
+        const data = await getResultFile(projectId, 'MID');
+        setMidResultFile(data);
+        return data;
+      } else if (phase === 'FINAL') {
+        const data = await getResultFile(projectId, 'FINAL');
+        setFinalResultFile(data);
+        return data;
+      }
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }, []);
   // ----------------------------[ POST ]--------------------------
   // 프로젝트 생성
   const create = useCallback(async (payload) => {
@@ -74,6 +98,24 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
+  // 클라이언트 피드백
+  const createFeedback = useCallback(async (projectId, payload) => {
+    try {
+      if (payload['phase'] === 'MID') {
+        const data = await createClientFeedback(projectId, payload);
+        setMidFeedback(data);
+        return data;
+      } else if (payload['phase'] === 'FINAL') {
+        const data = await createClientFeedback(projectId, payload);
+        setFinalFeedback(data);
+        return data;
+      }
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
   const resetProject = useCallback(() => {
     setProjectDetail(null);
     setError(null);
@@ -90,10 +132,18 @@ export function ProjectProvider({ children }) {
     // Project List
     projectList,
     fetchProjectList,
+    // result file
+    midResultFile,
+    finalResultFile,
+    fetchResultFile,
     // create project
     create,
     currentData,
     responseData,
+    // client feedback
+    createFeedback,
+    midFeedback,
+    finalFeedback,
   };
 
   return (

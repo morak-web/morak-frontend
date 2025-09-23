@@ -2,12 +2,41 @@ import closeBtn from '../../../../../assets/RequestList/AIFeedback/close-btn.png
 import downloadBtn from '../../../../../assets/RequestList/AIFeedback/download.png';
 import nextBtn from '../../../../../assets/RequestList/AIFeedback/next.png';
 import completeIcon from '../../../../../assets/RequestWrite/request-write-complete-icon.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { usePayment } from '../../../../../context/PaymentContext';
+import { useProject } from '../../../../../context/ProjectContext';
 
-export default function DownLoadModal({ downloadModalOpen, onClose }) {
+export default function DownLoadModal({ downloadModalOpen, onClose, id }) {
   const [downloadModal, setDownloadModal] = useState(true);
   const [paymentModal, setPaymentModal] = useState(false);
   const [completeModal, setCompleteModal] = useState(false);
+
+  const { projectDetail, fetchProjectDetail } = useProject();
+  const { createdPayment } = usePayment();
+  useEffect(() => {
+    fetchProjectDetail(id);
+  }, []);
+  console.log(projectDetail);
+  const onPendingSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {};
+    try {
+      const created = await createdPayment(payload);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+  const onFinalSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {};
+    try {
+      const created = await createdPayment(payload);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
   const handleClickButton = () => {
     onClose();
     setDownloadModal(true);
@@ -15,6 +44,7 @@ export default function DownLoadModal({ downloadModalOpen, onClose }) {
     setCompleteModal(false);
   };
   if (!downloadModalOpen) return null;
+
   return (
     <div
       onClick={handleClickButton}
@@ -66,26 +96,34 @@ export default function DownLoadModal({ downloadModalOpen, onClose }) {
               <div className="pb-[22px] border-b-[1px] border-[#52546657] flex justify-between">
                 <h1 className="text-[#525466] text-[20px]">프로젝트 명</h1>
                 <p className="text-[#525466] text-[18px]">
-                  퍼스널 헬스케어 플랫폼
+                  {projectDetail?.title}
                 </p>
               </div>
               <div className="pb-[22px] border-b-[1px] border-[#52546657] flex justify-between pt-[22px]">
                 <h1 className="text-[#525466] text-[20px]">
                   프로젝트 진행 기간
                 </h1>
-                <p className="text-[#525466] text-[18px] flex">
-                  <p>2025. 8. 23</p>
+                <div className="text-[#525466] text-[18px] flex">
+                  <p>
+                    {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')}
+                  </p>
                   <p className="mx-[16px]">-</p>
-                  <p>2025. 10. 25</p>
-                </p>
+                  <p>
+                    {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}
+                  </p>
+                </div>
               </div>
               <div className="pb-[22px] border-b-[1px] border-[#52546657] flex justify-between pt-[22px]">
                 <h1 className="text-[#525466] text-[20px]">청구일</h1>
-                <p className="text-[#525466] text-[18px]">2025. 10. 25</p>
+                <p className="text-[#525466] text-[18px]">
+                  {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}
+                </p>
               </div>
               <div className="flex justify-between pt-[22px]">
                 <h1 className="text-[#525466] text-[20px]">청구 금액</h1>
-                <p className="text-[#525466] text-[18px]">30,000,00</p>
+                <p className="text-[#525466] text-[18px]">
+                  {projectDetail?.budgetEstimate.toLocaleString()}
+                </p>
               </div>
             </div>
             <div className="flex flex-col gap-[28px] mt-[87px] justify-center items-center">
