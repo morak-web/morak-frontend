@@ -14,7 +14,6 @@ export default function PaymentListPage() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>error!! {String(error.message || error)}</div>;
-  console.log(payment);
 
   return (
     <div className="w-[100%] h-[710px] bg-white rounded-[11px] px-[30px] py-[30px] flex flex-col gap-[28px] items-center">

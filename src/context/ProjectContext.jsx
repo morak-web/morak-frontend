@@ -72,7 +72,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   const resetProject = useCallback(() => {
     setProjectDetail(null);

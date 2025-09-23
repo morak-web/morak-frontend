@@ -2,10 +2,12 @@ import { createContext, useContext, useCallback, useState } from 'react';
 import { getMatchingWaiting } from '../api/designer/matchingWaitingApi';
 import { getDesignerProject } from '../api/designer/designerProjectApi';
 import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
+import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
 
 const DesignerContext = createContext(null);
 
 export function DesignerProvider({ children }) {
+  // -----------[GET]--------------
   // matching 대기
   const [matchingWaitingList, setMatchingWaitingList] = useState([]);
   // 작업 중인 프로젝트 목록
@@ -13,7 +15,9 @@ export function DesignerProvider({ children }) {
   const [completeList, setCompleteList] = useState([]);
   // designer portfolio
   const [designerPortfolio, setDesignerPortfolio] = useState([]);
-
+  // -----------[POST]--------------
+  // 디자이너 등록
+  const [desginerRegisterInfo, setDesignerRegisterInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -78,6 +82,24 @@ export function DesignerProvider({ children }) {
     }
   }, []);
 
+  // ----------[POST]-----------------
+  // 디자이너 등록
+  const createDesignerRegister = useCallback(async (payload) => {
+    if (!payload) return;
+    setLoading(true);
+    setError(null);
+    try {
+      setDesignerRegisterInfo(payload);
+      const data = await createDesignerInfo(payload);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  });
+
   const value = {
     // matching 대기
     matchingWaitingList,
@@ -89,6 +111,9 @@ export function DesignerProvider({ children }) {
     // designer portfolio
     designerPortfolio,
     fetchDesignerPortfolio,
+    // 디자이너 등록
+    createDesignerRegister,
+    desginerRegisterInfo,
     loading,
     error,
   };
