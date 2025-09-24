@@ -2,6 +2,7 @@ import { createContext, useContext, useCallback, useState } from 'react';
 import { getMatchingWaiting } from '../api/designer/matchingWaitingApi';
 import { getDesignerProject } from '../api/designer/designerProjectApi';
 import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
+import { getDesignerInfo } from '../api/designer/designerInfoApi';
 import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
 
 const DesignerContext = createContext(null);
@@ -15,6 +16,8 @@ export function DesignerProvider({ children }) {
   const [completeList, setCompleteList] = useState([]);
   // designer portfolio
   const [designerPortfolio, setDesignerPortfolio] = useState([]);
+  // 디자이너 정보
+  const [designerInfo, setDesignerInfo] = useState(null);
   // -----------[POST]--------------
   // 디자이너 등록
   const [desginerRegisterInfo, setDesignerRegisterInfo] = useState(null);
@@ -82,6 +85,22 @@ export function DesignerProvider({ children }) {
     }
   }, []);
 
+  // 디자이너 정보
+  const fetchDesignerInfo = useCallback(async (id) => {
+    if (!id) return;
+    setLoading(true);
+    setError(false);
+    try {
+      const data = await getDesignerInfo(id);
+      setDesignerInfo(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  });
   // ----------[POST]-----------------
   // 디자이너 등록
   const createDesignerRegister = useCallback(async (payload) => {
@@ -111,6 +130,9 @@ export function DesignerProvider({ children }) {
     // designer portfolio
     designerPortfolio,
     fetchDesignerPortfolio,
+    // 디자이너 정보
+    fetchDesignerInfo,
+    designerInfo,
     // 디자이너 등록
     createDesignerRegister,
     desginerRegisterInfo,

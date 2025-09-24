@@ -5,11 +5,17 @@ import facebookIcon from '../../../assets/RequestList/SocialIcon/facebook.png';
 import youtubeIcon from '../../../assets/RequestList/SocialIcon/youtube.png';
 import figmaIcon from '../../../assets/RequestList/SocialIcon/figma.png';
 import { RequestListMocks } from '../../../mocks/RequestListMocks';
+import { useDesigner } from '../../../context/DesignerContext';
+import { useEffect } from 'react';
 export default function DesignerPortfolioPage() {
   const useData = RequestListMocks['doing'][0];
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { fetchDesignerInfo, designerInfo } = useDesigner();
+  useEffect(() => {
+    fetchDesignerInfo(id);
+  }, []);
+  console.log(designerInfo);
   return (
     <div className=" w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%] flex flex-col gap-3">
       <button
@@ -25,7 +31,7 @@ export default function DesignerPortfolioPage() {
             <div className="w-[100%] h-[200px] bg-blue-200 mb-[20px]"></div>
             <div className="flex items-center gap-3 mb-[8px]">
               <h1 className="text-[15px] sm:text-[20px] text-black font-semibold ">
-                디자이너 {useData.designer.name}
+                디자이너 {designerInfo?.name}
               </h1>
               <div className="flex h-[20px] gap-2">
                 <img
@@ -38,23 +44,22 @@ export default function DesignerPortfolioPage() {
               </div>
             </div>
             <h2 className="text-[#525466] text-[13px] sm:text-[16px] font-semibold mb-[6px]">
-              {useData.designer.job}, {useData.designer.personalHistory}년차
+              {designerInfo?.interestedIn} / {designerInfo?.yearsOfExperience}
+              년차
             </h2>
-            <p className="text-[#525466] text-[13px]">
-              {useData.designer.description}
-            </p>
+            <p className="text-[#525466] text-[13px]">{designerInfo?.intro}</p>
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-[20px] text-[#525466] font-medium">
               참여 프로젝트
             </h1>
-            <div className=" flex flex-col xl:flex-row md:flex-row lg:flex-col justify-between gap-[20px] sm:gap-[3%]">
-              {useData.designer.project.map((item, idx) => (
-                <div className="flex flex-col items-center">
+            <div className=" flex flex-col xl:flex-row md:flex-row lg:flex-col gap-[20px] sm:gap-[3%]">
+              {designerInfo?.portfolio.map((item, idx) => (
+                <div className="flex flex-col items-center ">
                   <img
                     src={item.picture}
                     key={idx}
-                    className="w-[100%] h-[80%] rounded-[10px] mb-[5px]"
+                    className="w-[350px] h-[200px] rounded-[10px] mb-[5px] border-[2px]"
                   />
                   <p className="text-[16px] text-[#525466]">{item.title}</p>
                 </div>

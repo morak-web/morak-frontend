@@ -75,7 +75,7 @@ export default function CompletePage() {
               </button>
             </div>
             <button
-              className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
+              className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
               onClick={() => {
                 const id = item?.designer?.designerId;
                 navigate(`/client-page/designer-portfolio/${id}`);
