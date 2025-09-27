@@ -4,6 +4,7 @@ import { getDesignerProject } from '../api/designer/designerProjectApi';
 import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
 import { getDesignerInfo } from '../api/designer/designerInfoApi';
 import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
+import { submitResultFile } from '../api/designer/submitResultFile';
 
 const DesignerContext = createContext(null);
 
@@ -14,7 +15,7 @@ export function DesignerProvider({ children }) {
   // 작업 중인 프로젝트 목록
   const [workingList, setWorkingList] = useState([]);
   const [completeList, setCompleteList] = useState([]);
-  // designer portfolio
+  // 디자이너 포트폴리오
   const [designerPortfolio, setDesignerPortfolio] = useState([]);
   // 디자이너 정보
   const [designerInfo, setDesignerInfo] = useState(null);
@@ -119,7 +120,32 @@ export function DesignerProvider({ children }) {
     }
   });
 
+  // 디자이너 결과물 제출
+  const createResultFile = useCallback(
+    async (projectId, { phase, description, file }) => {
+      if (!projectId) return;
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await submitResultFile(projectId, {
+          phase,
+          description,
+          file,
+        });
+        return data;
+      } catch (e) {
+        console.error(e);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
   const value = {
+    loading,
+    error,
     // matching 대기
     matchingWaitingList,
     fetchMatchingWaiting,
@@ -136,8 +162,8 @@ export function DesignerProvider({ children }) {
     // 디자이너 등록
     createDesignerRegister,
     desginerRegisterInfo,
-    loading,
-    error,
+    // 디자이너 결과물 제출
+    createResultFile,
   };
   return (
     <DesignerContext.Provider value={value}>

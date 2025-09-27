@@ -117,13 +117,16 @@ export default function DesignerRequestDoingPage() {
       </div>
       <SubmitRequestModal
         submitModalOpen={submitModalOpen}
+        id={id}
         onClose={() => setSubmitModalOpen(false)}
       />
       <FeedbackCheckModal
+        id={id}
         feedbackModalOpen={feedbackModalOpen}
         onClose={() => setFeedbackModalOpen(false)}
       />
       <FinalSubmitModal
+        id={id}
         finalModalOpen={finalModalOpen}
         onClose={() => setFinalModalOpen(false)}
       />
