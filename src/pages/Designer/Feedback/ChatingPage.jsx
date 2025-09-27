@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import MessageBubble from '../../Client/RequestListPage/IntermediateFeedback/MessageBubble';
+import MessageBubble from '../../Client/RequestWritePage/AIRequest/MessageBubble';
 import arrowIcon from '../../../assets/RequestList/IntermediateFeedback/arrow-icon.png';
 import folderIcon from '../../../assets/RequestList/IntermediateFeedback/folder-icon.png';
 

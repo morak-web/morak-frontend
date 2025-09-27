@@ -5,6 +5,8 @@ import { getProjectList } from '../api/client/projectListApi';
 import { getResultFile } from '../api/client/resultFileApi';
 import { createProject } from '../api/client/createProjectApi';
 import { createClientFeedback } from '../api/client/ProjectList/FeedbackRegister';
+import { getAIQuestionList } from '../api/client/AIQuestion/aiQuestionList';
+import { createResponseAIQuestion } from '../api/client/AIQuestion/responseAiQuestion';
 
 // 컨텍스트 생성
 const ProjectContext = createContext(null);
@@ -26,6 +28,10 @@ export function ProjectProvider({ children }) {
   // client feedback
   const [midFeedback, setMidFeedback] = useState(null);
   const [finalFeedback, setFinalFeedback] = useState(null);
+  // AI 질문 조회
+  const [AIQuestionList, setAIQuestionList] = useState(null);
+  // AI 질문에 대한 대답
+  const [AIResponse, setAIResponse] = useState(null);
 
   // --------------------[ GET ]------------------------
   // 상세 조회
@@ -80,6 +86,19 @@ export function ProjectProvider({ children }) {
       return null;
     }
   }, []);
+
+  // AI 질문 조회
+  const fetchAIQuestionList = useCallback(async (projectId) => {
+    try {
+      const data = await getAIQuestionList(projectId);
+      setAIQuestionList(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
   // ----------------------------[ POST ]--------------------------
   // 프로젝트 생성
   const create = useCallback(async (payload) => {
@@ -87,16 +106,16 @@ export function ProjectProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      setReponseData(payload);
       const data = await createProject(payload);
+      setReponseData(payload);
       setCurrentData(data);
-      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
       return null;
     }
   }, []);
+  //
 
   // 클라이언트 피드백
   const createFeedback = useCallback(async (projectId, payload) => {
@@ -110,6 +129,19 @@ export function ProjectProvider({ children }) {
         setFinalFeedback(data);
         return data;
       }
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
+  // AI 질문 대답
+  const createResponse = useCallback(async (projectId, payload) => {
+    try {
+      const data = await createResponseAIQuestion(projectId, payload);
+      setAIResponse(payload);
+      console.log('data', data);
+      return data;
     } catch (e) {
       console.error(e);
       return null;
@@ -144,6 +176,12 @@ export function ProjectProvider({ children }) {
     createFeedback,
     midFeedback,
     finalFeedback,
+    // AI 질문 조회
+    fetchAIQuestionList,
+    AIQuestionList,
+    // AI 질문 대답
+    createResponse,
+    AIResponse,
   };
 
   return (

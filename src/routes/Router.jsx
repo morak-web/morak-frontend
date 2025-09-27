@@ -17,7 +17,7 @@ import PaymentListPage from '../pages/Client/PaymentPage/PaymentListPage.jsx';
 // 의뢰 작성 페이지 (카테고리-직접 작성-AI-요약-완료)
 import ChooseCategoryPage from '../pages/Client/RequestWritePage/ChooseCategoryPage';
 import RequestWritePage from '../pages/Client/RequestWritePage/RequestWritePage';
-import AIRequestPage from '../pages/Client/RequestWritePage/AIRequestPage';
+import AIRequestPage from '../pages/Client/RequestWritePage/AIRequest/AIRequestPage.jsx';
 import RequirementSummaryPage from '../pages/Client/RequestWritePage/RequirementSummaryPage';
 import RequestWriteCompletePage from '../pages/Client/RequestWritePage/RequestWriteCompletePage';
 

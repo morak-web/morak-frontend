@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import MessageBubble from './MessageBubble';
 
 import arrowIcon from '../../../../assets/RequestList/IntermediateFeedback/arrow-icon.png';
-import folderIcon from '../../../../assets/RequestList/IntermediateFeedback/folder-icon.png';
+// import folderIcon from '../../../../assets/RequestList/IntermediateFeedback/folder-icon.png';
 
 export default function ChatPage() {
   const [input, setInput] = useState('');
   const [message, setMessage] = useState([
     {
       sender: 'bot',
-      name: '김락모',
+      name: '모락 AI',
       text: '안녕하세요! 무엇을 도와드릴까요?',
       timestamp: new Date().toLocaleTimeString(),
     },
@@ -37,7 +37,7 @@ export default function ChatPage() {
         ...prev,
         {
           sender: 'bot',
-          name: '김락모',
+          name: '모락 AI',
           text: `"${userText}"에 대해 확인해보겠습니다.`,
           timestamp: new Date().toLocaleTimeString(),
         },
@@ -51,18 +51,21 @@ export default function ChatPage() {
     setInput('');
   };
   return (
-    <div className="bg-[#F7F8FC] h-[270px] rounded-[15px] pl-[30px] pr-[10px] pt-[20px] pb-[10px] flex flex-col justify-between">
+    <div className="bg-white h-[530px] rounded-[15px] pl-[30px] pr-[10px] pt-[20px] pb-[10px] flex flex-col justify-between">
       <div
-        className={`h-[80%] pr-[18px] custom-scrollbar overflow-y-auto flex flex-col mb-[10px] gap-[10px]`}
+        className={`h-[480px] pr-[18px] custom-scrollbar overflow-y-auto flex flex-col mb-[10px] gap-[10px]`}
       >
         {message.map((msg, i) => (
-          <div className={`${message.length <= 2 && i <= 1 ? 'mt-auto' : ''} `}>
+          <div
+            key={i}
+            className={`${message.length <= 2 && i <= 1 ? 'mt-auto' : ''} `}
+          >
             <MessageBubble message={msg} key={i} />
           </div>
         ))}
         <div ref={scrollRef} />
       </div>
-      <div className=" flex h-[20%] bg-[#EDEFF7] items-center rounded-[35px] px-2">
+      <div className=" flex h-[45px] bg-[#EDEFF7] items-center rounded-[35px] px-2">
         <input
           type="text"
           value={input}
@@ -71,9 +74,9 @@ export default function ChatPage() {
           className="w-[95%] h-[50px] rounded-[35px] outline-none px-[10px]"
         />
         <div className="flex gap-[10px]">
-          <button className="w-[24px] h-[24px]">
+          {/* <button className="w-[24px] h-[24px]">
             <img src={folderIcon} alt="folderIcon" />
-          </button>
+          </button> */}
           <button
             onClick={handleSend}
             className="w-[24px] h-[24px] cursor-pointer"

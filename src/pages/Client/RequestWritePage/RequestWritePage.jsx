@@ -35,6 +35,7 @@ export default function RequestWritePage() {
     };
     try {
       const created = await create(payload);
+      console.log(payload);
     } catch (e) {
       console.error(err);
       return null;

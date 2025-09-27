@@ -1,5 +1,4 @@
 import closeBtn from '../../../../assets/RequestList/close-button.png';
-import ChatPage from './ChatPage';
 import { useProject } from '../../../../context/ProjectContext';
 import { useEffect } from 'react';
 
@@ -58,13 +57,16 @@ export default function IntermediateFeedbackModal({
                 <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
                 <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
               </div>
-              <p className="text-[#525466] text-[13px] md:text-[16px]">
-                {midResultFile?.description}
-              </p>
+              <div className="flex flex-col gap-[11px]">
+                <h1 className="text-[20px]">디자이너 설명</h1>
+                <p className="text-[#525466] text-[16px]">
+                  {midResultFile?.description}
+                </p>
+              </div>
             </div>
-            <div className="w-[100%] h-[45%] px-[1%] flex flex-col justify-end">
+            {/* <div className="w-[100%] h-[45%] px-[1%] flex flex-col justify-end">
               <ChatPage />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

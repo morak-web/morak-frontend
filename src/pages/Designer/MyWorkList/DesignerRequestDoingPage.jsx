@@ -96,19 +96,19 @@ export default function DesignerRequestDoingPage() {
         </div>
         <div className="w-[100%] h-[38px] flex justify-around">
           <button
-            className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
+            className="flex justify-center items-center w-[40%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setSubmitModalOpen(true)}
           >
             결과물 제출하기
           </button>
-          <button
+          {/* <button
             className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFeedbackModalOpen(true)}
           >
             피드백 확인
-          </button>
+          </button> */}
           <button
-            className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#6072FF] text-white text-[12px] sm:text-[16px] cursor-pointer"
+            className="flex justify-center items-center w-[40%] rounded-[19px] bg-[#6072FF] text-white text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFinalModalOpen(true)}
           >
             최종 결과 제출
