@@ -5,6 +5,7 @@ import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
 import { getDesignerInfo } from '../api/designer/designerInfoApi';
 import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
 import { submitResultFile } from '../api/designer/submitResultFile';
+import { applyProject } from '../api/designer/applyProjectApi';
 
 const DesignerContext = createContext(null);
 
@@ -94,6 +95,7 @@ export function DesignerProvider({ children }) {
     try {
       const data = await getDesignerInfo(id);
       setDesignerInfo(data);
+      console.log(designerInfo);
       return data;
     } catch (e) {
       console.error(e);
@@ -143,6 +145,17 @@ export function DesignerProvider({ children }) {
     []
   );
 
+  // 프로젝트 지원하기
+  const projectApply = useCallback(async (projectId, { designerId }) => {
+    try {
+      const data = await applyProject(projectId, { designerId });
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
   const value = {
     loading,
     error,
@@ -164,6 +177,8 @@ export function DesignerProvider({ children }) {
     desginerRegisterInfo,
     // 디자이너 결과물 제출
     createResultFile,
+    // 디자이너 지원하기
+    projectApply,
   };
   return (
     <DesignerContext.Provider value={value}>

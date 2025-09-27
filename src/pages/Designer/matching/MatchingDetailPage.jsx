@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useProject } from '../../../context/ProjectContext';
+import { useDesigner } from '../../../context/DesignerContext';
 
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import moneyIcon from '../../../assets/Designer/matching/money.png';
@@ -9,17 +10,35 @@ import lockIcon from '../../../assets/Designer/matching/lock.png';
 export default function MatchingDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [apply, setApply] = useState(false);
+  const { designerInfo, projectApply } = useDesigner();
   const { projectDetail, fetchProjectDetail } = useProject();
   useEffect(() => {
     fetchProjectDetail(id);
   }, []);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const designerId = designerInfo?.id;
+    console.log(designerId);
+    try {
+      const crated = await projectApply(id, { designerId: designerId });
+      alert('지원하기 완료');
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
   const start = new Date(projectDetail?.createdAt);
   const end = new Date(projectDetail?.expectedEndDate);
   const ms = end - start;
   const daysFloor = Math.floor(ms / 86400000);
   return (
-    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px]">
+    <form
+      onSubmit={onSubmit}
+      className="bg-white w-[95%] min-h-[710px] rounded-[11px]"
+    >
       <button
+        type="button"
         onClick={() => navigate(-1)}
         className=" h-[12px] ml-[13px] mt-[15px] cursor-pointer flex text-[#D8DAE5] text-[12px] gap-[5px]"
       >
@@ -47,7 +66,13 @@ export default function MatchingDetailPage() {
             <p>등록일자</p>
             <p>{projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')}</p>
           </div>
-          <button className="bg-[#668df7] text-white w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] cursor-pointer">
+          <button
+            onClick={() => {
+              setApply(true);
+            }}
+            type="submit"
+            className={`${apply ? 'bg-gray-200' : 'bg-[#668df7] text-white'}  w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] cursor-pointer`}
+          >
             지원하기
           </button>
         </div>
@@ -167,6 +192,6 @@ export default function MatchingDetailPage() {
           </ul>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
