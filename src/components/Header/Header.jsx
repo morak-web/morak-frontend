@@ -29,15 +29,15 @@ export default function Header() {
         </div>
       ) : (
         <div className="flex gap-[22px] items-center">
-          <Link to="/login" className="text-[12px]">
+          {/* <Link to="/login" className="text-[12px]">
             로그인
-          </Link>
+          </Link> */}
           <Link
-            to="/sign-up"
+            to="/login"
             className="text-[12px] bg-[#BDCFFF] py-[6px] px-[14px] rounded-[5px]"
             // onClick={() => setIsLogin(true)}
           >
-            회원가입
+            로그인
           </Link>
         </div>
       )}

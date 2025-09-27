@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage/HomePage';
 
 // 로그인, 회원가입 페이지
-import LoginPage from '../pages/LoginPage/LoginPage';
+import SocialLoginPage from '../pages/SocialLoginPage/SocialLoginPage.jsx';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
 
 // Client 페이지
@@ -49,7 +49,7 @@ export default function Router() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<SocialLoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
