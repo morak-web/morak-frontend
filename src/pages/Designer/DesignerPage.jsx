@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import { useMyInfo } from '../../context/MyInfoContext';
-
+import userIcon from '../../assets/user-icon.png';
+import { NavLink } from 'react-router-dom';
 const ASIDE_BAR = [
   {
     title: '프로젝트 매칭 대기',
@@ -20,7 +21,6 @@ const ASIDE_BAR = [
 ];
 
 function LeftSection() {
-  const [clicked, setClicked] = useState('포트폴리오 관리');
   const { fetchMyInfo, myInfo } = useMyInfo();
   useCallback(() => {
     fetchMyInfo();
@@ -29,13 +29,16 @@ function LeftSection() {
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
       <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">
-        <div className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] bg-red-300 rounded-[50%] mb-[12px]" />
-        <Link className="flex gap-[2px] items-center">
+        <img
+          src={myInfo?.profileImageUrl ? myInfo?.profileImageUrl : userIcon}
+          className={`w-[80px] h-[80px] lg:w-[127px] lg:h-[127px]  rounded-[50%] mb-[12px]`}
+        />
+        <NavLink className="flex gap-[2px] items-center" to="register">
           <p className="text-[10px] lg:text-[11px] text-[rgba(82,84,102,1)]">
             프로필 수정하기
           </p>
           <img src={pencilIcon} alt="pencilIcon" className="w-[9px] h-[9px]" />
-        </Link>
+        </NavLink>
         <div className="mt-[11px] w-[80%] h-[2px] bg-[#dadae0]" />
         <h1 className="pt-[9px] text-[13px] xl:text-[16px] text-[rgba(82,84,102,1)]">
           <span className="text-[20px] text-[rgba(96,114,255,1)] font-bold">
@@ -46,14 +49,19 @@ function LeftSection() {
       </div>
       <div className="flex flex-col 2xl:pr-[20%] gap-[8px] ">
         {ASIDE_BAR.map((item) => (
-          <Link
+          <NavLink
             key={item.title}
             to={item.link}
-            className={` border-t-[2px] w-[80px] sm:w-[152px] h-[50px] text-[13px] sm:text-[15px] pt-[10px] font-bold text-left ${item.title === clicked ? 'text-[#474858] border-[rgba(195,196,206)] ' : 'text-[rgba(195,196,206)]'}`}
-            onClick={() => setClicked(item.title)}
+            end
+            className={({ isActive }) =>
+              `border-t-[2px] w-[80px] sm:w-[152px] h-[50px] text-[13px] sm:text-[15px] pt-[10px] font-bold text-left ` +
+              (isActive
+                ? 'text-[#474858] border-[rgba(195,196,206)]'
+                : 'text-[rgba(195,196,206)]')
+            }
           >
             {item.title}
-          </Link>
+          </NavLink>
         ))}
       </div>
     </div>

@@ -23,6 +23,7 @@ export default function DesignerRegisterPage() {
       yearsOfExperience: Number(yearsOfExperience),
       intro: intro.trim(),
     };
+    console.log(payload);
     try {
       const created = await createDesignerRegister(payload);
       console.log(desginerRegisterInfo);
@@ -51,7 +52,7 @@ export default function DesignerRegisterPage() {
           <input
             type="text"
             disabled={true}
-            value={myInfo?.name}
+            value={myInfo?.name ?? ''}
             className="flex items-center w-[70%] md:w-[300px] h-[38px] bg-[#f2f3fa] rounded-[19px] px-[20px] text-[#383946] text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
           />
         </div>
@@ -93,6 +94,7 @@ export default function DesignerRegisterPage() {
               className="h-[180px] bg-[#F2F3FA] rounded-[19px]  resize-none py-[16px] px-[20px] text-black text-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
             />
             <button
+              type="button"
               className="w-[100%] md:w-[300px] h-[38px] rounded-[19px] shadow-md  text-[10px] sm:text-[15px] cursor-pointer text-[#525466]"
               onClick={() => setPortfolioModalOpen(true)}
             >

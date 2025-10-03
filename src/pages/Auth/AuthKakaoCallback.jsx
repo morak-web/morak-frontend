@@ -2,6 +2,8 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api/client';
+import userIcon from '../../assets/user-icon.png';
+
 export default function AuthKakaoCallback() {
   const navigate = useNavigate();
   const onceRef = useRef(false);
@@ -73,6 +75,7 @@ export default function AuthKakaoCallback() {
         const { token, isNewMember, user: loginUser } = res.data || {};
         if (!token) throw new Error('no_server_token');
         console.log(kakaoNickname);
+        console.log(kakaoImageUrl);
 
         // 토큰 저장 (이후 요청 Authorization 헤더 자동)
         localStorage.setItem('accessToken', token);
@@ -89,6 +92,7 @@ export default function AuthKakaoCallback() {
           if (kakaoNickname) {
             payload.name = kakaoNickname;
             payload.nickname = kakaoNickname;
+            payload.profileImageUrl = kakaoImageUrl;
           }
           if (kakaoImageUrl) {
             payload.profileImageUrl = kakaoImageUrl;

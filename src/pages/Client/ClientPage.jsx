@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import MainLayout from '../../components/layout/MainLayout';
 import { useMyInfo } from '../../context/MyInfoContext';
+import userIcon from '../../assets/user-icon.png';
 
 const ASIDE_BAR = [
   {
@@ -29,13 +30,16 @@ function LeftSide() {
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
       <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">
-        <div className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] bg-red-300 rounded-[50%] mb-[12px]" />
-        <Link className="flex gap-[2px] items-center">
+        <img
+          src={myInfo?.profileImageUrl ? myInfo?.profileImageUrl : userIcon}
+          className={`w-[80px] h-[80px] lg:w-[127px] lg:h-[127px]  rounded-[50%] mb-[12px]`}
+        />
+        {/* <Link className="flex gap-[2px] items-center">
           <p className="text-[10px] lg:text-[11px] text-[rgba(82,84,102,1)]">
             프로필 수정하기
           </p>
           <img src={pencilIcon} alt="pencilIcon" className="w-[9px] h-[9px]" />
-        </Link>
+        </Link> */}
         <div className="mt-[11px] w-[80%] h-[2px] bg-[#dadae0]" />
         <h1 className="pt-[9px] text-[13px] xl:text-[16px] text-[rgba(82,84,102,1)]">
           <span className="text-[20px] text-[rgba(96,114,255,1)] font-bold">

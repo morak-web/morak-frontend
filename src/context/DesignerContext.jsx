@@ -95,7 +95,6 @@ export function DesignerProvider({ children }) {
     try {
       const data = await getDesignerInfo(id);
       setDesignerInfo(data);
-      console.log(designerInfo);
       return data;
     } catch (e) {
       console.error(e);
@@ -113,6 +112,7 @@ export function DesignerProvider({ children }) {
     try {
       setDesignerRegisterInfo(payload);
       const data = await createDesignerInfo(payload);
+      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
