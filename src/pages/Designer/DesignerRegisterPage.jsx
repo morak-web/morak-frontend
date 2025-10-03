@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import DesignerPortfolioModal from './Porfolio/DesignerPortfolioModal';
 import { useDesigner } from '../../context/DesignerContext';
+import { useMyInfo } from '../../context/MyInfoContext';
+import { useEffect } from 'react';
 
 export default function DesignerRegisterPage() {
   const [portfolioModalOpen, setPortfolioModalOpen] = useState(false);
+  const { fetchMyInfo, myInfo } = useMyInfo();
+  useEffect(() => {
+    fetchMyInfo();
+  }, []);
   // 디자이너 등록 api
   const { desginerRegisterInfo, createDesignerRegister } = useDesigner();
-  const [name, setName] = useState('');
   const [interestedIn, setInterestedIn] = useState('');
   const [yearsOfExperience, setYearsOfExperience] = useState('');
   const [intro, setIntro] = useState('');
   const onSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      name: name.trim(),
+      name: myInfo?.name,
       interestedIn: interestedIn.trim(),
       yearsOfExperience: Number(yearsOfExperience),
       intro: intro.trim(),
@@ -45,9 +50,9 @@ export default function DesignerRegisterPage() {
           </h1>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-[70%] md:w-[300px] h-[38px] bg-[#f2f3fa] rounded-[19px] px-[20px] text-black text-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
+            disabled={true}
+            value={myInfo?.name}
+            className="flex items-center w-[70%] md:w-[300px] h-[38px] bg-[#f2f3fa] rounded-[19px] px-[20px] text-[#383946] text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
           />
         </div>
         <div className="flex items-center">

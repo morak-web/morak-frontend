@@ -8,17 +8,20 @@ import { PaymentProvider } from './context/PaymentContext.jsx';
 import { DesignerProvider } from './context/DesignerContext.jsx';
 1;
 import { AIFeedbackProvider } from './context/AIFeedbackContext.jsx';
+import { MyInfoProvider } from './context/MyInfoContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ProjectProvider>
-      <PaymentProvider>
-        <DesignerProvider>
-          <AIFeedbackProvider>
-            <App />
-          </AIFeedbackProvider>
-        </DesignerProvider>
-      </PaymentProvider>
-    </ProjectProvider>
+    <MyInfoProvider>
+      <ProjectProvider>
+        <PaymentProvider>
+          <DesignerProvider>
+            <AIFeedbackProvider>
+              <App />
+            </AIFeedbackProvider>
+          </DesignerProvider>
+        </PaymentProvider>
+      </ProjectProvider>
+    </MyInfoProvider>
   </StrictMode>
 );

@@ -1,7 +1,8 @@
 import { Outlet, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import MainLayout from '../../components/layout/MainLayout';
+import { useMyInfo } from '../../context/MyInfoContext';
 
 const ASIDE_BAR = [
   {
@@ -20,6 +21,11 @@ const ASIDE_BAR = [
 
 function LeftSide() {
   const [clickedBar, setClickedBar] = useState('내 의뢰 목록');
+  const { fetchMyInfo, myInfo } = useMyInfo();
+  useEffect(() => {
+    fetchMyInfo();
+  }, []);
+  console.log(myInfo);
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
       <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">
@@ -33,7 +39,7 @@ function LeftSide() {
         <div className="mt-[11px] w-[80%] h-[2px] bg-[#dadae0]" />
         <h1 className="pt-[9px] text-[13px] xl:text-[16px] text-[rgba(82,84,102,1)]">
           <span className="text-[20px] text-[rgba(96,114,255,1)] font-bold">
-            김모락
+            {myInfo?.name}
           </span>{' '}
           님의 워크스페이스
         </h1>

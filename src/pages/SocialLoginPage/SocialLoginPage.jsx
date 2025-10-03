@@ -2,6 +2,7 @@ import MainLayout from '../../components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/morak-logo.png';
 import kakaoLogo from '../../assets/Login/kakao-logo.png';
+import loginWithKakao from '../../features/auth/loginWithKakao';
 
 export default function SocialLoginPage() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function SocialLoginPage() {
           >
             <button
               type="submit"
+              onClick={loginWithKakao}
               className={`w-[356px] h-[53px] rounded-[9px]  text-black flex justify-center items-center font-regular mb-[36px] cursor-pointer bg-[#FEE500] gap-[10px]`}
             >
               <img

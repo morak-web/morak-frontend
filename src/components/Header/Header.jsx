@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(true);
+  const hasToken = () => !!localStorage.getItem('accessToken');
+  const [isLogin, setIsLogin] = useState(hasToken);
   return (
     <nav className="h-[64px] pl-[32px] pr-[24px] py-[20px] flex justify-between items-center ">
       <Link to="/">

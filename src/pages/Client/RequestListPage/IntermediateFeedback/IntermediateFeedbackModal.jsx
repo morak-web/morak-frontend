@@ -38,10 +38,10 @@ export default function IntermediateFeedbackModal({
           <div className="flex justify-between">
             <div className="flex items-end gap-[11px] mx-[1%]">
               <h1 className="text-[#525466] text-[15px] sm:text-[20px] font-medium ">
-                와이어프레임 초안 1차 색상안 2종 포함 //임시
+                디자이너 설명
               </h1>
               <p className="text-[#525466] text-[13px] sm:text-[16px] font-light">
-                2025.08.23 //임시
+                {midResultFile?.createdAt.slice(0, 10).replaceAll('-', '.')}
               </p>
             </div>
             <div className="flex flex-col justify-end md:flex-row text-[#525466] text-[13px] sm:text-[16px] font-normal ml-[10px] md:ml-[0px] md:gap-[11px] whitespace-nowrap hover:text-black hover:font-bold">
@@ -58,7 +58,6 @@ export default function IntermediateFeedbackModal({
                 <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
               </div>
               <div className="flex flex-col gap-[11px]">
-                <h1 className="text-[20px]">디자이너 설명</h1>
                 <p className="text-[#525466] text-[16px]">
                   {midResultFile?.description}
                 </p>

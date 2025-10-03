@@ -8,6 +8,7 @@ import HomePage from '../pages/HomePage/HomePage';
 // 로그인, 회원가입 페이지
 import SocialLoginPage from '../pages/SocialLoginPage/SocialLoginPage.jsx';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
+import AuthKakaoCallback from '../pages/Auth/AuthKakaoCallback.jsx';
 
 // Client 페이지
 import ClientPage from '../pages/Client/ClientPage';
@@ -44,12 +45,18 @@ import ProgressingSeeDetailPage from '../components/RequestList/Progressing/Prog
 import DesignerPortfolioPage from '../components/RequestList/portfolio/DesignerPortfolioPage.jsx';
 
 export default function Router() {
+  const hasToken = () => !!localStorage.getItem('accessToken');
+
+  // "/" 진입 시: 토큰 있으면 홈, 없으면 로그인
+  const AuthSwitch = () =>
+    hasToken() ? <HomePage /> : <Navigate to="/login" replace />;
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<AuthSwitch />} />
         <Route path="/login" element={<SocialLoginPage />} />
+        <Route path="/auth/kakao/callback" element={<AuthKakaoCallback />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
