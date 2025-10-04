@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import closeBtn from '../../../assets/RequestList/close-button.png';
-import moreBtn from '../../../assets/Designer/more.png';
 import folderBtn from '../../../assets/Designer/folder.png';
 import { useDesigner } from '../../../context/DesignerContext';
 import noFileImg from '../../../assets/Designer/no-file.png';
 
 export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
   if (!submitModalOpen) return null;
-  const [imgUploadBtn, setImgUploadBtn] = useState(false);
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -91,7 +89,7 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                         className="w-[107px] h-[107px]"
                       />
                       <h1 className="text-center text-[16px] text-[#525466] font-light">
-                        최종 결과 파일을
+                        결과 파일을
                         <br /> 업로드해주세요!
                       </h1>
                     </div>

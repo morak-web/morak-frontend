@@ -1,41 +1,46 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import closeBtn from '../../../assets/Designer/close-button.png';
-import plusBtn from '../../../assets/Designer/plus.png';
 import folderBtn from '../../../assets/Designer/folder.png';
+import { useDesigner } from '../../../context/DesignerContext';
+import noFileImg from '../../../assets/Designer/no-file.png';
 
-export default function FinalSubmitModal({ finalModalOpen, onClose }) {
+export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
   if (!finalModalOpen) return null;
-  const [isActiveIdx, setIsActiveIdx] = useState(null);
-  const [imgWrapper, setImgWrapper] = useState([{}]);
-
-  const handleAddImg = () => {
-    setImgWrapper((prev) => [...prev, {}]);
-  };
-  const removeImg = (removeIdx) => {
-    setImgWrapper((prev) => prev.filter((_, idx) => idx !== removeIdx));
-  };
-
-  const containerRef = useRef();
+  const [description, setDescription] = useState('');
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const { createResultFile } = useDesigner();
   useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
-    // 부드럽게 스크롤
-    container.scrollTo({
-      left: container.scrollWidth,
-      behavior: 'smooth',
-    });
-  }, [imgWrapper]);
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url); // 누수 방지
+  }, [file]);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const phase = 'FINAL';
+    try {
+      const created = await createResultFile(id, { phase, description, file });
+      alert('결과물 제출 완료!');
+      console.log(created);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+  const onFileChange = (e) => setFile(e.target.files?.[0] ?? null);
+
   return (
     <div
       onClick={onClose}
-      className=" fixed inset-0 z-50  min-w-screen min-h-screen bg-[#0101015e] justify-center items-center flex"
+      className=" fixed inset-0 z-50 min-w-screen min-h-screen bg-[#0101015e] justify-center items-center flex"
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col"
       >
         <div className="flex justify-between">
-          <h1 className="text-[20px] font-bold">최종 결과 제출</h1>
+          <h1 className="text-[20px] font-bold">결과물 제출하기</h1>
           <button className="cursor-pointer">
             <img
               src={closeBtn}
@@ -45,73 +50,70 @@ export default function FinalSubmitModal({ finalModalOpen, onClose }) {
             />
           </button>
         </div>
-        <div className="w-[100%] h-[100%] flex flex-col pr-[36px]">
-          <div className="bg-[#D9D9D9] w-[100%] h-[1px] mt-[14px] mb-[27px]"></div>
+        <form
+          onSubmit={onSubmit}
+          className="w-[100%] h-[100%] flex flex-col pr-[36px]"
+        >
+          <div className="bg-[#D9D9D9] w-[100%] h-[1px] mt-[15px]"></div>
           <div className="w-[100%] h-[100%] flex flex-col ">
-            {/* 미리보기 사진 */}
-            <div className="w-[100%] h-[342px] flex flex-col pl-[2%] gap-[10px] pt-[10px] mb-[48px]">
-              <p className="text-[16px] text-[#525466] mb-[38px]">
-                미리보기 사진 - 최대 4장 업로드
-              </p>
-              <div className="w-[100%] h-[100%] flex justify-between gap-[10px]">
-                <div
-                  className="w-[100%] h-[280px] flex overflow-x-auto  custom-scrollbar gap-[26px]"
-                  ref={containerRef}
-                >
-                  {imgWrapper.map((item, idx) => (
-                    <div
-                      {...item}
-                      key={idx}
-                      className="w-[270px] h-[250px] bg-[#DFE1ED] rounded-[10px] shrink-0 relative cursor-pointer "
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsActiveIdx(idx);
-                      }}
-                    >
-                      {idx === isActiveIdx && (
-                        <button
-                          className="w-[130px] h-[45px] bg-white rounded-[20px] text-[14px] text-[#525466] flex justify-center items-center shadow-lg absolute bottom-13 right-[-40px] z-10"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          사진 업로드
-                        </button>
+            <div className="w-[100%] h-[50%] flex flex-col pl-[2%] gap-[10px] pt-[10px] mb-[28px]">
+              <div className="w-full h-full mt-[15px]">
+                <div className="w-full h-[300px] flex justify-center items-center">
+                  {file ? (
+                    <div className="w-full h-[300px] flex flex-col justify-center items-center">
+                      {file.type === 'image/png' ? (
+                        <img
+                          src={previewUrl}
+                          alt="미리보기"
+                          className="w-[1047px] h-[290px] object-contain"
+                        />
+                      ) : file.type === 'application/pdf' ? (
+                        // 간단 프리뷰: 임베드(브라우저 PDF 뷰어)
+                        <embed
+                          src={previewUrl + '#toolbar=0&navpanes=0&scrollbar=0'}
+                          type="application/pdf"
+                          className="w-[1047px] h-[290px]"
+                        />
+                      ) : (
+                        <p>지원하지 않는 형식</p>
                       )}
-                      <button
-                        className="w-[14px] h-[16px] absolute right-3 top-3 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeImg(idx);
-                        }}
-                      >
-                        <img src={closeBtn} alt="closeBtn" />
-                      </button>
+                      <div className="text-sm text-gray-500 mt-2">
+                        {file.name}
+                      </div>
                     </div>
-                  ))}
-                  <button
-                    onClick={handleAddImg}
-                    className="cursor-pointer h-[100%] flex-shrink-0"
-                  >
-                    <img
-                      src={plusBtn}
-                      alt="plusBtn"
-                      className="w-[37px] h-[37px]"
-                    />
-                  </button>
+                  ) : (
+                    <div className="flex flex-col gap-[13px] items-center justify-center">
+                      <img
+                        src={noFileImg}
+                        alt="noFileImg"
+                        className="w-[107px] h-[107px]"
+                      />
+                      <h1 className="text-center text-[16px] text-[#525466] font-light">
+                        최종 결과 파일을
+                        <br /> 업로드해주세요!
+                      </h1>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            {/* 디자인 설명 */}
-            <div className="w-[100%] h-[33%]">
+            <div className="w-[100%] h-[250px]">
               <div className="w-[100%] h-[100%] bg-[#F7F8FC] rounded-[30px] px-[30px] pt-[30px] pb-[20px] ">
                 <textarea
                   type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="outline-none h-[80%] w-[100%] flex items-center resize-none overflow-y-auto custom-scrollbar mb-[10px]"
                   placeholder="디자인 설명을 자유롭게 작성해주세요!"
                 />
-                <div className="w-[100%] flex justify-end ">
-                  <button>
+                <div className="w-full flex justify-end relative cursor-pointer">
+                  <input
+                    type="file"
+                    accept=".png,application/pdf"
+                    onChange={onFileChange}
+                    className="z-10 absolute w-[22px] h-[22px] text-transparent cursor-pointer"
+                  />
+                  <button className="absolute cursor-pointer">
                     <img
                       src={folderBtn}
                       alt="folderBtn"
@@ -122,7 +124,13 @@ export default function FinalSubmitModal({ finalModalOpen, onClose }) {
               </div>
             </div>
           </div>
-        </div>
+          <button
+            type="submit"
+            className="w-[234px] h-[38px] rounded-[16px] bg-[#6072FF] text-[16px] text-white flex items-center justify-center self-end cursor-pointer"
+          >
+            최종 결과 제출
+          </button>
+        </form>
       </div>
     </div>
   );
