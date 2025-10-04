@@ -5,6 +5,8 @@ import { Navigate } from 'react-router-dom';
 // 홈페이지
 import HomePage from '../pages/HomePage/HomePage';
 
+// 채팅
+import ChatPage from '../pages/ChatPage/ChatPage.jsx';
 // 로그인, 회원가입 페이지
 import SocialLoginPage from '../pages/SocialLoginPage/SocialLoginPage.jsx';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
@@ -58,6 +60,7 @@ export default function Router() {
         <Route path="/login" element={<SocialLoginPage />} />
         <Route path="/auth/kakao/callback" element={<AuthKakaoCallback />} />
         <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
 

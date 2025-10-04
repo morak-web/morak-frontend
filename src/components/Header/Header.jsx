@@ -16,7 +16,7 @@ export default function Header() {
       {isLogin ? (
         <div className="flex gap-[23px] ">
           <div className="flex gap-[21px] items-center">
-            <Link>
+            <Link to="/chat">
               <img src={messageIcon} alt="messageIcon" />
             </Link>
             <Link>

@@ -9,7 +9,7 @@ import { DesignerProvider } from './context/DesignerContext.jsx';
 1;
 import { AIFeedbackProvider } from './context/AIFeedbackContext.jsx';
 import { MyInfoProvider } from './context/MyInfoContext.jsx';
-
+import { ChatProvider } from './context/ChatContext.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MyInfoProvider>
@@ -17,7 +17,9 @@ createRoot(document.getElementById('root')).render(
         <PaymentProvider>
           <DesignerProvider>
             <AIFeedbackProvider>
-              <App />
+              <ChatProvider>
+                <App />
+              </ChatProvider>
             </AIFeedbackProvider>
           </DesignerProvider>
         </PaymentProvider>
