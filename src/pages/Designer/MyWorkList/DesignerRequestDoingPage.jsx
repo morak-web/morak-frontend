@@ -88,12 +88,12 @@ export default function DesignerRequestDoingPage() {
           >
             결과물 제출하기
           </button>
-          <button
+          {/* <button
             className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFeedbackModalOpen(true)}
           >
             채팅 확인
-          </button>
+          </button> */}
           <button
             className="flex justify-center items-center w-[40%] rounded-[19px] bg-[#6072FF] text-white text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFinalModalOpen(true)}
@@ -107,11 +107,11 @@ export default function DesignerRequestDoingPage() {
         id={id}
         onClose={() => setSubmitModalOpen(false)}
       />
-      <FeedbackCheckModal
+      {/* <FeedbackCheckModal
         id={id}
         feedbackModalOpen={feedbackModalOpen}
         onClose={() => setFeedbackModalOpen(false)}
-      />
+      /> */}
       <FinalSubmitModal
         id={id}
         finalModalOpen={finalModalOpen}

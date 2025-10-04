@@ -11,6 +11,8 @@ export default function DesignerPortfolioModal({
   onClose,
 }) {
   if (!portfolioModalOpen) return null;
+
+  // pf 카드
   const [cards, setCards] = useState([{}]);
   const handleAddCard = () => {
     setCards((prev) => [...prev, {}]);
@@ -30,11 +32,8 @@ export default function DesignerPortfolioModal({
   };
 
   // api
-  const { designerPortfolio, fetchDesignerPortfolio } = useDesigner();
-  useEffect(() => {
-    fetchDesignerPortfolio(44);
-  }, []);
-  console.log(designerPortfolio);
+  const { removeDesignerPf } = useDesigner();
+  useEffect(() => {}, []);
 
   return (
     <div
@@ -68,6 +67,7 @@ export default function DesignerPortfolioModal({
             />
           ))}
           <button
+            type="button"
             onClick={handleAddCard}
             className="cursor-pointer flex-shrink-0 h-[400px]"
           >

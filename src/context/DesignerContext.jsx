@@ -1,12 +1,17 @@
 import { createContext, useContext, useCallback, useState } from 'react';
 import { getMatchingWaiting } from '../api/designer/matchingWaitingApi';
 import { getDesignerProject } from '../api/designer/designerProjectApi';
-import { getDesignerPortfolio } from '../api/designer/designerPortfolioApi';
 import { getDesignerInfo } from '../api/designer/designerInfoApi';
 import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
 import { submitResultFile } from '../api/designer/submitResultFile';
 import { applyProject } from '../api/designer/applyProjectApi';
 import { getApplyProjectList } from '../api/designer/applyProjectListApi';
+import {
+  getDesignerPortfolio,
+  postDesignerPortfolio,
+  patchDesignerPortfolio,
+  deleteDesignerPortfolio,
+} from '../api/designer/designerPortfolioApi';
 
 const DesignerContext = createContext(null);
 
@@ -27,6 +32,20 @@ export function DesignerProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [applyProjectList, setApplyProjectList] = useState(null);
+  // 포트폴리오
+  const [drafts, setDrafts] = useState([]);
+  const addDraft = useCallback((item) => {
+    setDrafts((prev) => [...prev, item]);
+  }, []);
+  const updateDraft = useCallback((index, patch) => {
+    setDrafts((prev) =>
+      prev.map((it, i) => (i === index ? { ...it, ...patch } : it))
+    );
+  }, []);
+  const removeDraft = useCallback((index) => {
+    setDrafts((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+  const clearDrafts = useCallback(() => setDrafts([]), []);
 
   // matching 대기
   const fetchMatchingWaiting = useCallback(async () => {
@@ -71,6 +90,34 @@ export function DesignerProvider({ children }) {
     }
   }, []);
 
+  // 디자이너 정보
+  const fetchDesignerInfo = useCallback(async (id) => {
+    if (!id) return;
+    setLoading(true);
+    setError(false);
+    try {
+      const data = await getDesignerInfo(id);
+      setDesignerInfo(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchApplyProjectList = useCallback(async (status) => {
+    try {
+      const data = await getApplyProjectList(status);
+      setApplyProjectList(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }, []);
+
   // 디자이너 포트폴리오
   const fetchDesignerPortfolio = useCallback(async (designerId) => {
     if (!designerId) return null;
@@ -89,33 +136,6 @@ export function DesignerProvider({ children }) {
     }
   }, []);
 
-  // 디자이너 정보
-  const fetchDesignerInfo = useCallback(async (id) => {
-    if (!id) return;
-    setLoading(true);
-    setError(false);
-    try {
-      const data = await getDesignerInfo(id);
-      setDesignerInfo(data);
-      return data;
-    } catch (e) {
-      console.error(e);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  });
-
-  const fetchApplyProjectList = useCallback(async (status) => {
-    try {
-      const data = await getApplyProjectList(status);
-      setApplyProjectList(data);
-      return data;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  });
   // ----------[POST]-----------------
   // 디자이너 등록
   const createDesignerRegister = useCallback(async (payload) => {
@@ -133,7 +153,7 @@ export function DesignerProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  });
+  }, []);
 
   // 디자이너 결과물 제출
   const createResultFile = useCallback(
@@ -167,7 +187,54 @@ export function DesignerProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
+
+  const createDesignerPf = useCallback(
+    async (designerId, { title, description, tags, file }) => {
+      try {
+        const data = await postDesignerPortfolio(designerId, {
+          title,
+          description,
+          tags,
+          file,
+        });
+        return data;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    },
+    []
+  );
+
+  // -----------[PATCH]-------------
+  const patchDesignerPf = useCallback(
+    async (designerId, portfolioId, payload) => {
+      try {
+        const data = await patchDesignerPortfolio(
+          designerId,
+          portfolioId,
+          payload
+        );
+        return data;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    },
+    []
+  );
+
+  // -----------[DELETE]------------
+  const removeDesignerPf = useCallback(async (designerId, portfolioId) => {
+    try {
+      const data = await deleteDesignerPortfolio(designerId, portfolioId);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }, []);
 
   const value = {
     loading,
@@ -195,6 +262,16 @@ export function DesignerProvider({ children }) {
     // 디자이너 지원한 프로젝트 목록
     fetchApplyProjectList,
     applyProjectList,
+    // 포트폴리오
+    getDesignerPortfolio,
+    patchDesignerPf,
+    createDesignerPf,
+    removeDesignerPf,
+    drafts,
+    addDraft,
+    updateDraft,
+    removeDraft,
+    clearDrafts,
   };
   return (
     <DesignerContext.Provider value={value}>
