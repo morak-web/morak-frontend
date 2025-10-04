@@ -6,6 +6,7 @@ import { getDesignerInfo } from '../api/designer/designerInfoApi';
 import { createDesignerInfo } from '../api/designer/createDesignerInfoApi';
 import { submitResultFile } from '../api/designer/submitResultFile';
 import { applyProject } from '../api/designer/applyProjectApi';
+import { getApplyProjectList } from '../api/designer/applyProjectListApi';
 
 const DesignerContext = createContext(null);
 
@@ -25,6 +26,7 @@ export function DesignerProvider({ children }) {
   const [desginerRegisterInfo, setDesignerRegisterInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [applyProjectList, setApplyProjectList] = useState(null);
 
   // matching 대기
   const fetchMatchingWaiting = useCallback(async () => {
@@ -103,6 +105,17 @@ export function DesignerProvider({ children }) {
       setLoading(false);
     }
   });
+
+  const fetchApplyProjectList = useCallback(async (status) => {
+    try {
+      const data = await getApplyProjectList(status);
+      setApplyProjectList(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
   // ----------[POST]-----------------
   // 디자이너 등록
   const createDesignerRegister = useCallback(async (payload) => {
@@ -179,6 +192,9 @@ export function DesignerProvider({ children }) {
     createResultFile,
     // 디자이너 지원하기
     projectApply,
+    // 디자이너 지원한 프로젝트 목록
+    fetchApplyProjectList,
+    applyProjectList,
   };
   return (
     <DesignerContext.Provider value={value}>

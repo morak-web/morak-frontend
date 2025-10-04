@@ -1,20 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import clientImg from '../../../assets/RequestList/designer1.png';
-export default function MatchingCard(props) {
+const CATEGORY = {
+  1: '웹',
+  2: '앱',
+  3: '쇼핑몰/스마트 스토어',
+  4: '키오스크/POS',
+  5: '그래픽/영상',
+  6: '기타',
+};
+export default function ApplyDetailCard(props) {
   const navigate = useNavigate();
   // date
-  const start = new Date(props.createdAt);
+  const start = new Date(props.appliedAt);
   const end = new Date(props.expectedEndDate);
-  const ms = end - start;
-  const daysFloor = Math.floor(ms / 86400000);
-  const CATEGORY = {
-    1: '웹',
-    2: '앱',
-    3: '쇼핑몰/스마트 스토어',
-    4: '키오스크/POS',
-    5: '그래픽/영상',
-    6: '기타',
-  };
+
   return (
     <div className="bg-[#EAECF5] w-[100%] min-h-[230px] rounded-[10px] flex">
       {/* left content */}
@@ -23,12 +22,12 @@ export default function MatchingCard(props) {
         <div className="text-[#525466] text-[13px] flex mb-[13px]">
           <div className="flex gap-[5px]">
             <p className="font-medium">예산</p>
-            <p>{props.budgetEstimate.toLocaleString()}</p>
+            <p>{props?.budgetEstimate.toLocaleString()}</p>
           </div>
           <p className="mx-[19px]">|</p>
           <div className="flex gap-[5px]">
-            <p className="font-medium">예상 기간 </p>
-            <p>{daysFloor}일</p>
+            <p className="font-medium">마감일 </p>
+            <p>{end.slice(0, 10).replaceAll('-', '.')}</p>
           </div>
         </div>
         <div className="text-[#525466] text-[13px] flex flex-col">
@@ -37,12 +36,11 @@ export default function MatchingCard(props) {
         </div>
         <div className="text-[#525466] text-[10px] flex gap-[5px] justify-end">
           <p>등록일자</p>
-          <p>{props.createdAt.slice(0, 10).replaceAll('-', '.')}</p>
+          <p>{start.slice(0, 10).replaceAll('-', '.')}</p>
         </div>
         {/* map으로 처리하기 */}
         <div className="text-[#525466] text-[12px] flex gap-[7px]">
           <div className="bg-white rounded-[10px] px-[7px] py-[4px]">
-            {' '}
             {CATEGORY[props.categoryId]}
           </div>
         </div>

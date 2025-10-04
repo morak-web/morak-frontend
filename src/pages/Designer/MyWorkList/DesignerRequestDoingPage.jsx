@@ -77,19 +77,6 @@ export default function DesignerRequestDoingPage() {
           <h1 className="text-[#525466] text-[16px] font-bold mb-[5px]">
             요구사항 확인
           </h1>
-          {/* {useDoingData.detailSections.map((item) => (
-            <div className="text-[#525466] text-[13px] mb-[8px]">
-              <p className="font-semibold text-[#525466d3] text-[14px]">
-                -{item.header}
-              </p>
-              {item.summary !== '' && <p>[ {item.summary} ]</p>}
-              <ul className="list-disc pl-7 space-y-[1px] text-[13px] text-[#525466]">
-                {item.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))} */}
           <p className="font-light text-[13px] text-[#525466]">
             {projectDetail?.userRequirements}
           </p>
@@ -101,12 +88,12 @@ export default function DesignerRequestDoingPage() {
           >
             결과물 제출하기
           </button>
-          {/* <button
+          <button
             className="flex justify-center items-center w-[30%] rounded-[19px] bg-[#DFE1ED] text-[#23242B] text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFeedbackModalOpen(true)}
           >
-            피드백 확인
-          </button> */}
+            채팅 확인
+          </button>
           <button
             className="flex justify-center items-center w-[40%] rounded-[19px] bg-[#6072FF] text-white text-[12px] sm:text-[16px] cursor-pointer"
             onClick={() => setFinalModalOpen(true)}

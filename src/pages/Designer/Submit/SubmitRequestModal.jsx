@@ -63,21 +63,6 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                   <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
                   <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
                 </div>
-                <button
-                  onClick={() => setImgUploadBtn(!imgUploadBtn)}
-                  className="cursor-pointer flex items-start"
-                >
-                  <img
-                    src={moreBtn}
-                    alt="moreBtn"
-                    className="w-[25px] h-[25px]"
-                  />
-                </button>
-                {imgUploadBtn && (
-                  <button className="fixed right-55 top-71 bg-white shadow-lg w-[130px] h-[40px] rounded-[20px] cursor-pointer">
-                    <h1 className="text-[#525466] text-[14px]">사진 업로드 </h1>
-                  </button>
-                )}
               </div>
             </div>
             <div className="w-[100%] h-[33%]">
