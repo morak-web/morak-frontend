@@ -16,27 +16,22 @@ export default function DownLoadModal({ downloadModalOpen, onClose, id }) {
   useEffect(() => {
     fetchProjectDetail(id);
   }, []);
-  console.log(projectDetail);
+
   const onPendingSubmit = async (e) => {
-    e.preventDefault();
-    const payload = {};
+    const payload = {
+      projectId: id,
+      amount: projectDetail?.budgetEstimate,
+    };
     try {
       const created = await createdPayment(payload);
+      console.log(created);
+      return created;
     } catch (e) {
       console.error(e);
       return null;
     }
   };
-  const onFinalSubmit = async (e) => {
-    e.preventDefault();
-    const payload = {};
-    try {
-      const created = await createdPayment(payload);
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  };
+
   const handleClickButton = () => {
     onClose();
     setDownloadModal(true);
@@ -136,6 +131,7 @@ export default function DownLoadModal({ downloadModalOpen, onClose, id }) {
                 onClick={() => {
                   setPaymentModal(false);
                   setCompleteModal(true);
+                  onPendingSubmit();
                 }}
               >
                 다음
