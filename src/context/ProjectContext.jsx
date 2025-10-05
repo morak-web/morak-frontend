@@ -106,7 +106,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   // 지원한 디자이너
   const fetchApplyDesigner = useCallback(async (projectId) => {
@@ -119,7 +119,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   // ----------------------------[ POST ]--------------------------
 
@@ -132,7 +132,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   // 프로젝트 생성
   const create = useCallback(async (payload) => {
@@ -167,7 +167,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   // AI 질문 대답
   const createResponse = useCallback(async (projectId, payload) => {
@@ -180,7 +180,7 @@ export function ProjectProvider({ children }) {
       console.error(e);
       return null;
     }
-  });
+  }, []);
 
   // ===============[PATCH]====================
   const patchNewProject = useCallback(async (projectId) => {
