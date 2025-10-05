@@ -7,6 +7,10 @@ import { createProject } from '../api/client/createProjectApi';
 import { createClientFeedback } from '../api/client/ProjectList/FeedbackRegister';
 import { getAIQuestionList } from '../api/client/AIQuestion/aiQuestionList';
 import { createResponseAIQuestion } from '../api/client/AIQuestion/responseAiQuestion';
+import {
+  applyDesignerList,
+  approveApply,
+} from '../api/client/applyDesignerListApi';
 
 // 컨텍스트 생성
 const ProjectContext = createContext(null);
@@ -32,6 +36,8 @@ export function ProjectProvider({ children }) {
   const [AIQuestionList, setAIQuestionList] = useState(null);
   // AI 질문에 대한 대답
   const [AIResponse, setAIResponse] = useState(null);
+  // 지원한 디자이너 리스트
+  const [applyDesigner, setApplyDesigner] = useState(null);
 
   // --------------------[ GET ]------------------------
   // 상세 조회
@@ -99,7 +105,32 @@ export function ProjectProvider({ children }) {
     }
   });
 
+  // 지원한 디자이너
+  const fetchApplyDesigner = useCallback(async (projectId) => {
+    try {
+      const data = await applyDesignerList(projectId);
+      setApplyDesigner(data);
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
   // ----------------------------[ POST ]--------------------------
+
+  // 요청 승인
+  const approveDesignerApply = useCallback(async (projectId, applicationId) => {
+    try {
+      const data = await approveApply(projectId, applicationId);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  });
+
   // 프로젝트 생성
   const create = useCallback(async (payload) => {
     if (!payload) return null;
@@ -182,6 +213,10 @@ export function ProjectProvider({ children }) {
     // AI 질문 대답
     createResponse,
     AIResponse,
+    // 지원한 디자이너 리스트
+    fetchApplyDesigner,
+    applyDesigner,
+    approveDesignerApply,
   };
 
   return (

@@ -26,7 +26,6 @@ function LeftSide() {
   useEffect(() => {
     fetchMyInfo();
   }, []);
-  console.log(myInfo);
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
       <div className="bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px]">

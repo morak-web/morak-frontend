@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import matchingIcon from '../../../assets/RequestList/matching-icon.png';
+import { useOutletContext } from 'react-router-dom';
 
 // api
 import { useProject } from '../../../context/ProjectContext';
 
 export default function MatchingPage() {
   const navigate = useNavigate();
+  const { openApplyList } = useOutletContext();
   const { projectList = [], fetchProjectList, error, loading } = useProject();
   useEffect(() => {
     fetchProjectList('MATCHING');
@@ -77,15 +79,25 @@ export default function MatchingPage() {
                 </p>
               </div>
             </div>
-            <div className="flex justify-end itmes-end">
+            <div className="flex gap-[10px] justify-center">
               <button
                 onClick={() => {
                   const id = item?.projectId;
                   navigate(`/client-page/matching-detail/${id}`);
                 }}
-                className="w-[103px] h-[40px] bg-[#DFE1ED] text-[15px] text-[#525466] rounded-[19px] flex justify-center items-center cursor-pointer"
+                className="w-[182px] h-[30px] rounded-[14px] bg-[#DFE1ED] text-[#525466] text-[13px] flex justify-center items-center cursor-pointer"
               >
-                상세 {'>'}
+                의뢰 상세
+              </button>
+              <button
+                onClick={() => {
+                  const id = item?.projectId;
+                  navigate(`/client-page/request-list/apply-designer/${id}`);
+                  openApplyList();
+                }}
+                className="w-[182px] h-[30px] rounded-[14px] text-[13px] bg-[#6072FF] text-white cursor-pointer flex justify-center items-center"
+              >
+                신청 디자이너 보기
               </button>
             </div>
           </div>

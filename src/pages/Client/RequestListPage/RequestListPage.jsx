@@ -1,5 +1,6 @@
-import { Outlet, NavLink } from 'react-router-dom';
-
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import ApplyDesignerListCard from './ApplyDesigner/ApplyDesignerListCard';
 const STATUS = [
   { title: '작성 중', count: 0, status: 'writing' },
   { title: '매칭 중', count: 1, status: 'matching' },
@@ -31,39 +32,79 @@ function TopSide() {
   );
 }
 
-function ContentTopSide() {
+function ContentTopSide({ tab, setTab, closeApplyList }) {
   return (
-    <div className="flex gap-[10px]">
-      {STATUS.map((item) => (
-        <NavLink key={item.title} to={item.status} className="no-underline">
-          {({ isActive }) => (
-            <label className="gap-[6px] flex items-center cursor-pointer">
-              <input
-                type="radio"
-                name="requestState"
-                className="w-[16px] h-[16px] hidden peer"
-                checked={isActive}
-                onChange={() => {}}
-              />
-              <span className="block w-[16px] h-[16px] border border-[#DFE1ED] rounded-[4px] peer-checked:bg-[#DFE1ED]" />
-              <span className="text-[13px] text-[#525466]">{item.title}</span>
-            </label>
-          )}
-        </NavLink>
-      ))}
+    <div className="flex justify-between">
+      <div className="flex gap-[10px]">
+        {tab ? (
+          <>
+            {STATUS.map((item) => (
+              <NavLink
+                key={item.title}
+                to={item.status}
+                className="no-underline"
+              >
+                {({ isActive }) => (
+                  <label className="gap-[6px] flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="requestState"
+                      className="w-[16px] h-[16px] hidden peer"
+                      checked={isActive}
+                      onChange={() => {}}
+                    />
+                    <span className="block w-[16px] h-[16px] border border-[#DFE1ED] rounded-[4px] peer-checked:bg-[#DFE1ED]" />
+                    <span className="text-[13px] text-[#525466]">
+                      {item.title}
+                    </span>
+                  </label>
+                )}
+              </NavLink>
+            ))}{' '}
+          </>
+        ) : (
+          <h1 className="font-bold">신청 디자이너 보기</h1>
+        )}
+      </div>
+      <button
+        onClick={() => (tab ? setTab(false) : closeApplyList())}
+        className={`${!tab && 'w-[160px] h-[31px] border-black text-black border-[1px]  rounded-[13px] text-[14px] flex justify-center items-center mr-[25px] cursor-pointer '}`}
+      >
+        {tab ? '' : '의뢰 목록 보기'}
+      </button>
     </div>
   );
 }
 
 export default function RequestListPage() {
+  const navigate = useNavigate();
+  const [tab, setTab] = useState(true);
+  const [showApplyList, setShowApplyList] = useState(false);
+  const openApplyList = () => {
+    setTab(false);
+    setShowApplyList(true);
+  };
+  const closeApplyList = () => {
+    setShowApplyList(false);
+    setTab(true);
+    navigate('/client-page/request-list/matching');
+  };
   return (
     <div className="w-[95%] h-[710px] flex flex-col justify-between">
       <TopSide />
       <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
         <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
-          <ContentTopSide />
+          <ContentTopSide
+            tab={tab}
+            setTab={setTab}
+            closeApplyList={closeApplyList}
+          />
           <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px] custom-scrollbar">
-            <Outlet />
+            {showApplyList ? (
+              <ApplyDesignerListCard />
+            ) : (
+              <Outlet context={{ openApplyList }} />
+            )}
           </div>
         </div>
       </div>

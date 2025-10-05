@@ -29,6 +29,8 @@ import WritingPage from '../components/RequestList/Writing/WritingPage';
 import MatchingPage from '../components/RequestList/Matching/MatchingPage';
 import ProgressingPage from '../components/RequestList/Progressing/ProgressingPage';
 import CompletePage from '../components/RequestList/Complete/CompletePage';
+import ApplyDesignerListCard from '../pages/Client/RequestListPage/ApplyDesigner/ApplyDesignerListCard.jsx';
+
 // 의뢰 목록 페이지 - 완료
 import FinalFeedbackPage from '../pages/Client/RequestListPage/FinalFeedbackPage/FinalFeedbackPage.jsx';
 
@@ -77,13 +79,17 @@ export default function Router() {
         {/* client  */}
         <Route path="/client-page" element={<ClientPage />}>
           <Route index element={<Navigate to="request-list" replace />} />
-          {/* request-list */}
+          {/* request-list */}{' '}
           <Route path="request-list" element={<RequestListPage />}>
             <Route index element={<Navigate to="writing" replace />} />
             <Route path="writing" element={<WritingPage />} />
             <Route path="matching" element={<MatchingPage />} />
             <Route path="progressing" element={<ProgressingPage />} />
             <Route path="complete" element={<CompletePage />} />
+            <Route
+              path="apply-designer/:id"
+              element={<ApplyDesignerListCard />}
+            />
           </Route>
           {/* matching-detail */}
           <Route
