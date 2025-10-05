@@ -1,5 +1,5 @@
 import MainLayout from '../../../../components/layout/MainLayout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import MessageBubble from './MessageBubble';
 import arrowIcon from '../../../../assets/RequestList/IntermediateFeedback/arrow-icon.png';
@@ -7,6 +7,7 @@ import { useProject } from '../../../../context/ProjectContext';
 
 export default function AIRequestPage() {
   const [responseMessage, setResponseMessage] = useState('');
+  const { id } = useParams();
   const [questionId, setQuestionId] = useState(1);
   const {
     fetchAIQuestionList,
@@ -15,10 +16,12 @@ export default function AIRequestPage() {
     createResponse,
     AIResponse,
   } = useProject();
+
   useEffect(() => {
-    fetchAIQuestionList(currentData?.projectId);
-    console.log(AIQuestionList);
+    fetchAIQuestionList(id);
+    console.log('AIQuestionList', AIQuestionList);
   }, []);
+
   const onQuestionSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -26,7 +29,7 @@ export default function AIRequestPage() {
       answer: responseMessage.trim(),
     };
     try {
-      const created = await createResponse(currentData?.projectId, payload);
+      const created = await createResponse(id, payload);
       console.log(AIResponse);
     } catch (e) {
       console.error(e);
@@ -103,7 +106,7 @@ export default function AIRequestPage() {
             </button>
             <button
               type="submit"
-              onClick={() => navigate('/request/requirement-summary')}
+              onClick={() => navigate(`/request/requirement-summary/${id}`)}
               className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer"
             >
               다음

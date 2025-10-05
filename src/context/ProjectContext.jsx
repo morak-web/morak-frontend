@@ -3,7 +3,10 @@ import { createContext, useContext, useState, useCallback } from 'react';
 import { getProjectDetail } from '../api/client/projectDetailApi';
 import { getProjectList } from '../api/client/projectListApi';
 import { getResultFile } from '../api/client/resultFileApi';
-import { createProject } from '../api/client/createProjectApi';
+import {
+  createProject,
+  submitNewProject,
+} from '../api/client/createProjectApi';
 import { createClientFeedback } from '../api/client/ProjectList/FeedbackRegister';
 import { getAIQuestionList } from '../api/client/AIQuestion/aiQuestionList';
 import { createResponseAIQuestion } from '../api/client/AIQuestion/responseAiQuestion';
@@ -179,6 +182,17 @@ export function ProjectProvider({ children }) {
     }
   });
 
+  // ===============[PATCH]====================
+  const patchNewProject = useCallback(async (projectId) => {
+    try {
+      const data = await submitNewProject(projectId);
+      return data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }, []);
+
   const resetProject = useCallback(() => {
     setProjectDetail(null);
     setError(null);
@@ -217,6 +231,8 @@ export function ProjectProvider({ children }) {
     fetchApplyDesigner,
     applyDesigner,
     approveDesignerApply,
+    // 프로젝트 제출
+    patchNewProject,
   };
 
   return (

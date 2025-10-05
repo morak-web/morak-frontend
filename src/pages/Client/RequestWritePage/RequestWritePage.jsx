@@ -35,7 +35,9 @@ export default function RequestWritePage() {
     };
     try {
       const created = await create(payload);
-      console.log(payload);
+      const { projectId } = created;
+      console.log(projectId);
+      navigate(`/request/AI-question/${projectId}`);
     } catch (e) {
       console.error(err);
       return null;

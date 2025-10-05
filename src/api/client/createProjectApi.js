@@ -10,3 +10,14 @@ export const createProject = async (payload) => {
     return null;
   }
 };
+
+// [PATCH] /api/projects/{projectId}/submit
+export const submitNewProject = async (projectId) => {
+  try {
+    const { data } = await apiClient.patch(`/api/projects/${projectId}/submit`);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};

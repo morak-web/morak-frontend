@@ -66,9 +66,9 @@ export default function Router() {
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
 
-        <Route path="/request/AI-question" element={<AIRequestPage />} />
+        <Route path="/request/AI-question/:id" element={<AIRequestPage />} />
         <Route
-          path="/request/requirement-summary"
+          path="/request/requirement-summary/:id"
           element={<RequirementSummaryPage />}
         />
         <Route

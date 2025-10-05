@@ -125,7 +125,7 @@ export default function HomePage() {
                 <h1
                   className={` ${isHover ? 'text-[#93A8ED]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap`}
                 >
-                  의뢰 시작하기(버튼수정)
+                  의뢰 시작하기
                 </h1>
                 <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px]" />
               </div>
@@ -146,7 +146,7 @@ export default function HomePage() {
                 <h1
                   className={`${hoverDesignerBtn ? 'text-[#7E8EFC]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap  `}
                 >
-                  디자이너 등록하기(버튼수정)
+                  디자이너 등록하기
                 </h1>
                 <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px] " />
               </div>

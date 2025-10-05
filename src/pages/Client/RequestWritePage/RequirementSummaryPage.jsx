@@ -1,10 +1,12 @@
 import MainLayout from '../../../components/layout/MainLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import folderImg from '../../../assets/RequestWrite/folder.png';
 import { useProject } from '../../../context/ProjectContext';
 
 export default function RequirementSummaryPage() {
-  const { responseData } = useProject();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { responseData, patchNewProject } = useProject();
   const startDate = new Date(); // 예: 2025-09-23T23:10:00+09:00
 
   // 숫자만 뽑기
@@ -21,6 +23,16 @@ export default function RequirementSummaryPage() {
     4: '키오스크/POS',
     5: '그래픽/영상',
     6: '기타',
+  };
+
+  const onSubmit = async () => {
+    try {
+      await patchNewProject(id);
+      navigate('/request/write/complete');
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   };
 
   return (
@@ -117,17 +129,17 @@ export default function RequirementSummaryPage() {
           {/* 이전, 다음 버튼 */}
           <div className="flex justify-between items-center">
             <Link
-              to="/request/AI-question"
+              to={`/request/AI-question/${id}`}
               className=" text-[18px] cursor-pointer"
             >
               이전
             </Link>
-            <Link
-              to="/request/write/complete"
+            <button
+              onClick={onSubmit}
               className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer"
             >
               제출
-            </Link>
+            </button>
           </div>
         </div>
       </div>
