@@ -13,9 +13,8 @@ export const getDesignerPortfolio = async (designerId) => {
   }
 };
 
-// \[POST] /api/designers/{designerId}/portfolios
+// \[POST] /api/designers/portfolios
 export const postDesignerPortfolio = async (
-  designerId,
   { title, description, tags, file },
   options = {}
 ) => {
@@ -25,11 +24,9 @@ export const postDesignerPortfolio = async (
     fd.append('description', description);
     fd.append('tags', tags);
     fd.append('file', file);
-    const { data } = await apiClient.post(
-      `/api/designers/${designerId}/portfolios`,
-      fd,
-      { ...options }
-    );
+    const { data } = await apiClient.post(`/api/designers/portfolios`, fd, {
+      ...options,
+    });
     return data;
   } catch (e) {
     console.error(e);
@@ -37,18 +34,30 @@ export const postDesignerPortfolio = async (
   }
 };
 
-// \[PATCH] /api/designers/{designerId}/portfolios/{portfolioId}
+// \[PATCH] /api/designers/portfolios/{portfolioId}
 export const patchDesignerPortfolio = async (
-  designerId,
   portfolioId,
-  payload
+  { title, description, tags, file } = {},
+  options = {}
 ) => {
   try {
+    const fd = new FormData();
+
+    // 변경된 것만 append (빈문자열은 초기화 의도로 append 허용)
+    if (title !== undefined) fd.append('title', title);
+    if (description !== undefined) fd.append('description', description); // '' 허용
+    if (tags !== undefined) fd.append('tags', tags); // '' 허용
+    if (file instanceof File) fd.append('file', file);
+
     const { data } = await apiClient.patch(
-      `/api/designers/${designerId}/portfolios/${portfolioId}`,
-      payload
+      `/api/designers/portfolios/${portfolioId}`,
+      fd,
+      {
+        // headers: { 'Content-Type': 'multipart/form-data' }, // 필요시
+        ...options,
+      }
     );
-    return data;
+    return data ?? true;
   } catch (e) {
     console.error(e);
     return null;

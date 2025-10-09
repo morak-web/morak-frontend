@@ -3,9 +3,6 @@ import plusBtn from '../../../assets/Designer/plus.png';
 import PortfolioCard from '../../../components/Designer/Portfolio/PortfolioCard';
 import { useState, useRef, useEffect } from 'react';
 
-// api
-import { useDesigner } from '../../../context/DesignerContext';
-
 export default function DesignerPortfolioModal({
   portfolioModalOpen,
   onClose,
@@ -30,10 +27,6 @@ export default function DesignerPortfolioModal({
   const removeCard = (removeIndex) => {
     setCards((prev) => prev.filter((_, idx) => idx !== removeIndex));
   };
-
-  // api
-  const { removeDesignerPf } = useDesigner();
-  useEffect(() => {}, []);
 
   return (
     <div
@@ -60,11 +53,7 @@ export default function DesignerPortfolioModal({
           ref={containerRef}
         >
           {cards.map((item, idx) => (
-            <PortfolioCard
-              key={idx}
-              {...item}
-              removeCard={() => removeCard(idx)}
-            />
+            <PortfolioCard key={idx} removeCard={() => removeCard(idx)} />
           ))}
           <button
             type="button"

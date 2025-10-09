@@ -190,9 +190,9 @@ export function DesignerProvider({ children }) {
   }, []);
 
   const createDesignerPf = useCallback(
-    async (designerId, { title, description, tags, file }) => {
+    async ({ title, description, tags, file }) => {
       try {
-        const data = await postDesignerPortfolio(designerId, {
+        const data = await postDesignerPortfolio({
           title,
           description,
           tags,
@@ -209,13 +209,14 @@ export function DesignerProvider({ children }) {
 
   // -----------[PATCH]-------------
   const patchDesignerPf = useCallback(
-    async (designerId, portfolioId, payload) => {
+    async (portfolioId, { title, description, tags, file }) => {
       try {
-        const data = await patchDesignerPortfolio(
-          designerId,
-          portfolioId,
-          payload
-        );
+        const data = await patchDesignerPortfolio(portfolioId, {
+          title,
+          description,
+          tags,
+          file,
+        });
         return data;
       } catch (e) {
         console.error(e);
