@@ -26,9 +26,12 @@ export default function SignUpPage() {
 
   return (
     <MainLayout>
-      <div className="w-full min-h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
-        <div className="w-[471px] h-[635px] bg-white py-[39px] px-[50px] rounded-[10px] shadow-lg">
-          <h1 className="text-[24px] mb-[30px] font-bold">회원가입</h1>
+      <div className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-b from-sky-50 to-white flex justify-center items-center py-12">
+        <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-xl border border-neutral-100">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-neutral-900 mb-2">회원가입</h1>
+            <p className="text-neutral-600">모락과 함께 시작하세요</p>
+          </div>
           <form
             action=""
             onSubmit={(e) => {
@@ -36,7 +39,7 @@ export default function SignUpPage() {
               signUpHandler();
             }}
           >
-            <div className="flex flex-col gap-[10px] mb-[52px]">
+            <div className="flex flex-col gap-4 mb-6">
               <Input
                 type="email"
                 placeholder="이메일"
@@ -64,15 +67,27 @@ export default function SignUpPage() {
             </div>
             <button
               type="submit"
-              className={`w-[100%] h-[56px] rounded-[5px] ${signUpBtnState ? 'bg-[#BED2FF]' : 'bg-[#DFE1ED]'} text-black flex justify-center items-center font-regular mb-[36px] cursor-pointer `}
+              disabled={!signUpBtnState}
+              className={`w-full h-12 rounded-xl font-semibold mb-6 transition-all ${
+                signUpBtnState
+                  ? 'bg-sky-600 hover:bg-sky-700 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] cursor-pointer'
+                  : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+              }`}
             >
               회원가입
             </button>
           </form>
-          <div className="w-[100%] h-[2px] bg-[#DFE1ED] mb-[16px]" />
-          <div className="text-[15px] flex justify-center gap-[5px]">
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-neutral-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-neutral-500">또는</span>
+            </div>
+          </div>
+          <div className="text-sm flex justify-center gap-1 text-neutral-600">
             <p>이미 모락 회원이신가요?</p>
-            <Link to="/login" className="text-[#93AFFF]">
+            <Link to="/login" className="text-sky-600 font-semibold hover:text-sky-700 transition-colors">
               로그인
             </Link>
           </div>

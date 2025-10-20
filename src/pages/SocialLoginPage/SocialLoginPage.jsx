@@ -13,26 +13,33 @@ export default function SocialLoginPage() {
 
   return (
     <MainLayout>
-      <div className="w-full min-h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
-        <div className="w-[471px] h-[244px] bg-white py-[39px] px-[50px] rounded-[10px] shadow-lg flex flex-col items-center justify-between">
-          <img src={Logo} alt="logo" className="w-[135px] h-[27px]" />
+      <div className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-b from-sky-50 to-white flex justify-center items-center py-12">
+        <div className="w-full max-w-sm bg-white p-10 rounded-2xl shadow-xl border border-neutral-100 flex flex-col items-center gap-8">
+          <div className="flex flex-col items-center gap-4">
+            <img src={Logo} alt="logo" className="h-10" />
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-neutral-900 mb-1">간편 로그인</h2>
+              <p className="text-neutral-600 text-sm">SNS 계정으로 빠르게 시작하세요</p>
+            </div>
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
               loginHandler();
             }}
+            className="w-full"
           >
             <button
               type="submit"
               onClick={loginWithKakao}
-              className={`w-[356px] h-[53px] rounded-[9px]  text-black flex justify-center items-center font-regular mb-[36px] cursor-pointer bg-[#FEE500] gap-[10px]`}
+              className="w-full h-12 rounded-xl text-neutral-900 font-semibold flex justify-center items-center cursor-pointer bg-[#FEE500] hover:bg-[#FDD835] gap-3 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
             >
               <img
                 src={kakaoLogo}
                 alt="kakaoLogo"
-                className="w-[17px] h-[17px]"
+                className="w-5 h-5"
               />
-              <h1>카카오 로그인</h1>
+              <span>카카오로 시작하기</span>
             </button>
           </form>
         </div>

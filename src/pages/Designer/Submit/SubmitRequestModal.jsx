@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import closeBtn from '../../../assets/RequestList/close-button.png';
-import folderBtn from '../../../assets/Designer/folder.png';
 import { useDesigner } from '../../../context/DesignerContext';
-import noFileImg from '../../../assets/Designer/no-file.png';
 
 export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
   if (!submitModalOpen) return null;
@@ -33,103 +30,117 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
   return (
     <div
       onClick={onClose}
-      className=" fixed inset-0 z-50 min-w-screen min-h-screen bg-[#0101015e] justify-center items-center flex"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md justify-center items-center flex p-4 animate-fade-in"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col"
+        className="w-full max-w-5xl max-h-[90vh] rounded-3xl bg-white shadow-2xl flex flex-col overflow-hidden animate-scale-in"
       >
-        <div className="flex justify-between">
-          <h1 className="text-[20px] font-bold">결과물 제출하기</h1>
-          <button className="cursor-pointer">
-            <img
-              src={closeBtn}
-              alt="closeBtn"
-              onClick={onClose}
-              className="w-[20px] h-[20px]"
-            />
+        <div className="flex justify-between items-center px-8 py-6 bg-gradient-to-r from-primary-600 to-primary-700">
+          <h1 className="text-2xl font-bold text-white">결과물 제출하기</h1>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-xl hover:bg-white/20 transition-all group"
+          >
+            <svg className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
         <form
           onSubmit={onSubmit}
-          className="w-[100%] h-[100%] flex flex-col pr-[36px]"
+          className="flex-1 flex flex-col px-8 py-6 overflow-y-auto"
         >
-          <div className="bg-[#D9D9D9] w-[100%] h-[1px] mt-[15px]"></div>
-          <div className="w-[100%] h-[100%] flex flex-col ">
-            <div className="w-[100%] h-[50%] flex flex-col pl-[2%] gap-[10px] pt-[10px] mb-[28px]">
-              <div className="w-full h-full mt-[15px]">
-                <div className="w-full h-[300px] flex justify-center items-center">
-                  {file ? (
-                    <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                      {file.type === 'image/png' ? (
-                        <img
-                          src={previewUrl}
-                          alt="미리보기"
-                          className="w-[1047px] h-[290px] object-contain"
-                        />
-                      ) : file.type === 'application/pdf' ? (
-                        // 간단 프리뷰: 임베드(브라우저 PDF 뷰어)
-                        <embed
-                          src={previewUrl + '#toolbar=0&navpanes=0&scrollbar=0'}
-                          type="application/pdf"
-                          className="w-[1047px] h-[290px]"
-                        />
-                      ) : (
-                        <p>지원하지 않는 형식</p>
-                      )}
-                      <div className="text-sm text-gray-500 mt-2">
-                        {file.name}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-[13px] items-center justify-center">
+          <div className="flex-1 flex flex-col gap-6">
+            <div className="flex-1 min-h-[300px]">
+              <div className="w-full h-full rounded-2xl border-2 border-dashed border-neutral-300 hover:border-primary-400 flex justify-center items-center bg-gradient-to-br from-neutral-50 to-white transition-all group">
+                {file ? (
+                  <div className="w-full h-full flex flex-col justify-center items-center p-6">
+                    {file.type === 'image/png' ? (
                       <img
-                        src={noFileImg}
-                        alt="noFileImg"
-                        className="w-[107px] h-[107px]"
+                        src={previewUrl}
+                        alt="미리보기"
+                        className="max-w-full max-h-[280px] object-contain rounded-xl shadow-lg"
                       />
-                      <h1 className="text-center text-[16px] text-[#525466] font-light">
-                        결과 파일을
-                        <br /> 업로드해주세요!
-                      </h1>
+                    ) : file.type === 'application/pdf' ? (
+                      <embed
+                        src={previewUrl + '#toolbar=0&navpanes=0&scrollbar=0'}
+                        type="application/pdf"
+                        className="w-full h-[280px] rounded-xl shadow-lg"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 rounded-2xl bg-error-100 flex items-center justify-center">
+                          <svg className="w-8 h-8 text-error-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                        </div>
+                        <p className="text-neutral-600 font-medium">지원하지 않는 형식</p>
+                      </div>
+                    )}
+                    <div className="text-sm text-neutral-600 mt-4 font-semibold px-4 py-2 bg-neutral-100 rounded-lg">
+                      {file.name}
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-5 items-center justify-center">
+                    <div className="w-20 h-20 rounded-2xl bg-primary-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                    </div>
+                    <h1 className="text-center text-lg font-semibold text-neutral-700">
+                      결과 파일을
+                      <br /> 업로드해주세요
+                    </h1>
+                    <p className="text-sm text-neutral-400">PNG, PDF 파일을 지원합니다</p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="w-[100%] h-[250px]">
-              <div className="w-[100%] h-[100%] bg-[#F7F8FC] rounded-[30px] px-[30px] pt-[30px] pb-[20px] ">
+            <div className="h-60">
+              <div className="w-full h-full bg-white rounded-2xl px-6 pt-6 pb-4 border-2 border-neutral-200 focus-within:border-primary-500 focus-within:ring-4 focus-within:ring-primary-100 transition-all">
                 <textarea
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="outline-none h-[80%] w-[100%] flex items-center resize-none overflow-y-auto custom-scrollbar mb-[10px]"
+                  className="outline-none h-[calc(100%-50px)] w-full resize-none overflow-y-auto custom-scrollbar mb-3 text-base text-neutral-900 placeholder:text-neutral-400 bg-transparent leading-relaxed"
                   placeholder="디자인 설명을 자유롭게 작성해주세요!"
                 />
-                <div className="w-full flex justify-end relative cursor-pointer">
+                <div className="w-full flex justify-end relative">
                   <input
                     type="file"
                     accept=".png,application/pdf"
                     onChange={onFileChange}
-                    className="z-10 absolute w-[22px] h-[22px] text-transparent cursor-pointer"
+                    className="z-10 absolute w-12 h-12 opacity-0 cursor-pointer"
                   />
-                  <button className="absolute cursor-pointer">
-                    <img
-                      src={folderBtn}
-                      alt="folderBtn"
-                      className="w-[22px] h-[22px]"
-                    />
+                  <button
+                    type="button"
+                    className="p-3 rounded-xl bg-primary-50 border-2 border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-all group"
+                  >
+                    <svg className="w-5 h-5 text-primary-600 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-[234px] h-[38px] rounded-[16px] bg-[#DFE1ED] text-[16px] flex items-center justify-center self-end cursor-pointer"
-          >
-            결과물 제출하기
-          </button>
+          <div className="flex justify-end gap-3 pt-6 border-t border-neutral-200 mt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-6 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold transition-all"
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="px-8 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              결과물 제출하기
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -137,94 +137,88 @@ export default function AIRequestPage() {
 
   return (
     <MainLayout>
-      <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center">
-        <div className="w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
-          <h1 className="text-[24px] font-bold flex flex-col mb-[30px]">
-            안녕하세요 AI 모락이에요
-          </h1>
+      <div className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-br from-primary-50 via-white to-neutral-50 py-8 px-4">
+        <div className="w-full max-w-4xl mx-auto bg-white/90 backdrop-blur-xl h-[calc(100vh-160px)] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200/50">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-6 flex items-center gap-4 shadow-lg">
+            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/50">
+              <img src={morakAI} alt="morakAI" className="w-10 h-10 rounded-full" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">AI 모락</h1>
+              <p className="text-primary-100 text-sm">의뢰서 작성을 도와드릴게요</p>
+            </div>
+          </div>
 
           {/* Chat */}
-          <form onSubmit={handleSubmit} className="w-full h-full">
-            <div className="bg-white h-[530px] rounded-[15px] pl-[30px] pr-[10px] pt-[20px] pb-[10px] flex flex-col justify-between">
+          <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-hidden">
               <div
                 ref={scrollRef}
-                className="h+[480px] pr-[18px] pb-[20px] custom-scrollbar overflow-y-auto flex flex-col mb-[10px] gap-[26px]"
+                className="flex-1 overflow-y-auto px-8 py-6 space-y-6 custom-scrollbar bg-gradient-to-b from-neutral-50/50 to-white"
               >
                 {/* 첫 인사 */}
-                <div className="flex gap-[12px]">
-                  <img
-                    src={morakAI}
-                    alt="morakAI"
-                    className="w-[44px] h-[44px] items-start"
-                  />
-                  <div className="inline-block shadow-md bg-[#F7F8FC] px-[14px] py-[11px] rounded-[12px] self-start text-[#525466]">
-                    <h1 className="text-[14px] font-medium">모락</h1>
-                    <p className="text-[16px]">
-                      안녕하세요! <b>AI모락</b>이에요. <br />제 질문에 답을
-                      해주시면 <b>의뢰서 작성</b>을 도와드릴게요!
+                <div className="flex gap-4 items-start animate-fade-in">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <img src={morakAI} alt="모락" className="w-6 h-6" />
+                  </div>
+                  <div className="bg-white border border-neutral-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm max-w-xl">
+                    <p className="text-neutral-800 leading-relaxed">
+                      안녕하세요! <span className="font-bold text-primary-700">AI 모락</span>이에요.
+                      <br />몇 가지 질문에 답해주시면 <span className="font-semibold">의뢰서 작성</span>을 도와드릴게요!
                     </p>
                   </div>
                 </div>
 
                 {/* 이전(답변된) Q/A */}
                 {loading ? (
-                  <div className="text-[#9aa] text-sm">질문을 불러오는 중…</div>
+                  <div className="flex items-center justify-center py-12">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-10 h-10 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+                      <p className="text-neutral-500 text-sm">질문을 불러오는 중...</p>
+                    </div>
+                  </div>
                 ) : (
                   <>
-                    {answeredList.map((n) => (
-                      <div
-                        key={`answered-${n.questionId}`}
-                        className="flex flex-col gap-[26px]"
-                      >
-                        {/* 질문 버블 */}
-                        <div className="flex gap-[12px]">
-                          <img
-                            src={morakAI}
-                            alt="morakAI"
-                            className="w-[44px] h-[44px] items-start"
-                          />
-                          <div className="inline-block shadow-md bg-[#F7F8FC] px-[14px] py-[11px] rounded-[12px] self-start text-[#525466]">
-                            <h1 className="text-[14px] font-medium">모락</h1>
-                            <p className="text-[16px]">{n.question}</p>
+                    {answeredList.map((n, idx) => (
+                      <div key={`answered-${n.questionId}`} className="space-y-4 animate-fade-in" style={{animationDelay: `${idx * 0.1}s`}}>
+                        {/* AI 질문 */}
+                        <div className="flex gap-4 items-start">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                            <img src={morakAI} alt="모락" className="w-6 h-6" />
+                          </div>
+                          <div className="bg-white border border-neutral-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm max-w-xl">
+                            <p className="text-neutral-800 leading-relaxed">{n.question}</p>
                           </div>
                         </div>
-                        {/* 나의 답변 버블 */}
-                        <div className="inline-block shadow-md bg-[#E6F0FF] px-[14px] py-[11px] rounded-[12px] self-end text-[#2b2f36]">
-                          <h1 className="text-[13px] font-medium text-right">
-                            나
-                          </h1>
-                          <p className="text-[16px] whitespace-pre-wrap">
-                            {n.answer}
-                          </p>
+                        {/* 사용자 답변 */}
+                        <div className="flex gap-4 items-start justify-end">
+                          <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl rounded-tr-sm px-5 py-4 shadow-md max-w-xl">
+                            <p className="text-white leading-relaxed whitespace-pre-wrap">{n.answer}</p>
+                          </div>
+                          <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <svg className="w-5 h-5 text-neutral-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                            </svg>
+                          </div>
                         </div>
                       </div>
                     ))}
 
-                    {/* 현재 질문(한 개만 노출) */}
+                    {/* 현재 질문 */}
                     {currentQuestion && (
-                      <div
-                        key={`current-${currentQuestion.questionId}`}
-                        className="flex flex-col gap-[26px]"
-                      >
-                        <div className="flex gap-[12px]">
-                          <img
-                            src={morakAI}
-                            alt="morakAI"
-                            className="w-[44px] h-[44px] items-start"
-                          />
-                          <div className="inline-block shadow-md bg-[#F7F8FC] px-[14px] py-[11px] rounded-[12px] self-start text-[#525466]">
-                            <h1 className="text-[14px] font-medium">모락</h1>
-                            <p className="text-[16px]">
-                              {currentQuestion.question}
-                            </p>
-                          </div>
+                      <div className="flex gap-4 items-start animate-fade-in">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                          <img src={morakAI} alt="모락" className="w-6 h-6" />
+                        </div>
+                        <div className="bg-white border-2 border-primary-300 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg max-w-xl">
+                          <p className="text-neutral-800 leading-relaxed font-medium">{currentQuestion.question}</p>
                         </div>
                       </div>
                     )}
 
-                    {/* 질문 없을 때 */}
                     {!currentQuestion && answeredList.length === 0 && (
-                      <div className="text-[#9aa] text-sm">
+                      <div className="text-center py-12 text-neutral-400">
                         표시할 질문이 없습니다.
                       </div>
                     )}
@@ -233,28 +227,26 @@ export default function AIRequestPage() {
               </div>
 
               {/* 입력창 */}
-              <div className="flex h-[45px] bg-[#EDEFF7] items-center rounded-[35px] px-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={onKeyDown}
-                  disabled={!hasMoreQuestions || submitting}
-                  placeholder={
-                    hasMoreQuestions
-                      ? '여기에 답변을 입력하세요'
-                      : '모든 질문이 완료되었습니다'
-                  }
-                  className="w-[95%] h-[50px] rounded-[35px] outline-none px-[10px] bg-transparent"
-                />
-                <div className="flex gap-[10px]">
+              <div className="px-8 py-5 bg-white border-t border-neutral-200">
+                <div className="flex items-center gap-3 bg-neutral-100 rounded-2xl px-5 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-primary-500 transition-all">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    disabled={!hasMoreQuestions || submitting}
+                    placeholder={hasMoreQuestions ? '답변을 입력하세요...' : '모든 질문이 완료되었습니다'}
+                    className="flex-1 bg-transparent outline-none text-neutral-900 placeholder:text-neutral-400 disabled:text-neutral-400"
+                  />
                   <button
                     type="submit"
                     disabled={!hasMoreQuestions || submitting || !input.trim()}
-                    className="w-[24px] h-[24px] cursor-pointer disabled:opacity-50"
+                    className="p-2 bg-primary-600 hover:bg-primary-700 disabled:bg-neutral-300 rounded-xl transition-all disabled:cursor-not-allowed group"
                     title="답변 보내기"
                   >
-                    <img src={arrowIcon} alt="arrowIcon" />
+                    <svg className="w-5 h-5 text-white transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -262,21 +254,27 @@ export default function AIRequestPage() {
           </form>
 
           {/* 하단 버튼 */}
-          <div className="flex justify-between items-center mt-2">
+          <div className="flex justify-between items-center px-8 py-4 bg-neutral-50 border-t border-neutral-200">
             <button
+              type="button"
               onClick={() => navigate('/request/write')}
-              className="text-[18px] cursor-pointer"
+              className="text-neutral-600 hover:text-neutral-900 font-medium transition-colors flex items-center gap-2"
             >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
               이전
             </button>
             <button
               onClick={goNext}
               disabled={hasMoreQuestions}
-              className={`bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer ${
-                hasMoreQuestions ? 'opacity-60 cursor-not-allowed' : ''
+              className={`px-8 py-3 rounded-xl font-semibold transition-all ${
+                !hasMoreQuestions
+                  ? 'bg-primary-600 hover:bg-primary-700 text-white shadow-lg hover:shadow-xl'
+                  : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
               }`}
             >
-              다음
+              다음 단계
             </button>
           </div>
         </div>

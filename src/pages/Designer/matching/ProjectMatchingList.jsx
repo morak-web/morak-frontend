@@ -76,61 +76,64 @@ export default function ProjectMatchingList() {
   );
   console.log('app', projectList);
   return (
-    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px]">
-      <div className="mb-[11px] flex justify-between pr-[22px]">
-        <h1>{seePage ? '지원 가능 프로젝트' : '내가 신청한 프로젝트'}</h1>
+    <div className="bg-white w-[95%] min-h-[710px] rounded-xl shadow-sm py-8 px-10">
+      <div className="mb-6 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-neutral-900">
+          {seePage ? '지원 가능 프로젝트' : '내가 신청한 프로젝트'}
+        </h1>
         <button
           onClick={() => setSeePage(!seePage)}
-          className={`w-[160px] h-[31px] rounded-[13px] border-[1px] text-[14px] ${seePage ? 'text-[#7484FF]' : 'text-black'} cursor-pointer`}
+          className="px-5 py-2 rounded-lg border border-primary-600 text-sm font-medium transition-colors hover:bg-primary-50"
+          style={{color: seePage ? '#4F46E5' : '#171717'}}
         >
           {seePage ? '신청 프로젝트 목록' : '지원 가능 프로젝트'}
         </button>
       </div>
       {seePage ? (
-        <div className="h-[32px] flex gap-[11px] mb-[27px]">
+        <div className="flex gap-3 mb-8 flex-wrap">
           {TYPE.map((item) => (
-            <div key={item.title} className="flex">
+            <div key={item.title} className="flex items-center">
               <button
                 onClick={() => setCheckedCategory(item.id)}
-                className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${checkedCategory === item.id ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
+                className={`h-10 px-4 rounded-lg font-medium text-sm transition-all ${
+                  checkedCategory === item.id
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
               >
-                <h1
-                  className={` ${checkedCategory === item.id ? 'text-white' : 'text-[#525466]'} text-[13px]`}
-                >
-                  {item.title}
-                </h1>
+                {item.title}
               </button>
               {item.title === 'ALL' && (
-                <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
+                <div className="bg-neutral-200 h-8 w-px ml-4 mr-2" />
               )}
             </div>
           ))}
         </div>
       ) : (
-        <div className="h-[32px] flex gap-[11px] mb-[27px]">
+        <div className="flex gap-3 mb-8">
           {STATUS.map((item) => (
-            <div key={item.title} className="flex">
+            <div key={item.title} className="flex items-center">
               <button
                 onClick={() => {
                   setStatus(item.en);
                 }}
-                className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${status === item.en ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
+                className={`h-10 px-4 rounded-lg font-medium text-sm transition-all ${
+                  status === item.en
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
               >
-                <h1
-                  className={` ${status === item.en ? 'text-white' : 'text-[#525466]'} text-[13px]`}
-                >
-                  {item.title}
-                </h1>
+                {item.title}
               </button>
               {item.title === 'ALL' && (
-                <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
+                <div className="bg-neutral-200 h-8 w-px ml-4 mr-2" />
               )}
             </div>
           ))}
         </div>
       )}
       {seePage ? (
-        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-6 custom-scrollbar pr-4">
           {matchingProjectList?.map((item) => (
             <div key={item.projectId}>
               <MatchingCard {...item} />
@@ -138,7 +141,7 @@ export default function ProjectMatchingList() {
           ))}
         </div>
       ) : (
-        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-6 custom-scrollbar pr-4">
           {projectList?.map((item) => (
             <div key={item.projectId}>
               <ApplyDetailCard {...item} />

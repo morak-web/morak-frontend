@@ -10,21 +10,21 @@ const STATUS = [
 
 function TopSide() {
   return (
-    <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
+    <div className="flex w-full h-20 bg-white rounded-xl justify-center items-center px-8 shadow-sm">
       {STATUS.map((item, idx) => (
-        <div className="flex items-center" key={idx}>
-          <h1 className="text-[11px] sm:text-[18px] md:text-[20px] text-[rgba(82,84,102,1)] mr-[7px] sm:mr-[12px] md:mr-[15px] xl:mr-[25px] 2xl:mr-[45px] ">
-            {item.title}
-          </h1>
-          <h2
-            className={`text-[17px] sm:text-[26px] md:text-[28px] ${item.count > 0 ? 'text-[#687AFE] font-bold ' : 'text-[rgba(195,196,206)] '}`}
-          >
-            {item.count}
-          </h2>
-          {idx < 3 ? (
-            <div className="inline-block w-[1px] h-[42px] bg-[rgba(195,196,206)] mr-[6px] sm:mr-[18px] xl:mr-[25px] 2xl:mr-[40px] ml-[6px] sm:ml-[14px] md:ml-[20px] xl:ml-[25px] 2xl:ml-[40px]" />
-          ) : (
-            ''
+        <div className="flex items-center flex-1 justify-center" key={idx}>
+          <div className="flex items-center gap-4">
+            <h1 className="text-sm sm:text-base md:text-lg text-neutral-600 font-medium">
+              {item.title}
+            </h1>
+            <h2
+              className={`text-2xl sm:text-3xl md:text-4xl font-bold ${item.count > 0 ? 'text-primary-600' : 'text-neutral-300'}`}
+            >
+              {item.count}
+            </h2>
+          </div>
+          {idx < 3 && (
+            <div className="w-px h-10 bg-neutral-200 ml-8" />
           )}
         </div>
       ))}
@@ -34,8 +34,8 @@ function TopSide() {
 
 function ContentTopSide({ tab, setTab, closeApplyList }) {
   return (
-    <div className="flex justify-between">
-      <div className="flex gap-[10px]">
+    <div className="flex justify-between items-center">
+      <div className="flex gap-3">
         {tab ? (
           <>
             {STATUS.map((item) => (
@@ -45,16 +45,16 @@ function ContentTopSide({ tab, setTab, closeApplyList }) {
                 className="no-underline"
               >
                 {({ isActive }) => (
-                  <label className="gap-[6px] flex items-center cursor-pointer">
+                  <label className="gap-2 flex items-center cursor-pointer group">
                     <input
                       type="radio"
                       name="requestState"
-                      className="w-[16px] h-[16px] hidden peer"
+                      className="w-4 h-4 hidden peer"
                       checked={isActive}
                       onChange={() => {}}
                     />
-                    <span className="block w-[16px] h-[16px] border border-[#DFE1ED] rounded-[4px] peer-checked:bg-[#DFE1ED]" />
-                    <span className="text-[13px] text-[#525466]">
+                    <span className="block w-4 h-4 border-2 border-neutral-300 rounded peer-checked:bg-primary-600 peer-checked:border-primary-600 transition-colors" />
+                    <span className="text-sm text-neutral-700 font-medium">
                       {item.title}
                     </span>
                   </label>
@@ -63,15 +63,17 @@ function ContentTopSide({ tab, setTab, closeApplyList }) {
             ))}{' '}
           </>
         ) : (
-          <h1 className="font-bold">신청 디자이너 보기</h1>
+          <h1 className="font-bold text-lg text-neutral-900">신청 디자이너 보기</h1>
         )}
       </div>
-      <button
-        onClick={() => (tab ? setTab(false) : closeApplyList())}
-        className={`${!tab && 'w-[160px] h-[31px] border-black text-black border-[1px]  rounded-[13px] text-[14px] flex justify-center items-center mr-[25px] cursor-pointer '}`}
-      >
-        {tab ? '' : '의뢰 목록 보기'}
-      </button>
+      {!tab && (
+        <button
+          onClick={closeApplyList}
+          className="px-5 py-2 border border-neutral-900 text-neutral-900 rounded-lg text-sm font-medium hover:bg-neutral-50 transition-colors"
+        >
+          의뢰 목록 보기
+        </button>
+      )}
     </div>
   );
 }
@@ -90,16 +92,16 @@ export default function RequestListPage() {
     navigate('/client-page/request-list/matching');
   };
   return (
-    <div className="w-[95%] h-[710px] flex flex-col justify-between">
+    <div className="w-[95%] min-h-[710px] flex flex-col gap-6">
       <TopSide />
-      <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
-        <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
+      <div className="bg-white w-full flex-1 rounded-xl shadow-sm">
+        <div className="p-8 h-full flex flex-col gap-8">
           <ContentTopSide
             tab={tab}
             setTab={setTab}
             closeApplyList={closeApplyList}
           />
-          <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px] custom-scrollbar">
+          <div className="flex flex-col gap-6 overflow-y-auto pr-4 custom-scrollbar">
             {showApplyList ? (
               <ApplyDesignerListCard />
             ) : (
