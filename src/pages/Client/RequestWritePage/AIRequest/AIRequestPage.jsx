@@ -137,16 +137,16 @@ export default function AIRequestPage() {
 
   return (
     <MainLayout>
-      <div className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-br from-primary-50 via-white to-neutral-50 py-8 px-4">
+      <div className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-br via-white to-neutral-50 py-8 px-4" style={{ backgroundImage: 'linear-gradient(to bottom right, #F0F9FF, white, #FAFAFA)' }}>
         <div className="w-full max-w-4xl mx-auto bg-white/90 backdrop-blur-xl h-[calc(100vh-160px)] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200/50">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-6 flex items-center gap-4 shadow-lg">
+          <div className="bg-gradient-to-r px-8 py-6 flex items-center gap-4 shadow-lg" style={{ backgroundImage: 'linear-gradient(to right, #0284C7, #0369A1)' }}>
             <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/50">
               <img src={morakAI} alt="morakAI" className="w-10 h-10 rounded-full" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">AI 모락</h1>
-              <p className="text-primary-100 text-sm">의뢰서 작성을 도와드릴게요</p>
+              <h1 className="text-2xl font-bold text-gray-800">AI 모락</h1>
+              <p className="text-sm" style={{ color: '#E0F2FE' }}>의뢰서 작성을 도와드릴게요</p>
             </div>
           </div>
 
@@ -159,12 +159,12 @@ export default function AIRequestPage() {
               >
                 {/* 첫 인사 */}
                 <div className="flex gap-4 items-start animate-fade-in">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md" style={{ backgroundImage: 'linear-gradient(to bottom right, #0EA5E9, #0369A1)' }}>
                     <img src={morakAI} alt="모락" className="w-6 h-6" />
                   </div>
                   <div className="bg-white border border-neutral-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm max-w-xl">
                     <p className="text-neutral-800 leading-relaxed">
-                      안녕하세요! <span className="font-bold text-primary-700">AI 모락</span>이에요.
+                      안녕하세요! <span className="font-bold" style={{ color: '#0369A1' }}>AI 모락</span>이에요.
                       <br />몇 가지 질문에 답해주시면 <span className="font-semibold">의뢰서 작성</span>을 도와드릴게요!
                     </p>
                   </div>
@@ -174,7 +174,7 @@ export default function AIRequestPage() {
                 {loading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-10 h-10 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+                      <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#BAE6FD', borderTopColor: '#0284C7' }}></div>
                       <p className="text-neutral-500 text-sm">질문을 불러오는 중...</p>
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export default function AIRequestPage() {
                       <div key={`answered-${n.questionId}`} className="space-y-4 animate-fade-in" style={{animationDelay: `${idx * 0.1}s`}}>
                         {/* AI 질문 */}
                         <div className="flex gap-4 items-start">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md" style={{ backgroundImage: 'linear-gradient(to bottom right, #0EA5E9, #0369A1)' }}>
                             <img src={morakAI} alt="모락" className="w-6 h-6" />
                           </div>
                           <div className="bg-white border border-neutral-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm max-w-xl">
@@ -193,8 +193,8 @@ export default function AIRequestPage() {
                         </div>
                         {/* 사용자 답변 */}
                         <div className="flex gap-4 items-start justify-end">
-                          <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl rounded-tr-sm px-5 py-4 shadow-md max-w-xl">
-                            <p className="text-white leading-relaxed whitespace-pre-wrap">{n.answer}</p>
+                          <div className="rounded-2xl rounded-tr-sm px-5 py-4 shadow-md max-w-xl" style={{ backgroundImage: 'linear-gradient(to bottom right, #0284C7, #0369A1)' }}>
+                            <p className="text-white leading-relaxed whitespace-pre-wrap font-[600]">{n.answer}</p>
                           </div>
                           <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0 shadow-sm">
                             <svg className="w-5 h-5 text-neutral-600" fill="currentColor" viewBox="0 0 20 20">
@@ -208,10 +208,10 @@ export default function AIRequestPage() {
                     {/* 현재 질문 */}
                     {currentQuestion && (
                       <div className="flex gap-4 items-start animate-fade-in">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-md" style={{ backgroundImage: 'linear-gradient(to bottom right, #0EA5E9, #0369A1)' }}>
                           <img src={morakAI} alt="모락" className="w-6 h-6" />
                         </div>
-                        <div className="bg-white border-2 border-primary-300 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg max-w-xl">
+                        <div className="bg-white border-2 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg max-w-xl" style={{ borderColor: '#7DD3FC' }}>
                           <p className="text-neutral-800 leading-relaxed font-medium">{currentQuestion.question}</p>
                         </div>
                       </div>
@@ -228,7 +228,16 @@ export default function AIRequestPage() {
 
               {/* 입력창 */}
               <div className="px-8 py-5 bg-white border-t border-neutral-200">
-                <div className="flex items-center gap-3 bg-neutral-100 rounded-2xl px-5 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-primary-500 transition-all">
+                <div className="flex items-center gap-3 bg-neutral-100 rounded-2xl px-5 py-3 transition-all focus-within-container"
+                  onFocus={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px #0EA5E9';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.backgroundColor = '#F5F5F5';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
                   <input
                     type="text"
                     value={input}
@@ -241,7 +250,20 @@ export default function AIRequestPage() {
                   <button
                     type="submit"
                     disabled={!hasMoreQuestions || submitting || !input.trim()}
-                    className="p-2 bg-primary-600 hover:bg-primary-700 disabled:bg-neutral-300 rounded-xl transition-all disabled:cursor-not-allowed group"
+                    className="p-2 rounded-xl transition-all disabled:cursor-not-allowed group"
+                    style={{
+                      backgroundColor: (!hasMoreQuestions || submitting || !input.trim()) ? '#D4D4D8' : '#0284C7'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!(!hasMoreQuestions || submitting || !input.trim())) {
+                        e.currentTarget.style.backgroundColor = '#0369A1';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!(!hasMoreQuestions || submitting || !input.trim())) {
+                        e.currentTarget.style.backgroundColor = '#0284C7';
+                      }
+                    }}
                     title="답변 보내기"
                   >
                     <svg className="w-5 h-5 text-white transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,11 +290,25 @@ export default function AIRequestPage() {
             <button
               onClick={goNext}
               disabled={hasMoreQuestions}
-              className={`px-8 py-3 rounded-xl font-semibold transition-all ${
-                !hasMoreQuestions
-                  ? 'bg-primary-600 hover:bg-primary-700 text-white shadow-lg hover:shadow-xl'
-                  : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
-              }`}
+              className="px-8 py-3 rounded-xl font-semibold transition-all"
+              style={{
+                backgroundColor: !hasMoreQuestions ? '#0284C7' : '#E5E5E5',
+                color: !hasMoreQuestions ? 'white' : '#A3A3A3',
+                cursor: hasMoreQuestions ? 'not-allowed' : 'pointer',
+                boxShadow: !hasMoreQuestions ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (!hasMoreQuestions) {
+                  e.currentTarget.style.backgroundColor = '#0369A1';
+                  e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!hasMoreQuestions) {
+                  e.currentTarget.style.backgroundColor = '#0284C7';
+                  e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                }
+              }}
             >
               다음 단계
             </button>

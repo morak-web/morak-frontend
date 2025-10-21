@@ -51,9 +51,8 @@ export default function ChatPage() {
                     console.log(item.chatRoomId);
                   }}
                   key={item.chatRoomId}
-                  className={`w-full p-4 flex items-center hover:bg-neutral-50 transition-colors ${
-                    chatRoomId === item.chatRoomId ? 'bg-primary-50' : ''
-                  }`}
+                  className="w-full p-4 flex items-center hover:bg-neutral-50 transition-colors"
+                  style={chatRoomId === item.chatRoomId ? { backgroundColor: '#F0F9FF' } : {}}
                 >
                   <img
                     src={item.profileImageUrl}
@@ -120,7 +119,7 @@ export default function ChatPage() {
                           <span className="text-xs text-neutral-400 mb-1">
                             {item.sentAt.slice(11, 16)}
                           </span>
-                          <div className="px-4 py-3 rounded-2xl bg-primary-600 text-white max-w-md">
+                          <div className="px-4 py-3 rounded-2xl max-w-md" style={{ backgroundColor: '#0284C7', color: '#FFFFFF' }}>
                             <p className="text-sm leading-relaxed">
                               {item.content}
                             </p>

@@ -65,7 +65,8 @@ export default function ChatingPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          className="w-[95%] h-[50px] rounded-[35px] outline-none px-[10px]"
+          className="w-[95%] h-[50px] rounded-[35px] outline-none px-[10px] text-neutral-900 placeholder:text-neutral-400 bg-transparent"
+          placeholder="메시지를 입력하세요..."
         />
         <div className="flex gap-[10px]">
           <button className="w-[24px] h-[24px]">

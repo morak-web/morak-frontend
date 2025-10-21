@@ -33,7 +33,8 @@ function LeftSection() {
           <div className="relative group">
             <img
               src={myInfo?.profileImageUrl ? myInfo?.profileImageUrl : userIcon}
-              className="w-28 h-28 rounded-full object-cover ring-4 ring-primary-100 shadow-md"
+              className="w-28 h-28 rounded-full object-cover ring-4 shadow-md"
+              style={{ ringColor: '#E0F2FE', boxShadow: '0 0 0 4px #E0F2FE, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }}
               alt="프로필"
             />
             <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -45,7 +46,9 @@ function LeftSection() {
           </div>
           <NavLink
             to="register"
-            className="mt-4 flex items-center gap-2 text-sm text-neutral-600 hover:text-primary-600 transition-colors group"
+            className="mt-4 flex items-center gap-2 text-sm text-neutral-600 transition-colors group"
+            onMouseEnter={(e) => e.currentTarget.style.color = '#0284C7'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#525252'}
           >
             <span>프로필 수정</span>
             <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +57,7 @@ function LeftSection() {
           </NavLink>
           <div className="mt-4 w-full h-px bg-gradient-to-r from-transparent via-neutral-300 to-transparent" />
           <p className="mt-4 text-center text-neutral-700">
-            <span className="text-xl font-bold text-primary-600 block mb-1">{myInfo?.name}</span>
+            <span className="text-xl font-bold block mb-1" style={{ color: '#0284C7' }}>{myInfo?.name}</span>
             <span className="text-sm">님의 워크스페이스</span>
           </p>
         </div>
@@ -69,9 +72,12 @@ function LeftSection() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all ${
                 isActive
-                  ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-md'
+                  ? 'text-white shadow-md'
                   : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
               }`
+            }
+            style={({ isActive }) =>
+              isActive ? { backgroundImage: 'linear-gradient(to right, #0284C7, #0369A1)' } : {}
             }
           >
             {item.title}
@@ -84,7 +90,7 @@ function LeftSection() {
 export default function DesignerPage() {
   return (
     <MainLayout>
-      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-primary-50 via-white to-neutral-50 py-8 px-4">
+      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br via-white to-neutral-50 py-8 px-4" style={{ backgroundImage: 'linear-gradient(to bottom right, #F0F9FF, white, #FAFAFA)' }}>
         <div className="max-w-7xl mx-auto flex gap-6">
           <LeftSection />
           <div className="flex-1">

@@ -15,6 +15,7 @@ export default function RequestWritePage() {
   const [dueDate, setDueDate] = useState('');
   const [userRequirements, setUserRequirements] = useState('');
   const [designerRequirements, setDesignerRequirements] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const startDate = new Date();
   function toDateString(d) {
     if (!d) return null;
@@ -23,6 +24,8 @@ export default function RequestWritePage() {
   }
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     const categoryId = responseData?.categoryId;
 
     const payload = {
@@ -33,13 +36,16 @@ export default function RequestWritePage() {
       userRequirements: userRequirements.trim(),
       designerRequirements: designerRequirements.trim(),
     };
+
+    setIsSubmitting(true);
     try {
       const created = await create(payload);
       const { projectId } = created;
       console.log(projectId);
       navigate(`/request/AI-question/${projectId}`);
     } catch (e) {
-      console.error(err);
+      console.error(e);
+      setIsSubmitting(false);
       return null;
     }
   };
@@ -188,15 +194,21 @@ export default function RequestWritePage() {
             </button>
             <button
               type="submit"
-              onClick={() => navigate('/request/AI-question')}
-              disabled={warning}
-              className={`px-8 py-4 rounded-xl font-semibold transition-all ${
-                !warning
+              disabled={warning || isSubmitting}
+              className={`px-8 py-4 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+                !warning && !isSubmitting
                   ? 'bg-sky-600 hover:bg-sky-700 text-white shadow-lg hover:shadow-xl hover:scale-[1.02]'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
               }`}
             >
-              다음 단계
+              {isSubmitting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-neutral-300 border-t-neutral-500 rounded-full animate-spin"></div>
+                  <span>의뢰서 생성 중...</span>
+                </>
+              ) : (
+                '다음 단계'
+              )}
             </button>
           </div>
         </div>

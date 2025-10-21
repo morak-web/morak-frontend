@@ -37,7 +37,7 @@ export default function MatchingCard(props) {
         </div>
         <div className="flex justify-between items-center mt-4">
           <div className="flex gap-2">
-            <span className="bg-primary-50 text-primary-700 text-xs font-medium px-3 py-1.5 rounded-lg">
+            <span className="text-xs font-medium px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#F0F9FF', color: '#0369A1' }}>
               {CATEGORY[props.categoryId]}
             </span>
           </div>

@@ -18,7 +18,8 @@ function TopSide() {
               {item.title}
             </h1>
             <h2
-              className={`text-2xl sm:text-3xl md:text-4xl font-bold ${item.count > 0 ? 'text-primary-600' : 'text-neutral-300'}`}
+              className="text-2xl sm:text-3xl md:text-4xl font-bold"
+              style={{ color: item.count > 0 ? '#0284C7' : '#D4D4D8' }}
             >
               {item.count}
             </h2>
@@ -53,7 +54,13 @@ function ContentTopSide({ tab, setTab, closeApplyList }) {
                       checked={isActive}
                       onChange={() => {}}
                     />
-                    <span className="block w-4 h-4 border-2 border-neutral-300 rounded peer-checked:bg-primary-600 peer-checked:border-primary-600 transition-colors" />
+                    <span
+                      className="block w-4 h-4 border-2 rounded transition-colors"
+                      style={{
+                        borderColor: isActive ? '#0284C7' : '#D4D4D8',
+                        backgroundColor: isActive ? '#0284C7' : 'transparent'
+                      }}
+                    />
                     <span className="text-sm text-neutral-700 font-medium">
                       {item.title}
                     </span>

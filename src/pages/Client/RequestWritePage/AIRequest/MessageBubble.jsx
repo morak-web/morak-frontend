@@ -11,8 +11,8 @@ export default function MessageBubble({ message }) {
         </div>
       )}
       {message?.answer !== null && (
-        <div className="inline-block bg-primary-600 px-4 py-3 rounded-2xl self-end max-w-2xl">
-          <h1 className="text-xs font-medium text-primary-100 mb-2">
+        <div className="inline-block px-4 py-3 rounded-2xl self-end max-w-2xl" style={{ backgroundColor: '#0284C7' }}>
+          <h1 className="text-xs font-medium mb-2" style={{ color: '#E0F2FE' }}>
             나 · {message?.createdAt.slice(0, 10).replaceAll('-', '.')}{' '}
             {message?.createdAt.slice(11, 16)}
           </h1>

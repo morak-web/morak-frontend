@@ -83,8 +83,14 @@ export default function ProjectMatchingList() {
         </h1>
         <button
           onClick={() => setSeePage(!seePage)}
-          className="px-5 py-2 rounded-lg border border-primary-600 text-sm font-medium transition-colors hover:bg-primary-50"
-          style={{color: seePage ? '#4F46E5' : '#171717'}}
+          className="px-5 py-2 rounded-lg border text-sm font-medium transition-colors"
+          style={{
+            borderColor: '#0284C7',
+            color: seePage ? '#4F46E5' : '#171717',
+            backgroundColor: seePage ? 'transparent' : '#F0F9FF'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F0F9FF'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = seePage ? 'transparent' : '#F0F9FF'}
         >
           {seePage ? '신청 프로젝트 목록' : '지원 가능 프로젝트'}
         </button>
@@ -97,9 +103,10 @@ export default function ProjectMatchingList() {
                 onClick={() => setCheckedCategory(item.id)}
                 className={`h-10 px-4 rounded-lg font-medium text-sm transition-all ${
                   checkedCategory === item.id
-                    ? 'bg-primary-600 text-white shadow-sm'
+                    ? 'text-white shadow-sm'
                     : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                 }`}
+                style={checkedCategory === item.id ? { backgroundColor: '#0284C7' } : {}}
               >
                 {item.title}
               </button>
@@ -119,9 +126,10 @@ export default function ProjectMatchingList() {
                 }}
                 className={`h-10 px-4 rounded-lg font-medium text-sm transition-all ${
                   status === item.en
-                    ? 'bg-primary-600 text-white shadow-sm'
+                    ? 'text-white shadow-sm'
                     : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                 }`}
+                style={status === item.en ? { backgroundColor: '#0284C7' } : {}}
               >
                 {item.title}
               </button>

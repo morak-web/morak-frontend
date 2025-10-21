@@ -36,7 +36,7 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-5xl max-h-[90vh] rounded-3xl bg-white shadow-2xl flex flex-col overflow-hidden animate-scale-in"
       >
-        <div className="flex justify-between items-center px-8 py-6 bg-gradient-to-r from-primary-600 to-primary-700">
+        <div className="flex justify-between items-center px-8 py-6 bg-gradient-to-r" style={{ backgroundImage: 'linear-gradient(to right, #0284C7, #0369A1)' }}>
           <h1 className="text-2xl font-bold text-white">결과물 제출하기</h1>
           <button
             onClick={onClose}
@@ -53,7 +53,10 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
         >
           <div className="flex-1 flex flex-col gap-6">
             <div className="flex-1 min-h-[300px]">
-              <div className="w-full h-full rounded-2xl border-2 border-dashed border-neutral-300 hover:border-primary-400 flex justify-center items-center bg-gradient-to-br from-neutral-50 to-white transition-all group">
+              <div className="w-full h-full rounded-2xl border-2 border-dashed border-neutral-300 flex justify-center items-center bg-gradient-to-br from-neutral-50 to-white transition-all group"
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#38BDF8'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#D4D4D8'}
+              >
                 {file ? (
                   <div className="w-full h-full flex flex-col justify-center items-center p-6">
                     {file.type === 'image/png' ? (
@@ -84,8 +87,8 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-5 items-center justify-center">
-                    <div className="w-20 h-20 rounded-2xl bg-primary-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{ backgroundColor: '#E0F2FE' }}>
+                      <svg className="w-10 h-10" style={{ color: '#0284C7' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                       </svg>
                     </div>
@@ -99,7 +102,16 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
               </div>
             </div>
             <div className="h-60">
-              <div className="w-full h-full bg-white rounded-2xl px-6 pt-6 pb-4 border-2 border-neutral-200 focus-within:border-primary-500 focus-within:ring-4 focus-within:ring-primary-100 transition-all">
+              <div className="w-full h-full bg-white rounded-2xl px-6 pt-6 pb-4 border-2 border-neutral-200 transition-all"
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#0EA5E9';
+                  e.currentTarget.style.boxShadow = '0 0 0 4px #E0F2FE';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#E5E5E5';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
                 <textarea
                   type="text"
                   value={description}
@@ -116,9 +128,18 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                   />
                   <button
                     type="button"
-                    className="p-3 rounded-xl bg-primary-50 border-2 border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-all group"
+                    className="p-3 rounded-xl border-2 transition-all group"
+                    style={{ backgroundColor: '#F0F9FF', borderColor: '#BAE6FD' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#E0F2FE';
+                      e.currentTarget.style.borderColor = '#7DD3FC';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#F0F9FF';
+                      e.currentTarget.style.borderColor = '#BAE6FD';
+                    }}
                   >
-                    <svg className="w-5 h-5 text-primary-600 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" style={{ color: '#0284C7' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                     </svg>
                   </button>
@@ -136,7 +157,10 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
             </button>
             <button
               type="submit"
-              className="px-8 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="px-8 py-3 rounded-xl text-white font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              style={{ backgroundImage: 'linear-gradient(to right, #0284C7, #0369A1)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundImage = 'linear-gradient(to right, #0369A1, #075985)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundImage = 'linear-gradient(to right, #0284C7, #0369A1)'}
             >
               결과물 제출하기
             </button>
