@@ -33,165 +33,184 @@ export default function MatchingDetailPage() {
   const ms = end - start;
   const daysFloor = Math.floor(ms / 86400000);
   return (
-    <form
-      onSubmit={onSubmit}
-      className="bg-white w-[95%] min-h-[710px] rounded-[11px]"
-    >
+    <div className="w-[95%] min-h-[710px]">
+      {/* Back Button */}
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className=" h-[12px] ml-[13px] mt-[15px] cursor-pointer flex text-[#D8DAE5] text-[12px] gap-[5px]"
+        className="mb-6 flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-colors group"
       >
-        <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
-        프로젝트 매칭 대기
+        <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        <span className="font-medium">프로젝트 목록으로 돌아가기</span>
       </button>
-      {/* header */}
-      <div className="flex justify-between items-start mt-[15px] mx-[36px] mb-[9px]">
-        <div className="flex flex-col flex-1 justify-start ">
-          <h1 className="text-[20px] font-semibold mb-[15px]">
-            {projectDetail?.title}
-          </h1>
-          {/* map으로 수정 */}
-          <div className="text-[#525466] text-[13px] flex gap-[7px]">
-            <div className="bg-[#EAECF5] rounded-[10px] px-[7px] py-[4px]">
-              웹 api
+
+      {/* Main Content */}
+      <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden">
+        {/* Header Section */}
+        <div className="px-10 py-8" style={{ backgroundImage: 'linear-gradient(to right, #0284C7, #0369A1)' }}>
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-white mb-4">{projectDetail?.title}</h1>
+              <div className="flex items-center gap-3 text-white/90 text-sm">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>등록일: {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')}</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-[#EAECF5] rounded-[10px] px-[7px] py-[4px]">
-              앱
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setApply(true);
+                onSubmit(e);
+              }}
+              disabled={apply}
+              className="px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl flex items-center gap-3"
+              style={apply ? { backgroundColor: '#D4D4D4', color: '#737373', cursor: 'not-allowed' } : { backgroundColor: '#FFFFFF', color: '#0284C7' }}
+            >
+              {apply ? (
+                <>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>지원 완료</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  <span>지원하기</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Info Cards */}
+        <div className="px-10 py-8 bg-gradient-to-b from-neutral-50 to-white border-b border-neutral-200">
+          <div className="grid grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl p-6 border-2 border-green-200 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#F0FDF4' }}>
+                  <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-neutral-500 font-medium mb-1">예산</p>
+                  <p className="text-2xl font-bold text-neutral-900">{projectDetail?.budgetEstimate.toLocaleString()}<span className="text-base font-normal ml-1">원</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 border-2 border-blue-200 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#EFF6FF' }}>
+                  <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-neutral-500 font-medium mb-1">예상 기간</p>
+                  <p className="text-2xl font-bold text-neutral-900">{daysFloor}<span className="text-base font-normal ml-1">일</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 border-2 border-red-200 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#FEF2F2' }}>
+                  <svg className="w-7 h-7 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-neutral-500 font-medium mb-1">마감일</p>
+                  <p className="text-lg font-bold text-neutral-900">2025.08.19</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex flex-col text-[#525466] text-[12px] font-light items-end justify-between gap-[10px]">
-          <div className="flex gap-[10px]">
-            <p>등록일자</p>
-            <p>{projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')}</p>
+
+        {/* Content Section */}
+        <div className="px-10 py-8 overflow-y-auto custom-scrollbar max-h-[500px]">
+          {/* 업무 내용 */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F0F9FF' }}>
+                <svg className="w-6 h-6" style={{ color: '#0284C7' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900">업무 내용</h2>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border-2 border-blue-200">
+              <p className="text-base text-neutral-700 leading-relaxed whitespace-pre-wrap">{projectDetail?.userRequirements}</p>
+            </div>
           </div>
+
+          {/* 모집 요건 */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F0FDF4' }}>
+                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900">모집 요건</h2>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-6 border-2 border-green-200">
+              <p className="text-base text-neutral-700 leading-relaxed whitespace-pre-wrap">{projectDetail?.designerRequirements}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-10 py-6 bg-neutral-50 border-t border-neutral-200 flex justify-between items-center">
           <button
-            onClick={() => {
-              setApply(true);
-            }}
-            type="submit"
-            className={`${apply ? 'bg-gray-200' : 'bg-[#668df7] text-white'}  w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] cursor-pointer`}
+            type="button"
+            onClick={() => navigate(-1)}
+            className="text-neutral-600 hover:text-neutral-900 font-semibold transition-colors flex items-center gap-2"
           >
-            지원하기
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            목록으로
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setApply(true);
+              onSubmit(e);
+            }}
+            disabled={apply}
+            className="px-10 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-3"
+            style={apply ? { backgroundColor: '#D4D4D4', color: '#737373', cursor: 'not-allowed' } : { backgroundColor: '#0284C7', color: '#FFFFFF' }}
+          >
+            {apply ? (
+              <>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>지원 완료</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>지원하기</span>
+              </>
+            )}
           </button>
         </div>
       </div>
-      {/* money, time */}
-      <div className="flex flex-col gap-[17px] py-[16px] border-b-[1px] border-t-[1px] border-[#52546652] mb-[14px] mx-[36px]">
-        <div className="flex items-center">
-          <img
-            src={moneyIcon}
-            alt="moneyIcon"
-            className="w-[15px] h-[15px] mr-[15px]"
-          />
-          <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
-            예산
-          </p>
-          <p className="text-[#525466] text-[13px] font-light">
-            {projectDetail?.budgetEstimate.toLocaleString()}
-          </p>
-        </div>
-        <div className="flex items-center">
-          <img
-            src={timeIcon}
-            alt="timeIcon"
-            className="w-[15px] h-[15px] mr-[15px]"
-          />
-          <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
-            에상 기간
-          </p>
-          <p className="text-[#525466] text-[13px] font-light">{daysFloor}일</p>
-        </div>
-        <div className="text-[#525466] text-[13px] font-light flex items-center">
-          <img
-            src={lockIcon}
-            alt="lockIcon"
-            className="w-[15px] h-[15px] mr-[15px]"
-          />
-          <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
-            모집 마감일 - api
-          </p>
-          <p className="text-[#525466] text-[13px] font-light">2025.08.19</p>
-        </div>
-      </div>
-      <div className="overflow-y-auto custom-scrollbar h-[430px] mr-[40px] ">
-        {/* content */}
-        <div className="mx-[36px] pb-[14px] mb-[14px] border-b-[1px] border-[#52546652]">
-          <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
-            업무 내용
-          </h1>
-          <section className="mb-2 flex flex-col gap-[10px]">
-            {/* <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - 주요 기능
-              </h2>
-              <p className="text-[13px] text-[#525466] px-[10px]">
-                [ 사용자의 건강 데이터를 통합 관리하고, 목표 달성을 지원하는
-                퍼스널 헬스케어 플랫폼 ]
-              </p>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>건강 상태 트래킹 (예: 수면, 운동, 심박수, 혈압 등)</li>{' '}
-                <li>건강 목표 설정 및 진행률 확인</li>
-                <li>맞춤형 건강 피드백 및 알림 제공</li>
-                <li>식단 및 물 섭취 기록 기능</li>
-                <li>
-                  타겟 사용자: 20~50대 남녀, 건강을 꾸준히 관리하고자 하는
-                  일반인 및 헬스케어 관심층
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - 톤앤매너
-              </h2>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>
-                  밝고 신뢰감 있는 색감 사용 (예: 화이트 배경 중심에 블루/민트
-                  계열 포인트 컬러)
-                </li>
-                <li>너무 병원스럽지 않되, 전문성과 안정감이 느껴지는 스타일</li>
-                <li>전체적으로 클린하고 여백이 잘 살아있는 UI 요청드립니다</li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - UX 원칙
-              </h2>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>
-                  사용자가 처음 접해도 쉽게 이해하고 사용할 수 있도록 직관적인
-                  구조로 설계해주세요
-                </li>
-                <li>
-                  정보의 계층 구조가 명확하고, 손가락 조작(터치/스크롤)이
-                  자연스러운 흐름으로 구성되어야 합니다
-                </li>
-                <li>
-                  자주 사용하는 기능은 하단 탭바 또는 메인화면 상단에 고정하여
-                  접근성을 높여주세요
-                </li>
-                <li>
-                  피드백이나 알림은 부드러운 애니메이션 또는 아이콘 강조로
-                  거부감 없이 전달되게 구성 바랍니다
-                </li>
-              </ul>
-            </div> */}
-            <p className="text-[#525466] text-[13px] font-light">
-              {projectDetail?.userRequirements}
-            </p>
-          </section>
-        </div>
-        {/* condition */}
-        <div className="mx-[36px]">
-          <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
-            모집 요건
-          </h1>
-          <ul className="text-[#525466] text-[13px]  pl-7 space-y-1 ">
-            <li>{projectDetail?.designerRequirements}</li>
-          </ul>
-        </div>
-      </div>
-    </form>
+    </div>
   );
 }
