@@ -71,19 +71,16 @@ export default function ChooseCategoryPage() {
               <button
                 type="button"
                 key={item.title}
-                className={`${item.title === isClicked ? 'shadow-[0_0_7px_5px_#BDCFFF]' : 'shadow-[3px_0px_3px_rgba(0,0,0,0.1),0_4px_3px_rgba(0,0,0,0.1)]'} bg-[#F7F8FC] rounded-[20px]  px-[21px] py-[12px] cursor-pointer hover:shadow-[0_0_7px_5px_#BDCFFF] `}
+                className={`${item.title === isClicked ? 'shadow-[0_0_7px_5px_#BDCFFF]' : 'shadow-[3px_0px_3px_rgba(0,0,0,0.1),0_4px_3px_rgba(0,0,0,0.1)]'} bg-[#F7F8FC] rounded-t-[20px] cursor-pointer hover:shadow-[0_0_7px_5px_#BDCFFF] flex flex-col justify-between items-start `}
                 onClick={() => {
                   setIsClicked(item.title);
                   setCategoryId(item.id);
                 }}
               >
-                <h2 className=" text-[10px] md:text-[16px] lg:text-[13px] xl:text-[15px] 2xl:text-[16px]">
+                <h2 className="text-[16px] pl-[19px] mt-[12px]">
                   {item.title}
                 </h2>
-                <div className="w-[100%] h-[1px] bg-[#BFC2D3] mt-[8px] mb-[10px] sm:hidden lg:flex" />
-                <div className="bg-white w-[100%] h-[77%] rounded-[20px] flex justify-center items-center sm:hidden lg:flex">
-                  <img src={item.icon} className="w-[70%]" />
-                </div>
+                <img src={item.icon} className="w-[100%] h-[80%]" />
               </button>
             ))}
           </div>
