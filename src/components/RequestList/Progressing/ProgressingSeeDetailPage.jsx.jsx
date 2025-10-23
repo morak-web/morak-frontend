@@ -21,7 +21,15 @@ export default function ProgressingSeeDetailPage() {
   const end = new Date(projectDetail?.dueDate);
   const diffMs = end - start;
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
+  const CATEGORY = [
+    '',
+    '웹사이트',
+    '앱',
+    '쇼핑몰/스마트스토어',
+    '키오스크/POS',
+    '그래픽/영상',
+    '기타',
+  ];
   return (
     <div className="w-[95%] h-[710px] bg-white rounded-[19px] py-[2%] px-[3%]">
       <button
@@ -55,40 +63,43 @@ export default function ProgressingSeeDetailPage() {
               포트폴리오 보기
             </button>
           </div>
-          <div className="w-[35%] md:w-[45%] flex flex-col justify-between">
-            <div className="flex justify-between border-b-[1px] border-[#D9D9D9] text-end text-[#525466] pb-[5px] mb-[5px] px-[10px]">
-              <div className="flex gap-[10px] justify-end">
-                <p className="font-light text-[10px]">
+          <div className="w-[45%] flex flex-col items-center justify-between">
+            <div className="flex items-center justify-between text-[#525466] ] px-[10px] pb-[10px] ">
+              <div className="flex flex-col items-center">
+                <p className="font-bold text-[20px]">
+                  D-{' '}
+                  <span className="font-bold text-[20px]">
+                    {diffDays.toFixed(0)}
+                  </span>
+                </p>
+                <p className="text-[12px]">
                   {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')} ~{' '}
                   {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}
                 </p>
-                <p className="font-normal text-[10px]">
-                  예상 기간{' '}
-                  <span className="font-normal">{diffDays.toFixed(0)}</span>일
-                </p>
+                {/* <p className="font-semibold text-[10px] ">
+                  ₩ {projectDetail?.budgetEstimate.toLocaleString()}
+                </p> */}
               </div>
-              <p className="font-semibold text-[10px] ">
-                ₩ {projectDetail?.budgetEstimate.toLocaleString()}
-              </p>
             </div>
-            <div className="flex flex-col md:flex md:flex-row md:px-[5%] xl:px-[15%] justify-between gap-[10px]">
-              <div className="flex flex-col ">
-                <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  프로젝트 명
-                </h3>
-                <p className="text-[#525466] text-[10px] sm:text-[13px] font-light">
-                  {projectDetail?.title}
-                </p>
-              </div>
-              <div className="flex flex-col">
-                <h3 className="text-[#525466] text-[9px] md:text-[13px] font-semibold whitespace-nowrap">
-                  프로젝트 카테고리
-                </h3>
-                <div className="flex lg:flex-col xl:flex-row xl:gap-[10px] gap-[10px] lg:gap-[0px]">
-                  <p className="text-[#525466] text-[10px] sm:text-[13px] font-light whitespace-nowrap ">
-                    {/* UI/UX 앱디자인{' '} */}
+            <div className="w-[100%] h-[1px] border-b-[1px] mb-[10px] border-[#D9D9D9]" />
+            <div className="flex justify-between gap-[10px]  text-end ">
+              <div className="flex justify-between gap-[40px]">
+                <div className="flex flex-col items-center gap-[2px]">
+                  <p className="text-[#525466] font-semibold text-[13px]">
+                    프로젝트 명
                   </p>
-                  {/* ))} */}
+                  <p className="text-[#525466] text-[12px]">
+                    {projectDetail?.title}
+                  </p>
+                </div>
+                <div className="flex flex-col items-center gap-[2px]">
+                  <p className="text-[#525466] font-semibold text-[13px]">
+                    {' '}
+                    카테고리
+                  </p>
+                  <p className="text-[#525466] text-[12px]">
+                    {CATEGORY[projectDetail?.categoryId]}
+                  </p>
                 </div>
               </div>
             </div>

@@ -15,7 +15,7 @@ export default function WritingPage() {
       {writingData.map((item) => (
         <div
           key={item.projectId}
-          className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+          className="w-[100%] min-h-[230px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
         >
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">

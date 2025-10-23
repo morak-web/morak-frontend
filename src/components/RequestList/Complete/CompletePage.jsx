@@ -16,7 +16,15 @@ const MATCHING_AND_COMPLETE_BTN = [
   '중간 결과 / 피드백',
   '최종 결과',
 ];
-
+const CATEGORY = [
+  '',
+  '웹사이트',
+  '앱',
+  '쇼핑몰/스마트스토어',
+  '키오스크/POS',
+  '그래픽/영상',
+  '기타',
+];
 export default function CompletePage() {
   const navigate = useNavigate();
   const [AIFeedbackModalOpen, setAIFeedbackModalOpen] = useState(false);
@@ -34,45 +42,30 @@ export default function CompletePage() {
   return (
     <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {completeData.map((item) => (
-        <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
+        <div className="w-[100%]  min-h-[230px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
           {/* left content */}
-          <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
-            <div className="flex gap-[20px]">
-              <img
-                src={designerImg}
-                alt="designerImg"
-                className="w-[53px] h-[53px] mb-[11px]"
-              />
-              <div className="flex flex-col gap-[5px]">
-                <h1 className="text-[12px] font-light">
-                  <span className="text-[15px] font-semibold">
-                    {item.designer.name}
-                  </span>
-                  님과의 프로젝트
-                </h1>
-                {/* map 사용하기 */}
-                {/* <div className="flex gap-[10px]">
-                  <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                    인터렉션
-                  </div>
-                  <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                    3D
-                  </div>
-                </div> */}
-              </div>
-            </div>
-            <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
-              <p className="text-[12px] text-[#525466] text-center">
-                {item.designer?.designerIntro}
-              </p>
-              <button className="text-[#525466] font-bold text-[10px] flex gap-[2px] cursor-pointer">
-                자세히 보기
+          <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center justify-between  border-r-[1px] border-[#D9D9D9]">
+            <div>
+              <div className="flex gap-[20px]">
                 <img
-                  src={arrowDownImg}
-                  alt="arrowDownImg"
-                  className="w-[15px] h-[15px]"
+                  src={designerImg}
+                  alt="designerImg"
+                  className="w-[53px] h-[53px] mb-[11px]"
                 />
-              </button>
+                <div className="flex flex-col gap-[5px] mt-[10px]">
+                  <h1 className="text-[12px] font-light">
+                    <span className="text-[15px] font-semibold">
+                      {item.designer.name}
+                    </span>{' '}
+                    님과의 프로젝트
+                  </h1>
+                </div>
+              </div>
+              <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center">
+                <p className="text-[12px] text-[#525466] text-center">
+                  {item.designer?.designerIntro.slice(0, 80)}
+                </p>
+              </div>
             </div>
             <button
               className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
@@ -93,7 +86,7 @@ export default function CompletePage() {
                     프로젝트 제목
                   </h1>
                   <div className="flex items-end gap-[4px]">
-                    <p className="text-[#525466] text-[13px]">{item.title}</p>
+                    <p className="text-[#525466] text-[12px]">{item.title}</p>
                     <p className="text-[#525466] text-[10px]">
                       {item.createdAt.slice(0, 10).replaceAll('-', '.')}
                     </p>
@@ -101,10 +94,10 @@ export default function CompletePage() {
                 </div>
                 <div className="flex flex-col gap-[7px] items-end">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
-                    프로젝트 카테고리
+                    카테고리
                   </h1>
-                  <p className="text-[#525466] text-[13px]">
-                    {/* SNS 콘텐츠 모션그래픽 */}
+                  <p className="text-[#525466] text-[12px]">
+                    {CATEGORY[item.categoryId]}
                   </p>
                 </div>
               </div>
@@ -113,11 +106,8 @@ export default function CompletePage() {
                   <h1 className="text-[#525466] text-[14px] font-semibold">
                     요구사항 요약
                   </h1>
-                  <h1 className="text-[#525466] text-[14px] font-semibold">
-                    D - day
-                  </h1>
                 </div>
-                <p className="text-[#525466] text-[13px]">{item.aiSummary}</p>
+                <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
               </div>
             </div>
             {/* button */}

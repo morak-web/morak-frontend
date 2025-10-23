@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import designerImg from '../../../assets/RequestList/designer1.png';
-import arrowDownImg from '../../../assets/RequestList/arrow-down.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 
 // button 3
@@ -16,6 +15,15 @@ const MATCHING_AND_COMPLETE_BTN = [
   'AI 피드백',
   '중간 결과 / 피드백',
   '최종 결과',
+];
+const CATEGORY = [
+  '',
+  '웹사이트',
+  '앱',
+  '쇼핑몰/스마트스토어',
+  '키오스크/POS',
+  '그래픽/영상',
+  '기타',
 ];
 
 export default function ProgressingPage() {
@@ -37,46 +45,31 @@ export default function ProgressingPage() {
       {workingData.map((item) => (
         <div
           key={item.designer.name}
-          className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+          className="w-[100%] py-[16px] min-h-[230px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
         >
           {/* left content */}
-          <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
-            <div className="flex gap-[20px]">
-              <img
-                src={designerImg}
-                alt="designerImg"
-                className="w-[53px] h-[53px] mb-[11px]"
-              />
-              <div className="flex flex-col gap-[5px]">
-                <h1 className="text-[12px] font-light">
-                  <span className="text-[15px] font-semibold">
-                    {item.designer.name}
-                  </span>{' '}
-                  님과의 프로젝트
-                </h1>{' '}
-                {/* map 사용하기 */}
-                {/* <div className="flex gap-[10px]">
-                  <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                    웹디자인
-                  </div>
-                  <div className=" px-[12px] h-[14px] text-[9px] text-[#525466] bg-white rounded-[3px] ">
-                    브랜딩
-                  </div>
-                </div> */}
-              </div>
-            </div>
-            <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
-              <p className="text-[12px] text-[#525466] text-center">
-                {item.designer?.designerIntro}
-              </p>
-              <button className="text-[#525466] font-bold text-[10px] flex gap-[2px] cursor-pointer">
-                자세히 보기
+          <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center justify-between  border-r-[1px] border-[#D9D9D9]">
+            <div>
+              <div className="flex gap-[20px]">
                 <img
-                  src={arrowDownImg}
-                  alt="arrowDownImg"
-                  className="w-[15px] h-[15px]"
+                  src={designerImg}
+                  alt="designerImg"
+                  className="w-[53px] h-[53px] mb-[11px]"
                 />
-              </button>
+                <div className="flex flex-col gap-[5px] mt-[10px]">
+                  <h1 className="text-[12px] font-light">
+                    <span className="text-[15px] font-semibold">
+                      {item.designer.name}
+                    </span>{' '}
+                    님과의 프로젝트
+                  </h1>
+                </div>
+              </div>
+              <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
+                <p className="text-[12px] text-[#525466] text-center">
+                  {item.designer?.designerIntro}
+                </p>
+              </div>
             </div>
             <button
               className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
@@ -97,9 +90,7 @@ export default function ProgressingPage() {
                     프로젝트 제목
                   </h1>
                   <div className="flex items-end gap-[6px]">
-                    <p className="text-[#525466] text-[12px] font-light">
-                      {item.title}
-                    </p>
+                    <p className="text-[#525466] text-[12px]">{item.title}</p>
                     <p className="text-[#525466] text-[10px]">
                       {item.createdAt.slice(0, 10).replaceAll('-', '.')}
                     </p>
@@ -107,10 +98,10 @@ export default function ProgressingPage() {
                 </div>
                 <div className="flex flex-col gap-[7px] items-end">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
-                    프로젝트 카테고리
+                    카테고리
                   </h1>
-                  <p className="text-[#525466] text-[13px]">
-                    {/* 로고 디자인 브랜딩 */}
+                  <p className="text-[#525466] text-[12px]">
+                    {CATEGORY[item.categoryId]}
                   </p>
                 </div>
               </div>
@@ -123,7 +114,7 @@ export default function ProgressingPage() {
                     D - 75
                   </h1>
                 </div>
-                <p className="text-[#525466] text-[13px]">{item.aiSummary}</p>
+                <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
               </div>
             </div>
             {/* button */}

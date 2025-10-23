@@ -6,6 +6,16 @@ import { useOutletContext } from 'react-router-dom';
 // api
 import { useProject } from '../../../context/ProjectContext';
 
+const CATEGORY = [
+  '',
+  '웹사이트',
+  '앱',
+  '쇼핑몰/스마트스토어',
+  '키오스크/POS',
+  '그래픽/영상',
+  '기타',
+];
+
 export default function MatchingPage() {
   const navigate = useNavigate();
   const { openApplyList } = useOutletContext();
@@ -23,16 +33,19 @@ export default function MatchingPage() {
   return (
     <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {matchingData.map((item) => (
-        <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
+        <div
+          className="w-[100%] min-h-[230px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+          key={item.title}
+        >
           {/* left content */}
-          <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
+          <div className="w-[38%] px-[6%] flex flex-col items-center justify-center  border-r-[1px] border-[#D9D9D9]">
             <img
               src={matchingIcon}
               alt="matchingIcon"
               className="w-[76px] h-[76px] mb-[14px]"
             />
             <div className="text-[#525466] text-[12px] mb-[19px] flex flex-col items-center text-center">
-              <p>
+              <p className="text-[12px] text-[#525466] text-center">
                 아직 매칭이 되지 않은 의뢰입니다. 모락 AI로 함께 프로젝트를 진행
                 할 디자이너를 만나보세요!
               </p>
@@ -47,9 +60,7 @@ export default function MatchingPage() {
                     프로젝트 제목
                   </h1>
                   <div className="flex items-end gap-[6px]">
-                    <p className="text-[#525466] text-[12px] font-light">
-                      {item.title}
-                    </p>
+                    <p className="text-[#525466] text-[12px]">{item.title}</p>
                     <p className="text-[#525466] text-[10px]">
                       {item.createdAt.slice(0, 10).replaceAll('-', '.')}
                     </p>
@@ -57,11 +68,11 @@ export default function MatchingPage() {
                 </div>
                 <div className="flex flex-col gap-[7px] items-end">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
-                    프로젝트 카테고리
+                    카테고리
                   </h1>
                   {/* 이 부분은 map 사용해서 구현하기 */}
-                  <p className="text-[#525466] text-[12px] font-ligth">
-                    {/* 로고 디자인 브랜딩 */}
+                  <p className="text-[#525466] text-[12px]">
+                    {CATEGORY[item.categoryId]}
                   </p>
                 </div>
               </div>
@@ -74,9 +85,7 @@ export default function MatchingPage() {
                     예상 기간 일
                   </h1> */}
                 </div>
-                <p className="text-[#525466] text-[12px] font-light">
-                  {item.aiSummary}
-                </p>
+                <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
               </div>
             </div>
             <div className="flex gap-[10px] justify-center">

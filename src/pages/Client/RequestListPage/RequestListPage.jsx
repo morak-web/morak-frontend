@@ -5,7 +5,7 @@ import { useProject } from '../../../context/ProjectContext';
 
 function TopSide({ STATUS }) {
   return (
-    <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
+    <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] shadow-md">
       {STATUS.map((item, idx) => (
         <div className="flex items-center" key={idx}>
           <h1 className="text-[11px] sm:text-[18px] md:text-[20px] text-[rgba(82,84,102,1)] mr-[7px] sm:mr-[12px] md:mr-[15px] xl:mr-[25px] 2xl:mr-[45px] ">
@@ -63,9 +63,9 @@ function ContentTopSide({ tab, setTab, closeApplyList, STATUS }) {
       </div>
       <button
         onClick={() => (tab ? setTab(false) : closeApplyList())}
-        className={`${!tab && 'w-[160px] h-[31px] border-black text-black border-[1px]  rounded-[13px] text-[14px] flex justify-center items-center mr-[25px] cursor-pointer '}`}
+        className={`${!tab && 'w-[160px] h-[31px] text-black text-[14px] flex justify-center items-center cursor-pointer'}`}
       >
-        {tab ? '' : '의뢰 목록 보기'}
+        {tab ? '' : '의뢰 목록 보기 > '}
       </button>
     </div>
   );
@@ -147,8 +147,8 @@ export default function RequestListPage() {
   return (
     <div className="w-[95%] h-[710px] flex flex-col justify-between">
       <TopSide STATUS={STATUS} />
-      <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
-        <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
+      <div className="bg-white w-[100%] h-[84%] rounded-[11px] shadow-md">
+        <div className="pl-[28px] pr-[13px] py-[20px] h-[100%] flex flex-col gap-[33px]">
           <ContentTopSide
             tab={tab}
             setTab={setTab}

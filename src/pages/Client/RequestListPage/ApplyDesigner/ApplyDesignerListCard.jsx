@@ -21,7 +21,7 @@ export default function ApplyDesignerListCard() {
   };
 
   return (
-    <div className="w-full h-[470px] flex flex-col gap-[15px] bg-red-200">
+    <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {applyDesigner?.map((item) => {
         const designerId = item.designerId;
         const decision = decisionById[designerId] ?? '';
@@ -38,7 +38,7 @@ export default function ApplyDesignerListCard() {
         return (
           <div
             key={item.name}
-            className="w-[100%] h-[229px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+            className="w-[100%] min-h-[229px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
           >
             {/* left content */}
             <div className="w-[50%] py-[20px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
