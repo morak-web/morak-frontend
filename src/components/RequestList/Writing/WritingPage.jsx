@@ -12,8 +12,11 @@ export default function WritingPage() {
   const writingData = projectList.filter((item) => item['status'] === 'DRAFT');
   return (
     <div className="w-full h-[470px] flex flex-col gap-[15px]">
-      {writingData.map((_) => (
-        <div className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex">
+      {writingData.map((item) => (
+        <div
+          key={item.projectId}
+          className="w-[100%] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+        >
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center  border-r-[1px] border-[#D9D9D9]">
             <img

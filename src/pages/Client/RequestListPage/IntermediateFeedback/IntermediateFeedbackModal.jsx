@@ -1,6 +1,36 @@
 import closeBtn from '../../../../assets/RequestList/close-button.png';
 import { useProject } from '../../../../context/ProjectContext';
 import { useEffect } from 'react';
+import noFileImg from '../../../../assets/Designer/no-file.png';
+
+function FilePreview({ url }) {
+  if (!url)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <img src={noFileImg} alt="no file" className="max-w-[50%] opacity-70" />
+      </div>
+    );
+
+  const ext = url.split('?')[0].split('.').pop()?.toLowerCase();
+  const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].includes(
+    ext
+  );
+  const isPdf = ext === 'pdf';
+
+  if (isImage) {
+    return (
+      <img src={url} alt="미리보기" className="w-full h-full object-contain" />
+    );
+  }
+  if (isPdf) {
+    return <iframe title="PDF 미리보기" src={url} className="w-full h-full" />;
+  }
+  return (
+    <div className="w-full h-full flex items-center justify-center text-[#525466]">
+      미리보기를 지원하지 않는 파일 형식입니다.
+    </div>
+  );
+}
 
 export default function IntermediateFeedbackModal({
   interFeedbackModalOpen,
@@ -41,7 +71,7 @@ export default function IntermediateFeedbackModal({
                 디자이너 설명
               </h1>
               <p className="text-[#525466] text-[13px] sm:text-[16px] font-light">
-                {midResultFile?.createdAt.slice(0, 10).replaceAll('-', '.')}
+                {midResultFile?.createdAt?.slice(0, 10).replaceAll('-', '.')}
               </p>
             </div>
             <div className="flex flex-col justify-end md:flex-row text-[#525466] text-[13px] sm:text-[16px] font-normal ml-[10px] md:ml-[0px] md:gap-[11px] whitespace-nowrap hover:text-black hover:font-bold">
@@ -53,9 +83,8 @@ export default function IntermediateFeedbackModal({
           <div className="bg-[#D9D9D9] w-[100%] h-[1px] my-[10px]"></div>
           <div className="w-[100%] h-[100%] flex flex-col justify-between">
             <div className="w-[100%] h-[50%] flex flex-col px-[1%]">
-              <div className="w-[100%] h-[100%] flex justify-between ">
-                <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
-                <div className="w-[45%] h-[95%] bg-[#DFE1ED] rounded-[10px]"></div>
+              <div className="w-[100%] h-[100%] flex justify-between mb-[10px]">
+                <FilePreview url={midResultFile?.fileUrl} />
               </div>
               <div className="flex flex-col gap-[11px]">
                 <p className="text-[#525466] text-[16px]">

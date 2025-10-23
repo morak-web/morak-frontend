@@ -4,6 +4,36 @@ import { useEffect, useState } from 'react';
 import DownLoadModal from './Payment/DownloadModal';
 import { useAIFeedback } from '../../../../context/AIFeedbackContext';
 import { useProject } from '../../../../context/ProjectContext';
+import noFileImg from '../../../../assets/Designer/no-file.png';
+
+function FilePreview({ url }) {
+  if (!url)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <img src={noFileImg} alt="no file" className="max-w-[50%] opacity-70" />
+      </div>
+    );
+
+  const ext = url.split('?')[0].split('.').pop()?.toLowerCase();
+  const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].includes(
+    ext
+  );
+  const isPdf = ext === 'pdf';
+
+  if (isImage) {
+    return (
+      <img src={url} alt="미리보기" className="w-full h-full object-contain" />
+    );
+  }
+  if (isPdf) {
+    return <iframe title="PDF 미리보기" src={url} className="w-full h-full" />;
+  }
+  return (
+    <div className="w-full h-full flex items-center justify-center text-[#525466]">
+      미리보기를 지원하지 않는 파일 형식입니다.
+    </div>
+  );
+}
 
 export default function FinalFeedbackPage() {
   const navigate = useNavigate();
@@ -24,7 +54,7 @@ export default function FinalFeedbackPage() {
     <MainLayout>
       <div className="bg-[#F2F3FA] py-[30px] w-full min-h-[calc(100vh-64px)] flex flex-col justify-center items-center">
         <div className="flex flex-col w-[95%] h-[780px] bg-white rounded-[11px] p-[26px] gap-[2%]">
-          <div className="bg-red-200 h-[49%]">사진</div>
+          <FilePreview url={finalResultFile?.fileUrl} />
           <div className="flex justify-between h-[49%]">
             <div className="flex flex-col w-[48%] h-full justify-between gap-[10px]">
               <div className="flex flex-col gap-[10px] h-[100%]">

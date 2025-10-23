@@ -31,3 +31,9 @@
 html {
   overflow-y: scroll; /* 항상 스크롤바 공간 확보 */
 }
+
+.topbar {
+  -webkit-backdrop-filter: blur(80px);
+
+  backdrop-filter: blur(80px);
+}

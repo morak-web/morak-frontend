@@ -1,4 +1,4 @@
-import morakLogo from '../../assets/Header/morak-logo-nav.png';
+import morakLogo from '../../assets/morak-logo.png';
 import messageIcon from '../../assets/Header/message.png';
 import notificationIcon from '../../assets/Header/notification-status.png';
 
@@ -10,7 +10,7 @@ export default function Header() {
   const [isLogin, setIsLogin] = useState(hasToken);
   return (
     <nav className="h-[64px] pl-[32px] pr-[24px] py-[20px] flex justify-between items-center ">
-      <Link to="/">
+      <Link to="/" className="w-[85px] h-[17px]">
         <img src={morakLogo} alt="morakLogo" />
       </Link>
       {isLogin ? (

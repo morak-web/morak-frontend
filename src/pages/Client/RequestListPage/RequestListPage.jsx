@@ -1,14 +1,9 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import ApplyDesignerListCard from './ApplyDesigner/ApplyDesignerListCard';
-const STATUS = [
-  { title: '작성 중', count: 0, status: 'writing' },
-  { title: '매칭 중', count: 1, status: 'matching' },
-  { title: '진행 중', count: 0, status: 'progressing' },
-  { title: '완료', count: 0, status: 'complete' },
-];
+import { useProject } from '../../../context/ProjectContext';
 
-function TopSide() {
+function TopSide({ STATUS }) {
   return (
     <div className="flex w-[100%] h-[80px] bg-white rounded-[11px] justify-center py-[13px] 2xl:px-[1px] px-[5px] ">
       {STATUS.map((item, idx) => (
@@ -32,7 +27,7 @@ function TopSide() {
   );
 }
 
-function ContentTopSide({ tab, setTab, closeApplyList }) {
+function ContentTopSide({ tab, setTab, closeApplyList, STATUS }) {
   return (
     <div className="flex justify-between">
       <div className="flex gap-[10px]">
@@ -80,6 +75,65 @@ export default function RequestListPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState(true);
   const [showApplyList, setShowApplyList] = useState(false);
+  const location = useLocation();
+  const [counts, setCounts] = useState({
+    DRAFT: 0,
+    MATCHING: 0,
+    WORKING: 0,
+    COMPLETE: 0,
+  });
+  const { fetchProjectList } = useProject();
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const STATUSES = ['DRAFT', 'MATCHING', 'WORKING', 'COMPLETE'];
+
+        // fetchProjectList가 배열을 "리턴"한다고 가정
+        const results = await Promise.all(
+          STATUSES.map((s) => fetchProjectList(s))
+        );
+
+        const next = {};
+        results.forEach((res, i) => {
+          // res가 배열이든 객체든 안전하게 길이 뽑기
+          const len = Array.isArray(res)
+            ? res.length
+            : Array.isArray(res?.data)
+              ? res.data.length
+              : typeof res?.totalCount === 'number'
+                ? res.totalCount
+                : 0;
+          next[STATUSES[i]] = len;
+        });
+
+        if (!cancelled) setCounts((prev) => ({ ...prev, ...next }));
+      } catch (e) {
+        console.error('load counts error:', e);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true; // ✅ 언마운트 시 setState 방지
+    };
+  }, [fetchProjectList]);
+
+  useEffect(() => {
+    // 예: /client-page/request-list 또는 /client-page/request-list/
+    const isParent = /\/client-page\/request-list\/?$/.test(location.pathname);
+    if (isParent && tab && !showApplyList) {
+      navigate('writing', { replace: true });
+    }
+  }, [location.pathname, showApplyList, navigate]);
+
+  const STATUS = [
+    { title: '작성 중', count: counts.DRAFT, status: 'writing' },
+    { title: '매칭 중', count: counts.MATCHING, status: 'matching' },
+    { title: '진행 중', count: counts.WORKING, status: 'progressing' },
+    { title: '완료', count: counts.COMPLETE, status: 'complete' },
+  ];
+
   const openApplyList = () => {
     setTab(false);
     setShowApplyList(true);
@@ -89,15 +143,17 @@ export default function RequestListPage() {
     setTab(true);
     navigate('/client-page/request-list/matching');
   };
+
   return (
     <div className="w-[95%] h-[710px] flex flex-col justify-between">
-      <TopSide />
+      <TopSide STATUS={STATUS} />
       <div className="bg-white w-[100%] h-[84%] rounded-[11px]">
         <div className="pl-[28px] pr-[13px] py-[25px] h-[100%] flex flex-col gap-[33px]">
           <ContentTopSide
             tab={tab}
             setTab={setTab}
             closeApplyList={closeApplyList}
+            STATUS={STATUS}
           />
           <div className="flex flex-col gap-[24px] overflow-y-auto pr-[27px] custom-scrollbar">
             {showApplyList ? (

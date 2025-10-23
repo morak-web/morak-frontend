@@ -1,20 +1,94 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import MainLayout from '../../components/layout/MainLayout';
 import mainImage from '../../assets/Home/background-picture.png';
-import startRequestBtn from '../../assets/Home/button1-icon.png';
-import registerDesignerBtn from '../../assets/Home/button2-icon.png';
 import goIcon from '../../assets/Home/go-icon.png';
 
 import machingIcon from '../../assets/Home/matching-icon.png';
 import writeIcon from '../../assets/Home/write-icon.png';
 import task from '../../assets/Home/task.png';
-import hoverButton from '../../assets/Home/hover-button.png';
+
+function GlassButton({ label, to, hoverText = '#93A8ED' }) {
+  const [hover, setHover] = useState(false);
+
+  // 기본/호버 상태에 따라 투명도·보더·그로우 강도 조절
+  const panelBg = hover
+    ? 'linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.20) 100%)'
+    : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.10) 100%)';
+
+  const borderColor = hover
+    ? 'rgba(255, 255, 255, 0)'
+    : 'rgba(255,255,255,0.45)';
+  const outerShadow = hover
+    ? '0 10px 28px rgba(208, 172, 214, 0.45), inset 0 2px 0 rgba(255,255,255,0.25)'
+    : '0 8px 20px rgba(100, 100, 100, 0.25), inset 0 2px 0 rgba(255,255,255,0.18)';
+
+  const rimGradient = hover
+    ? 'linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.36) 40%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.10) 100%)'
+    : 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 40%, rgba(255,255,255,0.16) 60%, rgba(255,255,255,0.08) 100%)';
+
+  const neonBg = hover
+    ? 'radial-gradient(120% 120% at 100% 100%, rgb(255, 255, 255) 0%, rgba(255,119,230,0) 55%), radial-gradient(120% 120% at 0% 0%, rgb(255, 255, 255) 0%, rgba(255,119,230,0) 60%)'
+    : 'radial-gradient(120% 120% at 100% 100%, rgba(48, 51, 192, 0.28) 0%, rgba(255,119,230,0) 55%), radial-gradient(120% 120% at 0% 0%, rgba(51, 116, 177, 0.644) 0%, rgba(255,119,230,0) 60%)';
+
+  return (
+    <Link
+      to={to}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      className="relative block"
+    >
+      {/* 패널 */}
+      <div
+        className="topbar relative w-[350px] h-[99px] rounded-[50px] overflow-hidden cursor-pointer
+                   transition-all duration-200 ease-out"
+        style={{
+          background: panelBg,
+          boxShadow: outerShadow,
+          transform: hover ? 'translateY(-1px) scale(1.01)' : 'none',
+        }}
+      >
+        {/* 유리 하이라이트 (림) */}
+        <span
+          className="pointer-events-none absolute inset-[1.5px] rounded-[24px] transition-opacity duration-200"
+          style={{
+            background: rimGradient,
+            mixBlendMode: 'screen',
+            opacity: hover ? 0.95 : 0.85,
+          }}
+        />
+        {/* 핑크 네온 가장자리 */}
+        <span
+          className="pointer-events-none absolute -inset-[2px] rounded-[28px] transition-all duration-200"
+          style={{
+            background: neonBg,
+            opacity: hover ? 1 : 0.8,
+            filter: hover ? 'blur(14px)' : 'blur(10px)',
+          }}
+        />
+
+        {/* 내용 */}
+        <div className="relative z-10 h-full w-full flex items-center justify-center pl-9 gap-6">
+          <h1
+            className="transition-colors duration-200 text-[24px] whitespace-nowrap text-center"
+            style={{ color: hover ? hoverText : '#FFFFFF' }}
+          >
+            {label}
+          </h1>
+          <img
+            src={goIcon}
+            alt="go"
+            className="w-[22px] h-[22px] md:w-[24px] md:h-[24px] transition-transform duration-200"
+            style={{ transform: hover ? 'translateX(2px)' : 'none' }}
+          />
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function HomePage() {
-  const [isHover, setIsHover] = useState(false);
-  const [hoverDesignerBtn, setHoverDesignerBtn] = useState(false);
   const TRAIT = [
     {
       icon: machingIcon,
@@ -36,24 +110,26 @@ export default function HomePage() {
     },
   ];
 
-  // useEffect(() => {
-  //   const prev = document.body.style.overflow;
-  //   document.body.style.overflow = 'hidden';
-  //   return () => {
-  //     document.body.style.overflow = prev;
-  //   };
-  // }, []);
-
   return (
     <MainLayout>
-      <div className="w-[100%] h-[100%] overflow-hidden ">
+      {/* .topbar: 유리알 효과 */}
+      <style>{`
+        .topbar {
+          -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+        }
+      `}</style>
+
+      <div className="w-[100%] h-[100%] overflow-hidden">
         <img
           src={mainImage}
-          alt="mainImage"
+          alt="main"
           className="w-[100%] h-[650px] relative"
         />
 
-        <div className="flex flex-col md:flex-row md:justify-between w-[100%] h-[40%] absolute top-50 px-[10%]  ">
+        {/* 히어로 */}
+        <div className="flex flex-col md:flex-row md:justify-between w-[100%] h-[40%] absolute top-50 px-[10%]">
+          {/* 왼쪽 카피 */}
           <div className="w-[50%] h-[100%]">
             <h1 className="text-[30px] sm:text-[35px] lg:text-[48px] xl:text-[55px] whitespace-nowrap">
               딱 맞는 디자이너
@@ -68,91 +144,30 @@ export default function HomePage() {
               내게 딱 맞는 디자이너를 만날 수 있어요.
             </p>
             <h3 className="text-[27px] sm:text-[32px] mt-[4%] sm:mt-[2%] whitespace-nowrap">
-              <span className="text-[#2C44FF] text-[27px] sm:text-[32px] font-bold ">
+              <span className="text-[#2C44FF] text-[27px] sm:text-[32px] font-bold">
                 AI 모락
               </span>
               이 도와드릴게요
             </h3>
           </div>
-          <div className="md:hidden flex w-[410px] h-[100px] items-end mx-[-5%] absolute top-65 ">
-            <Link
-              className="relative"
-              to={'request/category'}
-              onMouseEnter={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
-            >
-              <img
-                src={isHover ? hoverButton : startRequestBtn}
-                alt="startRequestBtn"
-                className="w-[300px] h-[100px] relative"
-              />
-              <h1
-                className={`${isHover ? 'text-[#93A8ED]' : 'text-white'}  text-[20px]  whitespace-nowrap absolute left-10 top-8`}
-              >
-                의뢰 시작하기
-              </h1>
-            </Link>
-            <Link
-              className="relative ml-[-20px]"
-              onMouseEnter={() => setHoverDesignerBtn(true)}
-              onMouseLeave={() => setHoverDesignerBtn(false)}
-            >
-              <img
-                src={hoverDesignerBtn ? hoverButton : registerDesignerBtn}
-                alt="registerDesignerBtn"
-                className="w-[360px] h-[100px] relative"
-              />
-              <h1
-                className={` ${hoverDesignerBtn ? 'text-[#7E8EFC]' : 'text-white'} text-[20px] whitespace-nowrap absolute left-11 top-8`}
-              >
-                디자이너 등록하기
-              </h1>
-            </Link>
-          </div>
-          <div className="hidden md:flex flex-col md:w-[500px] h-[100%] items-end md:mr-[-12%] lg:mr-[-12%] xl:mr-[-7%] 2xl:mr-0 md:mt-[10px] lg:mt-0">
-            <Link
-              className="relative block"
-              to={'request/category'}
-              onMouseEnter={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
-            >
-              <img
-                src={isHover ? hoverButton : startRequestBtn}
-                alt="startRequestBtn"
-                className="md:w-[320px] lg:w-[400px] xl:w-[500px] md:h-[150px] lg:h-[200px] relative"
-              />
-              <div className="flex justify-end items-center absolute md:left-22 lg:left-31 md:gap-10 lg:gap-17 md:top-14 lg:top-19.5 xl:gap-25 xl:left-44 ">
-                <h1
-                  className={` ${isHover ? 'text-[#93A8ED]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap`}
-                >
-                  의뢰 시작하기
-                </h1>
-                <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px]" />
-              </div>
-            </Link>
 
-            <Link
-              className="relative block mt-[-45px] lg:mt-[-63px]"
-              to={'/designer-page'}
-              onMouseEnter={() => setHoverDesignerBtn(true)}
-              onMouseLeave={() => setHoverDesignerBtn(false)}
-            >
-              <img
-                src={hoverDesignerBtn ? hoverButton : registerDesignerBtn}
-                alt="registerDesignerBtn"
-                className="md:w-[320px] lg:w-[400px] xl:w-[500px] md:h-[150px] lg:h-[200px]  relative "
+          <div className="hidden md:flex flex-col md:w-[500px] h-[100%] items-end gap-[100px] mt-10">
+            <GlassButton
+              label="의뢰 시작하기"
+              to="request/category"
+              hoverText="#666dce"
+            />
+            <div className="mt-[-45px] lg:mt-[-63px]">
+              <GlassButton
+                label="디자이너 등록하기"
+                to="/designer-page"
+                hoverText="#666dce"
               />
-              <div className="flex justify-end items-center  absolute  md:left-18 lg:left-26 md:gap-4 lg:gap-10 md:top-14 lg:top-19.5 xl:gap-19 xl:left-39">
-                <h1
-                  className={`${hoverDesignerBtn ? 'text-[#7E8EFC]' : 'text-white'} md:text-[22px] lg:text-[24px] whitespace-nowrap  `}
-                >
-                  디자이너 등록하기
-                </h1>
-                <img src={goIcon} alt="goIcon" className="w-[24px] h-[24px] " />
-              </div>
-            </Link>
+            </div>
           </div>
         </div>
+
+        {/* 하단 섹션 */}
         <div className="flex flex-col px-[10%] gap-[50px] mb-[80px]">
           <div>
             <p className="text-[20px]">우리의 고민</p>
