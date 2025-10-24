@@ -24,14 +24,16 @@ export default function AuthKakaoCallback() {
         const code = url.searchParams.get('code');
         if (!code) throw new Error('no_code_in_callback');
 
-        // 2) 토큰 교환
+        // 2) 토큰 교환 (프론트에서 직접 교환하는 현재 구조 유지)
+        const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI; // 반드시 콘솔값과 동일
         const params = new URLSearchParams({
           grant_type: 'authorization_code',
-          client_id: import.meta.env.VITE_KAKAO_REST_API_KEY, // REST API 키
-          redirect_uri: import.meta.env.VITE_KAKAO_REDIRECT_URI, // 콘솔/authorize와 동일
+          client_id: import.meta.env.VITE_KAKAO_REST_API_KEY,
+          redirect_uri: redirectUri,
           code,
         });
-        // params.append('client_secret', import.meta.env.VITE_KAKAO_CLIENT_SECRET) // 사용 중이면 주석 해제
+        // client_secret 쓰면 아래 주석 해제
+        // params.append('client_secret', import.meta.env.VITE_KAKAO_CLIENT_SECRET);
 
         const tokenResp = await fetch('https://kauth.kakao.com/oauth/token', {
           method: 'POST',
@@ -46,43 +48,41 @@ export default function AuthKakaoCallback() {
           throw new Error(reason);
         }
 
-        // 3) 사용자 정보 조회 (이메일 + 닉네임/이미지)
+        // 3) 사용자 정보 조회
         window.Kakao.Auth.setAccessToken(tokenJson.access_token);
         const me = await window.Kakao.API.request({ url: '/v2/user/me' });
 
         const email = me?.kakao_account?.email || null;
         if (!email) {
-          // 이메일 동의 재요청
+          // 이메일 추가 동의 필요 시: 동일 redirectUri(= vercel.app 콜백)로 재요청
           window.Kakao.Auth.authorize({
-            redirectUri: import.meta.env.VITE_KAKAO_REDIRECT_URI,
+            redirectUri,
             scope: 'account_email',
             prompt: 'consent',
           });
           return;
         }
 
-        // 카카오 프로필(닉네임/이미지)
+        // 카카오 프로필
         const kaProfile = me?.kakao_account?.profile || {};
         const kakaoNickname =
           kaProfile.nickname || me?.properties?.nickname || null;
         const kakaoImageUrl =
           kaProfile.profile_image_url || me?.properties?.profile_image || '';
 
-        // 4) 우리 서버 로그인(회원가입 통합)
-        const res = await apiClient.post('/api/login', { email });
+        // 4) 우리 서버 로그인
+        const res = await apiClient.post('/login', { email }); // baseURL에 /api 포함 여부는 apiClient에서 처리
         const { token, isNewMember, user: loginUser } = res.data || {};
         if (!token) throw new Error('no_server_token');
 
-        // 4-1) 토큰 저장 + 전역 알림 + axios 헤더 세팅
+        // 4-1) 토큰 저장 + axios 헤더
         localStorage.setItem('accessToken', token);
-        // 같은 탭에서 라우터가 즉시 토큰 변화를 인식하도록 커스텀 이벤트 발행
         window.dispatchEvent(new Event('auth'));
-        // 이후 API 요청에 자동 적용되도록
         try {
           apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
         } catch {}
 
-        // 5) 필요하면 닉네임/이미지 채워 넣기
+        // 5) 필요시 프로필 보정
         const needFill =
           isNewMember ||
           !loginUser?.nickname ||
@@ -100,18 +100,18 @@ export default function AuthKakaoCallback() {
           }
           if (Object.keys(payload).length > 0) {
             try {
-              await apiClient.patch('/api/me', payload);
+              await apiClient.patch('/me', payload);
             } catch (e) {
-              console.warn('PATCH /api/me failed (continue anyway)', e);
+              console.warn('PATCH /me failed (continue anyway)', e);
             }
           }
         }
 
-        // 6) URL에서 code 제거(새로고침 시 재교환 방지)
+        // 6) URL 정리
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, '', cleanUrl);
 
-        // 7) 홈으로 이동 (흐름이 /에서 시작해도 즉시 Home으로 전환됨)
+        // 7) 홈으로
         navigate('/', { replace: true });
       } catch (err) {
         console.error('[AuthKakaoCallback] failed:', err);

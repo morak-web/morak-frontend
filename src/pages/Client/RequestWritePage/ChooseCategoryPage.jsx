@@ -19,8 +19,12 @@ const CATEGORY = [
   { title: '기타', icon: moreIcon, id: 6 },
 ];
 
+// userRequirements가 비면 400이 나므로 최소 초안 문구를 보냄
+const DRAFT_REQUIREMENTS_FALLBACK =
+  '(draft) 사용자 요구사항은 다음 단계에서 상세하게 작성합니다.';
+
 export default function ChooseCategoryPage() {
-  const [isClicked, setIsClicked] = useState(''); // 선택된 타이틀 (하이라이트용)
+  const [isClicked, setIsClicked] = useState(''); // 선택된 타이틀(하이라이트)
   const [categoryId, setCategoryId] = useState(null); // 숫자 ID
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -47,8 +51,18 @@ export default function ChooseCategoryPage() {
     try {
       setSubmitting(true);
 
-      // 서버에 프로젝트 초안 생성 (반드시 숫자 전달)
-      const created = await create({ categoryId: Number(categoryId) });
+      // 로컬에 임시 요구사항이 있으면 우선 사용 (비어있으면 무시)
+      const draftReq = (
+        localStorage.getItem('draftUserRequirements') || ''
+      ).trim();
+      const userRequirements =
+        draftReq.length > 0 ? draftReq : DRAFT_REQUIREMENTS_FALLBACK;
+
+      // 서버에 프로젝트 초안 생성 (필수값 채워서 전송)
+      const created = await create({
+        categoryId: Number(categoryId),
+        userRequirements, // ✅ 필수 필드 채워서 보냄
+      });
 
       // 생성 결과에서 projectId를 가져와 로컬에 저장
       const projectId = created?.id ?? created?.projectId ?? null;
@@ -60,11 +74,17 @@ export default function ChooseCategoryPage() {
       localStorage.setItem('draftCategoryId', String(categoryId));
       localStorage.setItem('draftSavedAt', new Date().toISOString());
 
-      // 다음 단계로 이동 (라우팅 구조에 따라 필요 시 /request/write/:id 로 바꾸세요)
+      // 다음 단계로 이동 (라우팅에 따라 필요시 '/request/write/:id'로 변경)
       navigate('/request/write');
+      // navigate(`/request/write/${projectId}`);
     } catch (err) {
       console.error(err);
-      alert('프로젝트 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      const msg =
+        err?.response?.data?.details ||
+        err?.response?.data?.error ||
+        err?.message ||
+        '프로젝트 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      alert(msg);
     } finally {
       setSubmitting(false);
     }

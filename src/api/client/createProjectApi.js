@@ -7,7 +7,7 @@ export const createProject = async (payload) => {
     return data;
   } catch (e) {
     console.error(e);
-    return null;
+    return e;
   }
 };
 
@@ -18,6 +18,6 @@ export const submitNewProject = async (projectId) => {
     return data;
   } catch (e) {
     console.error(e);
-    return null;
+    return e;
   }
 };
