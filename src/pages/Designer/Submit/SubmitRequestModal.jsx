@@ -23,10 +23,10 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
     try {
       const created = await createResultFile(id, { phase, description, file });
       alert('결과물 제출 완료!');
-      console.log(created);
+      console.log('결과물:', created);
     } catch (e) {
       console.error(e);
-      return null;
+      return e;
     }
   };
   const onFileChange = (e) => setFile(e.target.files?.[0] ?? null);
@@ -113,7 +113,7 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                     onChange={onFileChange}
                     className="z-10 absolute w-[22px] h-[22px] text-transparent cursor-pointer"
                   />
-                  <button className="absolute cursor-pointer">
+                  <button type="button" className="absolute cursor-pointer">
                     <img
                       src={folderBtn}
                       alt="folderBtn"
@@ -126,7 +126,7 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
           </div>
           <button
             type="submit"
-            className="w-[234px] h-[38px] rounded-[16px] bg-[#DFE1ED] text-[16px] flex items-center justify-center self-end cursor-pointer"
+            className="w-[234px] h-[38px] rounded-[16px] bg-[#BDCFFF] text-[16px] flex items-center justify-center self-end cursor-pointer"
           >
             결과물 제출하기
           </button>

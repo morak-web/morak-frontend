@@ -169,8 +169,9 @@ export function DesignerProvider({ children }) {
         });
         return data;
       } catch (e) {
+        setError(e);
         console.error(e);
-        return null;
+        throw e;
       } finally {
         setLoading(false);
       }

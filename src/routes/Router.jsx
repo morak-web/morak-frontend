@@ -83,7 +83,7 @@ export default function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<AuthSwitch />} />
+        <Route path="/" element={<HomePage />} />
 
         {/* /login으로 오면 한 곳으로 통일하여 /로 보냄 (선택 사항) */}
         <Route path="/login" element={<Navigate to="/" replace />} />

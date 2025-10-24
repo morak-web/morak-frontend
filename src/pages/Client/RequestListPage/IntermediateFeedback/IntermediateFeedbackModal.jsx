@@ -6,8 +6,15 @@ import noFileImg from '../../../../assets/Designer/no-file.png';
 function FilePreview({ url }) {
   if (!url)
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <img src={noFileImg} alt="no file" className="max-w-[50%] opacity-70" />
+      <div className="w-full h-full flex items-center justify-center flex-col gap-[10px]">
+        <img
+          src={noFileImg}
+          alt="no file"
+          className="max-w-[200px] opacity-70"
+        />
+        <p className="text-[18px] text-[#525466]">
+          아직 파일이 업로드되지 않았습니다!
+        </p>
       </div>
     );
 
@@ -51,10 +58,12 @@ export default function IntermediateFeedbackModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col gap-[4%]"
+        className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col"
       >
         <div className="flex justify-between ">
-          <h1 className="text-[20px] font-bold">중간 결과 / 피드백</h1>
+          <h1 className="text-[20px] mt-[10px] font-bold">
+            중간 결과 / 피드백
+          </h1>
           <button className="cursor-pointer">
             <img
               src={closeBtn}
@@ -67,9 +76,6 @@ export default function IntermediateFeedbackModal({
         <div className="w-[100%] h-[100%] flex flex-col pr-[36px]">
           <div className="flex justify-between">
             <div className="flex items-end gap-[11px] mx-[1%]">
-              <h1 className="text-[#525466] text-[15px] sm:text-[20px] font-medium ">
-                디자이너 설명
-              </h1>
               <p className="text-[#525466] text-[13px] sm:text-[16px] font-light">
                 {midResultFile?.createdAt?.slice(0, 10).replaceAll('-', '.')}
               </p>

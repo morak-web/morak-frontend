@@ -2,6 +2,7 @@ import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import { RequestDetailMocks } from '../../../mocks/RequestDetailMocks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import useIcon from '../../../assets/user-icon.png';
 
 // api
 import { useProject } from '../../../context/ProjectContext';
@@ -42,9 +43,9 @@ export default function ProgressingSeeDetailPage() {
       <div className=" px-[4%] py-[1%]">
         <div className="flex justify-around gap-[10px]">
           <img
-            src={projectDetail?.designer?.profileImageUrl}
+            src={projectDetail?.designer?.profileImageUrl ? useIcon : useIcon}
             alt="desingerImg"
-            className="w-[12%] h-[12%] rounded-[50%]"
+            className="w-[12%] mt-[6px] h-[12%] rounded-[50%]"
           />
           <div className="flex flex-col items-center justify-ceenter pt-[1%] gap-[10px]">
             <h1 className="text-[10px] sm:text-[20px] whitespace-nowrap">
