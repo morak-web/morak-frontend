@@ -3,6 +3,7 @@ import { useChat } from '../../context/ChatContext';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import morakAI from '../../assets/morak2.png';
 import sendIcon from '../../assets/send-icon.png';
+import userIcon from '../../assets/user-icon.png';
 
 export default function ChatPage() {
   const [chatRoomId, setChatRoomId] = useState('');
@@ -180,8 +181,8 @@ export default function ChatPage() {
                   className="w-[290px] h-[70px] flex items-center cursor-pointer"
                 >
                   <img
-                    src={item.profileImageUrl}
-                    className="w-[54px] h-[54px] rounded-[50%] bg-red-200 mr-[17px]"
+                    src={item.profileImageUrl ? userIcon : userIcon}
+                    className="w-[54px] h-[54px] rounded-[50%] mr-[17px]"
                   />
                   <div className="flex flex-col mr-[5px] w-[220px]">
                     <div className="flex justify-between">
@@ -227,7 +228,7 @@ export default function ChatPage() {
               {/* 상단 헤더 */}
               <div className="h-[107px] px-[12px] py-[20px] border-b-[1px] border-[#5254664d] flex gap-[27px]">
                 <img
-                  src={showChat?.profileImageUrl}
+                  src={showChat?.profileImageUrl ? userIcon : userIcon}
                   alt="profileImageUrl"
                   className="w-[71px] h-[71px] rounded-[50%] bg-blue-200"
                 />
@@ -269,7 +270,7 @@ export default function ChatPage() {
                         // 상대방 메시지 (왼쪽)
                         <div className="flex items-end justify-start ">
                           <img
-                            src={item.profileImageUrl}
+                            src={item.profileImageUrl ? userIcon : userIcon}
                             alt="profileImageUrl"
                             className="w-[42px] h-[42px] bg-blue-200 rounded-[50%]"
                           />
