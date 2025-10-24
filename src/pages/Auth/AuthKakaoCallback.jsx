@@ -31,8 +31,7 @@ export default function AuthKakaoCallback() {
           redirect_uri: import.meta.env.VITE_KAKAO_REDIRECT_URI, // 콘솔/authorize와 동일
           code,
         });
-        // Client Secret 사용 중이면 주석 해제
-        // params.append('client_secret', import.meta.env.VITE_KAKAO_CLIENT_SECRET);
+        // params.append('client_secret', import.meta.env.VITE_KAKAO_CLIENT_SECRET) // 사용 중이면 주석 해제
 
         const tokenResp = await fetch('https://kauth.kakao.com/oauth/token', {
           method: 'POST',
@@ -62,7 +61,7 @@ export default function AuthKakaoCallback() {
           return;
         }
 
-        // 카카오 프로필(닉네임/이미지) 추출
+        // 카카오 프로필(닉네임/이미지)
         const kaProfile = me?.kakao_account?.profile || {};
         const kakaoNickname =
           kaProfile.nickname || me?.properties?.nickname || null;
@@ -73,13 +72,17 @@ export default function AuthKakaoCallback() {
         const res = await apiClient.post('/api/login', { email });
         const { token, isNewMember, user: loginUser } = res.data || {};
         if (!token) throw new Error('no_server_token');
-        console.log(kakaoNickname);
-        console.log(kakaoImageUrl);
 
-        // 토큰 저장 (이후 요청 Authorization 헤더 자동)
+        // 4-1) 토큰 저장 + 전역 알림 + axios 헤더 세팅
         localStorage.setItem('accessToken', token);
+        // 같은 탭에서 라우터가 즉시 토큰 변화를 인식하도록 커스텀 이벤트 발행
+        window.dispatchEvent(new Event('auth'));
+        // 이후 API 요청에 자동 적용되도록
+        try {
+          apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
+        } catch {}
 
-        // 5) 필요하면 닉네임/이미지 채워 넣기 (신규이거나, 기존에 비어있는 경우)
+        // 5) 필요하면 닉네임/이미지 채워 넣기
         const needFill =
           isNewMember ||
           !loginUser?.nickname ||
@@ -91,7 +94,6 @@ export default function AuthKakaoCallback() {
           if (kakaoNickname) {
             payload.name = kakaoNickname;
             payload.nickname = kakaoNickname;
-            payload.profileImageUrl = kakaoImageUrl;
           }
           if (kakaoImageUrl) {
             payload.profileImageUrl = kakaoImageUrl;
@@ -109,8 +111,8 @@ export default function AuthKakaoCallback() {
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, '', cleanUrl);
 
-        // 7) 이동 (신규면 온보딩, 아니면 홈)
-        navigate(isNewMember ? '/' : '/', { replace: true });
+        // 7) 홈으로 이동 (흐름이 /에서 시작해도 즉시 Home으로 전환됨)
+        navigate('/', { replace: true });
       } catch (err) {
         console.error('[AuthKakaoCallback] failed:', err);
         const msg = err?.message || 'unexpected';
