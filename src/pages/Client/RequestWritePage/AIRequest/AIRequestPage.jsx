@@ -272,7 +272,7 @@ export default function AIRequestPage() {
             <button
               onClick={goNext}
               disabled={hasMoreQuestions}
-              className={`bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer ${
+              className={`bg-[#BDCFFF] px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer ${
                 hasMoreQuestions ? 'opacity-60 cursor-not-allowed' : ''
               }`}
             >

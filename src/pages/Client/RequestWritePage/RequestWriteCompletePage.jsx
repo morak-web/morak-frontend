@@ -23,12 +23,18 @@ export default function RequestWriteCompletePage() {
               디자이너 매칭을 기다려주세요
             </p>
           </div>
-          <div>
+          <div className="flex justify-between">
             <button
               onClick={() => navigate(-1)}
               className="text-[18px] cursor-pointer"
             >
               이전
+            </button>
+            <button
+              onClick={() => navigate('/client-page/request-list/writing')}
+              className="text-[18px] cursor-pointer"
+            >
+              의뢰 내역 보기 {'>'}
             </button>
           </div>
         </div>

@@ -98,7 +98,7 @@ export default function ChooseCategoryPage() {
                 isClicked
                   ? 'bg-[#BDCFFF]' // 선택된 상태에만 활성화
                   : 'bg-gray-300 pointer-events-none' // 미선택 시 비활성화
-              } px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer`}
+              } px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer`}
             >
               다음
             </button>

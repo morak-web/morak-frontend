@@ -116,7 +116,7 @@ export default function RequirementSummaryPage() {
                 내용을 수정하려면 이전으로 돌아가주세요.
               </p>
             </div>
-            <div className="relative">
+            {/* <div className="relative">
               <h1 className="text-[#525466] text-[16px] mb-[6px]">
                 의뢰 내용을 바탕으로 요약했습니다!
               </h1>
@@ -124,7 +124,7 @@ export default function RequirementSummaryPage() {
               <p className="text-[#A9A9A9] text-[12px] absolute right-5 bottom-20">
                 요약문을 확인하고 제출 버튼을 눌러주세요.
               </p>
-            </div>
+            </div> */}
           </div>
           {/* 이전, 다음 버튼 */}
           <div className="flex justify-between items-center">
@@ -136,7 +136,7 @@ export default function RequirementSummaryPage() {
             </Link>
             <button
               onClick={onSubmit}
-              className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer"
+              className="bg-[#BDCFFF] px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer"
             >
               제출
             </button>

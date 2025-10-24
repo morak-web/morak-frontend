@@ -177,7 +177,7 @@ export default function RequestWritePage() {
             <button
               type="submit"
               onClick={() => navigate('/request/AI-question')}
-              className={`${warning ? 'bg-gray-300 pointer-events-none' : 'bg-[#BDCFFF]'} px-[17px] py-[8px] rounded-[8px] text-[18px] cursor-pointer`}
+              className={`${warning ? 'bg-gray-300 pointer-events-none' : 'bg-[#BDCFFF]'} px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer`}
             >
               다음
             </button>
