@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import YesIcon from '../../../../assets/RequestList/yes-icon.png';
 import NoIcon from '../../../../assets/RequestList/no-icon.png';
 import approveIcon from '../../../../assets/RequestList/approve-icon.png';
+import userIcon from '../../../../assets/user-icon.png';
 
 // api
 import { useProject } from '../../../../context/ProjectContext';
@@ -47,7 +48,7 @@ export default function ApplyDesignerListCard() {
             </p> */}
               <div className="flex gap-[20px]">
                 <img
-                  src={item.profileImageUrl}
+                  src={item.profileImageUrl ? userIcon : userIcon}
                   alt="designerImg"
                   className="w-[53px] h-[53px] mb-[11px]"
                 />

@@ -11,36 +11,94 @@ export default function AIRequestPage() {
   const { id: projectId } = useParams();
   const { fetchAIQuestionList, createResponse } = useProject();
 
+  // ★ 프로젝트별 스토리지 키 (projectId가 있어야만 생성)
+  const storageKey = useMemo(
+    () => (projectId ? `ai_req_thread_v1:${projectId}` : null),
+    [projectId]
+  );
+
   const [thread, setThread] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [hydrated, setHydrated] = useState(false); // ★ 복원 완료 플래그
   const scrollRef = useRef(null);
 
-  // 초기 로드: 트리 가져와서 리스트로 보관
+  // ★ 로컬 스냅샷 저장/복원 유틸 (키가 없으면 no-op)
+  const saveLocal = (data) => {
+    if (!storageKey) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    } catch {}
+  };
+  const loadLocal = () => {
+    if (!storageKey) return null;
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  };
+
+  // ★ 서버 리스트와 로컬 스냅샷 병합
+  const mergeServerAndLocal = (serverList = [], localSnap = null) => {
+    if (!localSnap) return serverList;
+    const localById = Object.fromEntries(
+      (localSnap.thread || []).map((n) => [n.questionId, n])
+    );
+    const merged = serverList.map((s) => {
+      const l = localById[s.questionId];
+      const answer = s.answer ?? l?.answer ?? null; // 서버 우선, 없으면 로컬 보존
+      return { ...s, answer };
+    });
+    const serverIds = new Set(serverList.map((s) => s.questionId));
+    const onlyLocal = (localSnap.thread || []).filter(
+      (n) => !serverIds.has(n.questionId)
+    );
+    return [...merged, ...onlyLocal].sort(
+      (a, b) => a.questionId - b.questionId
+    );
+  };
+
+  // 초기 로드: storageKey가 준비되면 (1) 로컬 복원 → (2) 서버 병합
   useEffect(() => {
     let mounted = true;
+    if (!storageKey || !projectId) return; // 키/ID 없으면 대기
+
+    const snap = loadLocal();
+    if (snap) {
+      setThread(Array.isArray(snap.thread) ? snap.thread : []);
+      setInput(snap.input || '');
+      setLoading(false); // 로컬 먼저 보이기
+    }
+
     (async () => {
-      if (!projectId) return;
-      setLoading(true);
       try {
-        const list = await fetchAIQuestionList(projectId); // [ {questionId, parentQuestionId, question, answer, depth, createdAt}, ... ]
+        const list = await fetchAIQuestionList(projectId);
         if (!mounted) return;
-        // 안전하게 정렬(의도: 표시 순서를 questionId ASC로 보장)
         const sorted = (list || [])
           .slice()
           .sort((a, b) => a.questionId - b.questionId);
-        setThread(sorted);
+        const merged = mergeServerAndLocal(sorted, snap);
+        setThread(merged);
+        // 병합 결과 저장(입력값은 로컬 스냅샷의 것을 유지)
+        saveLocal({ thread: merged, input: snap?.input || '' });
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+          setHydrated(true); // ★ 복원/병합 완료
+        }
       }
     })();
+
     return () => {
       mounted = false;
     };
-  }, [projectId, fetchAIQuestionList]);
+  }, [storageKey, projectId, fetchAIQuestionList]);
 
-  // 현재(다음) 질문: answer === null 중 questionId가 가장 작은 것 "한 개"
+  // 현재(다음) 질문: answer === null 중 questionId가 가장 작은 것
   const currentQuestion = useMemo(() => {
     const nulls = thread.filter((n) => n.answer == null);
     if (nulls.length === 0) return null;
@@ -52,7 +110,7 @@ export default function AIRequestPage() {
 
   const hasMoreQuestions = !!currentQuestion;
 
-  // 이전(답변된) 항목만 정렬해서 보여줄 리스트
+  // 이전(답변된) 항목
   const answeredList = useMemo(() => {
     return thread
       .filter((n) => n.answer != null && n.answer !== '')
@@ -70,6 +128,12 @@ export default function AIRequestPage() {
     }
   }, [thread, submitting]);
 
+  // ★ input 변경 시 즉시 저장 (복원 전에는 저장 금지)
+  useEffect(() => {
+    if (!hydrated) return;
+    saveLocal({ thread, input });
+  }, [input]); // thread 저장은 submit/병합 시점에서 처리
+
   const handleSubmit = async (e) => {
     e && e.preventDefault();
     if (!projectId || submitting) return;
@@ -78,15 +142,12 @@ export default function AIRequestPage() {
 
     setSubmitting(true);
     try {
-      // 1) 답변 전송
-      const payload = {
-        questionId: currentQuestion.questionId,
-        answer: msg,
-      };
+      // 1) 서버로 답변 전송
+      const payload = { questionId: currentQuestion.questionId, answer: msg };
       const res = await createResponse(projectId, payload);
       const nextQuestions = (res && res.nextQuestions) || [];
 
-      // 2) 현재 질문의 answer 반영 + 바로 뒤에 nextQuestions 삽입
+      // 2) 로컬 스레드 업데이트(+ 저장)
       setThread((prev) => {
         const idx = prev.findIndex(
           (n) => n.questionId === currentQuestion.questionId
@@ -94,29 +155,26 @@ export default function AIRequestPage() {
         if (idx === -1) return prev;
 
         const updated = [...prev];
-        // 현재 질문에 답 채우기
         updated[idx] = { ...updated[idx], answer: msg };
 
         if (nextQuestions.length > 0) {
-          // 서버가 준 후속 질문들을 스탬핑해서 삽입
           const stamped = nextQuestions.map((q) => ({
             ...q,
             answer: q.answer ?? null,
             createdAt: q.createdAt ?? new Date().toISOString(),
           }));
-          // 이어서 표시 순서를 위해 questionId 기준 정렬 보정
           stamped.sort((a, b) => a.questionId - b.questionId);
           updated.splice(idx + 1, 0, ...stamped);
         }
-        // 전체를 questionId 기준으로 정렬 유지(안전장치)
         updated.sort((a, b) => a.questionId - b.questionId);
+        saveLocal({ thread: updated, input: '' }); // ★ 저장
         return updated;
       });
 
       setInput('');
-      // setThread 이후 currentQuestion/hasMoreQuestions는 자동 반영됨
     } catch (err) {
       console.error(err);
+      // 실패해도 기존 로컬 상태는 유지
     } finally {
       setSubmitting(false);
     }
@@ -200,7 +258,7 @@ export default function AIRequestPage() {
                       </div>
                     ))}
 
-                    {/* 현재 질문(한 개만 노출) */}
+                    {/* 현재 질문(한 개만) */}
                     {currentQuestion && (
                       <div
                         key={`current-${currentQuestion.questionId}`}

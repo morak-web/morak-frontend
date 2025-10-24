@@ -27,9 +27,7 @@ export default function RequestWriteCompletePage() {
             <button
               onClick={() => navigate(-1)}
               className="text-[18px] cursor-pointer"
-            >
-              이전
-            </button>
+            ></button>
             <button
               onClick={() => navigate('/client-page/request-list/writing')}
               className="text-[18px] cursor-pointer"
