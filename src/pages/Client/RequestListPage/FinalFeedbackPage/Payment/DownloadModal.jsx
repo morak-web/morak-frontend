@@ -16,14 +16,14 @@ export default function DownLoadModal({ downloadModalOpen, onClose, id }) {
   useEffect(() => {
     fetchProjectDetail(id);
   }, []);
+  const amount = projectDetail?.budgetEstimate;
 
   const onPendingSubmit = async (e) => {
-    const payload = {
-      projectId: id,
-      amount: projectDetail?.budgetEstimate,
-    };
     try {
-      const created = await createdPayment(payload);
+      const created = await createdPayment({
+        projectId: Number(id),
+        amount: Number(amount),
+      });
       console.log(created);
       return created;
     } catch (e) {

@@ -7,7 +7,6 @@ import userIcon from '../../../../assets/user-icon.png';
 
 // api
 import { useProject } from '../../../../context/ProjectContext';
-import { usePayment } from '../../../../context/PaymentContext';
 
 export default function ApplyDesignerListCard() {
   const [decisionById, setDecisionById] = useState({});
@@ -29,9 +28,6 @@ export default function ApplyDesignerListCard() {
     fetchProjectDetail,
     projectDetail,
   } = useProject();
-  const { createdPayment } = usePayment();
-  const amount = projectDetail?.budgetEstimate;
-  console.log(amount);
   useEffect(() => {
     if (!projectId) return;
     fetchProjectDetail(projectId).catch(() => {});
@@ -72,16 +68,7 @@ export default function ApplyDesignerListCard() {
             );
             console.log('[approveDesignerApply] ok:', res);
             if (!res) return null;
-            try {
-              const pay = await createdPayment({
-                projectId: Number(projectId),
-                amount: projectDetail?.budgetEstimate,
-              });
-              console.log(pay);
-            } catch (e) {
-              console.error(e);
-              return e;
-            }
+
             return res;
           } catch (e) {
             console.error(
