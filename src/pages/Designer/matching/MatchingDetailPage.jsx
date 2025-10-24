@@ -45,7 +45,7 @@ export default function MatchingDetailPage() {
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className=" h-[12px] ml-[13px] mt-[15px] cursor-pointer flex text-[#D8DAE5] text-[12px] gap-[5px]"
+        className=" h-[12px] ml-[13px] py-[15px] cursor-pointer flex text-[#D8DAE5] text-[12px] gap-[5px]"
       >
         <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
         프로젝트 매칭 대기

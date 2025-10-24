@@ -74,11 +74,7 @@ function LeftSection() {
             <img
               src={myInfo?.profileImageUrl ? myInfo.profileImageUrl : userIcon}
               alt="프로필"
-              className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] rounded-[50%] mb-[12px]
-                         transition-transform duration-500 ease-out scale-95 opacity-90"
-              onLoad={(e) =>
-                e.currentTarget.classList.remove('scale-95', 'opacity-90')
-              }
+              className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] rounded-[50%] mb-[12px]"
             />
             <NavLink className="flex gap-[2px] items-center" to="register">
               <p className="text-[10px] lg:text-[11px] text-[rgba(82,84,102,1)]">
@@ -116,18 +112,13 @@ function LeftSection() {
               className={({ isActive }) =>
                 `group relative border-t-[2px] w-[80px] sm:w-[152px] h-[50px]
                  text-[13px] sm:text-[15px] pt-[10px] font-bold text-left
-                 transition-all duration-300 ease-out
+                transition-all duration-300 ease-out
                  ${isActive ? 'text-[#474858] border-[rgba(195,196,206)]' : 'text-[rgba(195,196,206)]'}
                  after:content-[''] after:absolute after:left-0 after:bottom-[-1px]
                  after:h-[2px] after:bg-[#606EFF] after:transition-transform after:duration-300 after:origin-left
                  ${isActive ? 'after:scale-x-100' : 'after:scale-x-0'}`
               }
-              style={{ transitionDelay: `${idx * 35}ms` }} // 순차 등장
             >
-              {/* 클릭 파동 */}
-              {pulseIdx === idx && (
-                <span className="pointer-events-none absolute inset-0 rounded-[10px] animate-ping opacity-40 bg-[#c3c4ce]" />
-              )}
               <span className="relative">{item.title}</span>
             </NavLink>
           );

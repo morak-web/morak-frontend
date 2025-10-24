@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import closeBtn from '../../../assets/Designer/close-button.png';
 import folderBtn from '../../../assets/Designer/folder.png';
 import { useDesigner } from '../../../context/DesignerContext';
 import noFileImg from '../../../assets/Designer/no-file.png';
 
+// ✅ 마스코트 이미지 경로 조정
+import mascotImg from '../../../assets/morak-designer.png';
+
 const MAX_INLINE_IMAGE = 1.5 * 1024 * 1024; // 1.5MB 이하 이미지만 저장
 
 export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
-  if (!finalModalOpen) return null;
-
-  const DRAFT_KEY = `finalSubmit:desc:${id}:v1`; // 설명 캐시
-  const FILE_KEY = `finalSubmit:file:${id}:v1`; // 이미지 캐시(작은 것만)
+  const DRAFT_KEY = `finalSubmit:desc:${id}:v1`;
+  const FILE_KEY = `finalSubmit:file:${id}:v1`;
 
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [submitting, setSubmitting] = useState(false); // ⬅️ 로딩 상태
   const { createResultFile } = useDesigner();
 
-  // 설명 복원
   useEffect(() => {
     try {
       const saved = localStorage.getItem(DRAFT_KEY);
@@ -25,21 +28,18 @@ export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
     } catch {}
   }, [DRAFT_KEY]);
 
-  // 설명 변경 시 즉시 저장
   useEffect(() => {
     try {
       localStorage.setItem(DRAFT_KEY, description || '');
     } catch {}
   }, [description, DRAFT_KEY]);
 
-  // 파일 복원 (작은 이미지인 경우에만)
   useEffect(() => {
     try {
       const raw = localStorage.getItem(FILE_KEY);
       if (!raw) return;
       const cached = JSON.parse(raw);
       if (!cached?.dataUrl || !cached?.name || !cached?.type) return;
-      // DataURL → File 재구성
       const f = dataURLToFile(cached.dataUrl, cached.name, cached.type);
       setFile(f);
       const blobUrl = URL.createObjectURL(f);
@@ -48,15 +48,16 @@ export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
     } catch {}
   }, [FILE_KEY]);
 
-  // 새 파일 선택 → 미리보기 + (작은 이미지면) 캐시 저장
   useEffect(() => {
-    if (!file) return;
+    if (!file) {
+      setPreviewUrl(null);
+      return;
+    }
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
 
     const save = async () => {
       try {
-        // 이미지이면서 용량 제한 이하면 DataURL 저장
         if (file.type.startsWith('image/') && file.size <= MAX_INLINE_IMAGE) {
           const dataUrl = await fileToDataURL(file);
           localStorage.setItem(
@@ -70,7 +71,6 @@ export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
             })
           );
         } else {
-          // 용량 크거나 이미지가 아니면, 캐시는 지우고 파일명만 유지하고 싶다면 여기에 별도 저장 가능
           localStorage.removeItem(FILE_KEY);
         }
       } catch {}
@@ -80,129 +80,213 @@ export default function FinalSubmitModal({ id, finalModalOpen, onClose }) {
     return () => URL.revokeObjectURL(url);
   }, [file, FILE_KEY]);
 
+  useEffect(() => {
+    if (!finalModalOpen) return;
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.documentElement.style.overflow = prev;
+    };
+  }, [finalModalOpen]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     const phase = 'FINAL';
     try {
+      setSubmitting(true); // ⬅️ 로딩 시작
       const created = await createResultFile(id, { phase, description, file });
       alert('결과물 제출 완료!');
       console.log(created);
-      // 제출 후에도 캐시 삭제하지 않음 → 다시 열어도 그대로 보임
-    } catch (e) {
-      console.error(e);
-      return null;
+      // 성공 시 로컬 캐시 정리(선택)
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+        localStorage.removeItem(FILE_KEY);
+      } catch {}
+      // onClose?.(); // 제출 후 닫을 거면 주석 해제
+    } catch (e2) {
+      console.error(e2);
+      alert(
+        e2?.response?.data?.message ||
+          e2?.response?.data?.error ||
+          '업로드 중 오류가 발생했습니다.'
+      );
+    } finally {
+      setSubmitting(false); // ⬅️ 로딩 끝
     }
   };
 
   const onFileChange = (e) => setFile(e.target.files?.[0] ?? null);
 
-  return (
-    <div
-      onClick={onClose}
-      className=" fixed inset-0 z-50 min-w-screen min-h-screen bg-[#0101015e] justify-center items-center flex"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col"
-      >
-        <div className="flex justify-between">
-          <h1 className="text-[20px] font-bold">결과물 제출하기</h1>
-          <button className="cursor-pointer">
-            <img
-              src={closeBtn}
-              alt="closeBtn"
-              onClick={onClose}
-              className="w-[20px] h-[20px]"
-            />
-          </button>
-        </div>
+  const handleBackdropClick = () => {
+    if (!submitting) onClose?.(); // 업로드 중엔 닫기 금지
+  };
 
-        <form
-          onSubmit={onSubmit}
-          className="w-[100%] h-[100%] flex flex-col pr-[36px]"
+  return createPortal(
+    <AnimatePresence initial={false} mode="wait">
+      {finalModalOpen && (
+        <motion.div
+          key="backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={handleBackdropClick}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
-          <div className="bg-[#D9D9D9] w-[100%] h-[1px] mt-[15px]"></div>
-
-          <div className="w-[100%] h-[100%] flex flex-col ">
-            <div className="w-[100%] h-[50%] flex flex-col pl-[2%] gap-[10px] pt-[10px] mb-[28px]">
-              <div className="w-full h-full mt-[15px]">
-                <div className="w-full h-[300px] flex justify-center items-center">
-                  {file ? (
-                    <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                      {file.type === 'image/png' ? (
-                        <img
-                          src={previewUrl}
-                          alt="미리보기"
-                          className="w-[1047px] h-[290px] object-contain"
-                        />
-                      ) : file.type === 'application/pdf' ? (
-                        <embed
-                          src={previewUrl + '#toolbar=0&navpanes=0&scrollbar=0'}
-                          type="application/pdf"
-                          className="w-[1047px] h-[290px]"
-                        />
-                      ) : (
-                        <p>지원하지 않는 형식</p>
-                      )}
-                      <div className="text-sm text-gray-500 mt-2">
-                        {file.name}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-[13px] items-center justify-center">
-                      <img
-                        src={noFileImg}
-                        alt="noFileImg"
-                        className="w-[107px] h-[107px]"
-                      />
-                      <h1 className="text-center text-[16px] text-[#525466] font-light">
-                        최종 결과 파일을
-                        <br /> 업로드해주세요!
-                      </h1>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="w-[100%] h-[250px]">
-              <div className="w-[100%] h-[100%] bg-[#F7F8FC] rounded-[30px] px-[30px] pt-[30px] pb-[20px] ">
-                <textarea
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="outline-none h-[80%] w-[100%] flex items-center resize-none overflow-y-auto custom-scrollbar mb-[10px]"
-                  placeholder="디자인 설명을 자유롭게 작성해주세요!"
-                />
-                <div className="w-full flex justify-end relative cursor-pointer">
-                  <input
-                    type="file"
-                    accept=".png,application/pdf"
-                    onChange={onFileChange}
-                    className="z-10 absolute w-[22px] h-[22px] text-transparent cursor-pointer"
-                  />
-                  {/* 기본 submit 방지 위해 type="button"만 추가 (디자인 변화 없음) */}
-                  <button type="button" className="absolute cursor-pointer">
-                    <img
-                      src={folderBtn}
-                      alt="folderBtn"
-                      className="w-[22px] h-[22px]"
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="w-[234px] h-[38px] rounded-[16px] bg-[#6072FF] text-[16px] text-white flex items-center justify-center self-end cursor-pointer"
+          <motion.div
+            key="modal"
+            onClick={(e) => e.stopPropagation()}
+            className="w-[80%] h-[85%] rounded-[11px] bg-white px-[35px] py-[27px] flex flex-col"
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 16, opacity: 0 }}
+            transition={{ type: 'tween', duration: 0.18 }}
+            role="dialog"
+            aria-modal="true"
           >
-            최종 결과 제출
-          </button>
-        </form>
-      </div>
-    </div>
+            <div className="flex justify-between">
+              <h1 className="text-[20px] font-bold">결과물 제출하기</h1>
+              <button
+                className="cursor-pointer disabled:opacity-60"
+                onClick={onClose}
+                aria-label="닫기"
+                disabled={submitting}
+              >
+                <img
+                  src={closeBtn}
+                  alt="closeBtn"
+                  className="w-[20px] h-[20px]"
+                />
+              </button>
+            </div>
+
+            <form
+              onSubmit={onSubmit}
+              className="relative w-[100%] h-[100%] flex flex-col pr-[36px]" // ⬅️ relative로 오버레이 기준
+            >
+              {/* ⬇️ 업로드 오버레이: 폼 영역만 덮음 */}
+              {submitting && (
+                <motion.div
+                  className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  aria-live="polite"
+                  aria-busy="true"
+                  role="status"
+                >
+                  <motion.img
+                    src={mascotImg}
+                    alt="업로드 중"
+                    className="w-[120px] h-[120px] drop-shadow-lg select-none pointer-events-none"
+                    draggable={false}
+                    animate={{ y: [0, -14, 0] }}
+                    transition={{
+                      duration: 0.9,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                  <div className="mt-3 text-[14px] sm:text-[15px] font-semibold text-[#525466]">
+                    업로드 중입니다…
+                  </div>
+                </motion.div>
+              )}
+
+              <div className="bg-[#D9D9D9] w-[100%] h-[1px] mt-[15px]" />
+
+              <div className="w-[100%] h-[100%] flex flex-col ">
+                {/* 미리보기 영역 */}
+                <div className="w-[100%] h-[50%] flex flex-col pl-[2%] gap-[10px] pt-[10px] mb-[28px]">
+                  <div className="w-full h-full mt-[15px]">
+                    <div className="w-full h-[300px] flex justify-center items-center">
+                      {file ? (
+                        <div className="w-full h-[300px] flex flex-col justify-center items-center">
+                          {file.type === 'image/png' ? (
+                            <img
+                              src={previewUrl}
+                              alt="미리보기"
+                              className="w-[1047px] h-[290px] object-contain"
+                            />
+                          ) : file.type === 'application/pdf' ? (
+                            <embed
+                              src={
+                                previewUrl + '#toolbar=0&navpanes=0&scrollbar=0'
+                              }
+                              type="application/pdf"
+                              className="w-[1047px] h-[290px]"
+                            />
+                          ) : (
+                            <p>지원하지 않는 형식</p>
+                          )}
+                          <div className="text-sm text-gray-500 mt-2">
+                            {file.name}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-[13px] items-center justify-center">
+                          <img
+                            src={noFileImg}
+                            alt="noFileImg"
+                            className="w-[107px] h-[107px]"
+                          />
+                          <h1 className="text-center text-[16px] text-[#525466] font-light">
+                            최종 결과 파일을
+                            <br /> 업로드해주세요!
+                          </h1>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 설명 + 파일 선택 */}
+                <div className="w-[100%] h-[250px]">
+                  <div className="w-[100%] h-[100%] bg-[#F7F8FC] rounded-[30px] px-[30px] pt-[30px] pb-[20px] ">
+                    <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="outline-none h-[80%] w-[100%] flex items-center resize-none overflow-y-auto custom-scrollbar mb-[10px]"
+                      placeholder="디자인 설명을 자유롭게 작성해주세요!"
+                      disabled={submitting}
+                    />
+
+                    <div className="w-full flex justify-end">
+                      <label
+                        className={`inline-flex items-center gap-2 ${submitting ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                      >
+                        <input
+                          type="file"
+                          accept=".png,application/pdf"
+                          onChange={onFileChange}
+                          className="sr-only"
+                          disabled={submitting}
+                        />
+                        <img
+                          src={folderBtn}
+                          alt="파일 선택"
+                          className="w-[22px] h-[22px]"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                aria-busy={submitting}
+                className="w-[234px] h-[38px] rounded-[16px] bg-[#6072FF] text-[16px] text-white flex items-center justify-center self-end cursor-pointer disabled:opacity-60"
+              >
+                최종 결과 제출
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
   );
 }
 

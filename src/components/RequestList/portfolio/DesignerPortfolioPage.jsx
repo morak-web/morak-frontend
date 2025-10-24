@@ -53,9 +53,9 @@ export default function DesignerPortfolioPage() {
             <h1 className="text-[20px] text-[#525466] font-medium">
               참여 프로젝트
             </h1>
-            <div className=" flex flex-col xl:flex-row md:flex-row lg:flex-col gap-[20px] sm:gap-[3%]">
+            <div className="grid-cols-2 gap-[3%]">
               {designerInfo?.portfolio.map((item, idx) => (
-                <div className="flex flex-col items-center ">
+                <div className="flex w-[50%] flex-col items-center ">
                   <img
                     src={item.picture}
                     key={idx}

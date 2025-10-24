@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import MainLayout from '../../components/layout/MainLayout';
 import mainImage from '../../assets/Home/background-picture.png';
@@ -9,6 +10,45 @@ import machingIcon from '../../assets/Home/matching-icon.png';
 import writeIcon from '../../assets/Home/write-icon.png';
 import task from '../../assets/Home/task.png';
 
+// ====== Animation Variants (slower) ======
+const EASE = [0.22, 1, 0.36, 1];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: EASE } }, // 0.55 → 0.85
+};
+
+const heroStagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.16 } }, // 0.08 → 0.16
+};
+
+const rightButtonsStagger = {
+  hidden: {},
+  visible: { transition: { delayChildren: 0.28, staggerChildren: 0.18 } }, // 0.15/0.12 → 0.28/0.18
+};
+
+const slideRight = {
+  hidden: { opacity: 0, x: 24 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: EASE } }, // 0.5 → 0.8
+};
+
+const traitsStagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14 } }, // 0.1 → 0.14
+};
+
+const traitItem = {
+  hidden: { opacity: 0, y: 18, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: EASE },
+  }, // 0.45 → 0.7
+};
+
+/* ====== 글래스 버튼 ====== */
 function GlassButton({ label, to, hoverText = '#93A8ED' }) {
   const [hover, setHover] = useState(false);
 
@@ -39,15 +79,17 @@ function GlassButton({ label, to, hoverText = '#93A8ED' }) {
       onMouseLeave={() => setHover(false)}
       className="relative block"
     >
-      {/* 패널 */}
-      <div
-        className="topbar relative w-[350px] h-[99px] rounded-[50px] overflow-hidden cursor-pointer
-                   transition-all duration-200 ease-out"
+      <motion.div
+        className="topbar relative w-[350px] h-[99px] rounded-[50px] overflow-hidden cursor-pointer transition-all duration-200 ease-out"
         style={{
           background: panelBg,
           boxShadow: outerShadow,
-          transform: hover ? 'translateY(-1px) scale(1.01)' : 'none',
         }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: EASE }}
+        whileHover={{ y: -2, scale: 1.01 }}
+        whileTap={{ scale: 0.995 }}
       >
         {/* 유리 하이라이트 (림) */}
         <span
@@ -76,14 +118,15 @@ function GlassButton({ label, to, hoverText = '#93A8ED' }) {
           >
             {label}
           </h1>
-          <img
+          <motion.img
             src={goIcon}
             alt="go"
-            className="w-[22px] h-[22px] md:w-[24px] md:h-[24px] transition-transform duration-200"
-            style={{ transform: hover ? 'translateX(2px)' : 'none' }}
+            className="w-[22px] h-[22px] md:w-[24px] md:h-[24px]"
+            animate={{ x: hover ? 2 : 0 }}
+            transition={{ duration: 0.18 }}
           />
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }
@@ -118,9 +161,19 @@ export default function HomePage() {
           -webkit-backdrop-filter: blur(8px);
           backdrop-filter: blur(8px);
         }
+        /* 접근성: 모션 최소화 환경에서 과한 애니메이션 제한 */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
       `}</style>
 
       <div className="w-[100%] h-[100%] overflow-hidden">
+        {/* 배경 이미지는 그대로 (애니메이션 없음) */}
         <img
           src={mainImage}
           alt="main"
@@ -128,57 +181,101 @@ export default function HomePage() {
         />
 
         {/* 히어로 */}
-        <div className="flex flex-col md:flex-row md:justify-between w-[100%] h-[40%] absolute top-50 px-[10%]">
+        <motion.div
+          className="flex flex-col md:flex-row md:justify-between w-[100%] h-[40%] absolute top-50 px-[10%]"
+          variants={heroStagger}
+          initial="hidden"
+          animate="visible"
+        >
           {/* 왼쪽 카피 */}
-          <div className="w-[50%] h-[100%]">
-            <h1 className="text-[30px] sm:text-[35px] lg:text-[48px] xl:text-[55px] whitespace-nowrap">
+          <motion.div className="w-[50%] h-[100%]" variants={fadeUp}>
+            <motion.h1
+              className="text-[30px] sm:text-[35px] lg:text-[48px] xl:text-[55px] whitespace-nowrap"
+              variants={fadeUp}
+            >
               딱 맞는 디자이너
               <br />
               쉽고 빠르게 매칭해 드려요
-            </h1>
-            <p className="text-[18px] sm:text-[20px] mt-[10%] sm:mt-[5%] whitespace-nowrap">
+            </motion.h1>
+
+            <motion.p
+              className="text-[18px] sm:text-[20px] mt-[10%] sm:mt-[5%] whitespace-nowrap"
+              variants={fadeUp}
+            >
               디자인이 필요할 땐,
               <br />
               누구나 쉽게 의뢰하고,
               <br />
               내게 딱 맞는 디자이너를 만날 수 있어요.
-            </p>
-            <h3 className="text-[27px] sm:text-[32px] mt-[4%] sm:mt-[2%] whitespace-nowrap">
+            </motion.p>
+
+            <motion.h3
+              className="text-[27px] sm:text-[32px] mt-[4%] sm:mt-[2%] whitespace-nowrap"
+              variants={fadeUp}
+            >
               <span className="text-[#2C44FF] text-[27px] sm:text-[32px] font-bold">
                 AI 모락
               </span>
               이 도와드릴게요
-            </h3>
-          </div>
+            </motion.h3>
+          </motion.div>
 
-          <div className="hidden md:flex flex-col md:w-[500px] h-[100%] items-end gap-[100px] mt-10">
-            <GlassButton
-              label="의뢰 시작하기"
-              to="request/category"
-              hoverText="#666dce"
-            />
-            <div className="mt-[-45px] lg:mt-[-63px]">
+          {/* 오른쪽 버튼 묶음 */}
+          <motion.div
+            className="hidden md:flex flex-col md:w-[500px] h-[100%] items-end gap-[100px] mt-10"
+            variants={rightButtonsStagger}
+          >
+            <motion.div variants={slideRight}>
+              <GlassButton
+                label="의뢰 시작하기"
+                to="request/category"
+                hoverText="#666dce"
+              />
+            </motion.div>
+
+            <motion.div
+              className="mt-[-45px] lg:mt-[-63px]"
+              variants={slideRight}
+            >
               <GlassButton
                 label="디자이너 등록하기"
                 to="/designer-page"
                 hoverText="#666dce"
               />
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* 하단 섹션 */}
         <div className="flex flex-col px-[10%] gap-[50px] mb-[80px]">
-          <div>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+          >
             <p className="text-[20px]">우리의 고민</p>
             <h1 className="text-[30px] sm:text-[40px]">
               초보 개발자와 디자이너를 위한
               <br className="hidden sm:flex" /> 시스템
             </h1>
-          </div>
-          <div className="flex justify-between gap-[10%]">
+          </motion.div>
+
+          <motion.div
+            className="flex justify-between gap-[10%]"
+            variants={traitsStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
             {TRAIT.map((item) => (
-              <div className="flex flex-col gap-[15px]" key={item.title}>
+              <motion.div
+                className="flex flex-col gap-[15px]"
+                key={item.title}
+                variants={traitItem}
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.99 }}
+              >
                 <img src={item.icon} alt="icon" className="w-[73px] h-[73px]" />
                 <h1 className="text-[15px] whitespace-nowrap sm:text-[20px]">
                   {item.title}
@@ -186,9 +283,9 @@ export default function HomePage() {
                 <p className="text-[13px] sm:text-[16px] whitespace-pre-line">
                   {item.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </MainLayout>
