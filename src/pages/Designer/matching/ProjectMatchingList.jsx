@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MatchingCard from '../../../components/Designer/Matching/MatchingCard';
-import ApplyDetailCard from './applyDetailCard';
+import ApplyDetailCard from './ApplyDetailCard';
 import { useDesigner } from '../../../context/DesignerContext';
 
 const TYPE = [
