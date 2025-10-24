@@ -6,7 +6,14 @@ import { useDesigner } from '../../../context/DesignerContext';
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import moneyIcon from '../../../assets/Designer/matching/money.png';
 import timeIcon from '../../../assets/Designer/matching/time.png';
-import lockIcon from '../../../assets/Designer/matching/lock.png';
+const CATEGORY = {
+  1: '웹사이트',
+  2: '앱',
+  3: '쇼핑몰/스마트스토어',
+  4: '키오스크/POS',
+  5: '그래픽/영상',
+  6: '기타',
+};
 export default function MatchingDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -54,10 +61,7 @@ export default function MatchingDetailPage() {
           {/* map으로 수정 */}
           <div className="text-[#525466] text-[13px] flex gap-[7px]">
             <div className="bg-[#EAECF5] rounded-[10px] px-[7px] py-[4px]">
-              웹 api
-            </div>
-            <div className="bg-[#EAECF5] rounded-[10px] px-[7px] py-[4px]">
-              앱
+              {CATEGORY[projectDetail?.categoryId]}
             </div>
           </div>
         </div>
@@ -102,17 +106,6 @@ export default function MatchingDetailPage() {
             에상 기간
           </p>
           <p className="text-[#525466] text-[13px] font-light">{daysFloor}일</p>
-        </div>
-        <div className="text-[#525466] text-[13px] font-light flex items-center">
-          <img
-            src={lockIcon}
-            alt="lockIcon"
-            className="w-[15px] h-[15px] mr-[15px]"
-          />
-          <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
-            모집 마감일 - api
-          </p>
-          <p className="text-[#525466] text-[13px] font-light">2025.08.19</p>
         </div>
       </div>
       <div className="overflow-y-auto custom-scrollbar h-[430px] mr-[40px] ">
@@ -187,7 +180,7 @@ export default function MatchingDetailPage() {
           <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
             모집 요건
           </h1>
-          <ul className="text-[#525466] text-[13px]  pl-7 space-y-1 ">
+          <ul className="text-[#525466] text-[13px] space-y-1 ">
             <li>{projectDetail?.designerRequirements}</li>
           </ul>
         </div>

@@ -32,10 +32,10 @@ export default function ProgressingPage() {
   const navigate = useNavigate();
   const { projectList, fetchProjectList, error, loading } = useProject();
   useEffect(() => {
-    fetchProjectList('MATCHING');
+    fetchProjectList('WORKING');
   }, []);
   const workingData = projectList.filter(
-    (item) => item['status'] === 'MATCHING'
+    (item) => item['status'] === 'WORKING'
   );
   console.log(workingData);
   if (loading) return <div>Loading...</div>;

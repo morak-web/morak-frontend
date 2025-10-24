@@ -76,76 +76,78 @@ export default function ProjectMatchingList() {
   );
   console.log('app', projectList);
   return (
-    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px]">
+    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px] flex flex-col">
       <div className="mb-[11px] flex justify-between pr-[22px]">
         <h1>{seePage ? '지원 가능 프로젝트' : '내가 신청한 프로젝트'}</h1>
-        <button
-          onClick={() => setSeePage(!seePage)}
-          className={`w-[160px] h-[31px] rounded-[13px] border-[1px] text-[14px] ${seePage ? 'text-[#7484FF]' : 'text-black'} cursor-pointer`}
-        >
-          {seePage ? '신청 프로젝트 목록' : '지원 가능 프로젝트'}
-        </button>
       </div>
-      {seePage ? (
-        <div className="h-[32px] flex gap-[11px] mb-[27px]">
-          {TYPE.map((item) => (
-            <div key={item.title} className="flex">
-              <button
-                onClick={() => setCheckedCategory(item.id)}
-                className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${checkedCategory === item.id ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
-              >
-                <h1
-                  className={` ${checkedCategory === item.id ? 'text-white' : 'text-[#525466]'} text-[13px]`}
+      <div className="h-[620px]">
+        {seePage ? (
+          <div className="h-[32px] flex gap-[11px] mb-[27px]">
+            {TYPE.map((item) => (
+              <div key={item.title} className="flex">
+                <button
+                  onClick={() => setCheckedCategory(item.id)}
+                  className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${checkedCategory === item.id ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
                 >
-                  {item.title}
-                </h1>
-              </button>
-              {item.title === 'ALL' && (
-                <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
-              )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="h-[32px] flex gap-[11px] mb-[27px]">
-          {STATUS.map((item) => (
-            <div key={item.title} className="flex">
-              <button
-                onClick={() => {
-                  setStatus(item.en);
-                }}
-                className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${status === item.en ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
-              >
-                <h1
-                  className={` ${status === item.en ? 'text-white' : 'text-[#525466]'} text-[13px]`}
+                  <h1
+                    className={` ${checkedCategory === item.id ? 'text-white' : 'text-[#525466]'} text-[13px]`}
+                  >
+                    {item.title}
+                  </h1>
+                </button>
+                {item.title === 'ALL' && (
+                  <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="h-[32px] flex gap-[11px] mb-[27px]">
+            {STATUS.map((item) => (
+              <div key={item.title} className="flex">
+                <button
+                  onClick={() => {
+                    setStatus(item.en);
+                  }}
+                  className={`  h-[32px] px-[13px]  rounded-[10px] cursor-pointer ${status === item.en ? 'bg-[#BDCFFF]' : 'bg-[#EAECF5] '}`}
                 >
-                  {item.title}
-                </h1>
-              </button>
-              {item.title === 'ALL' && (
-                <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-      {seePage ? (
-        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
-          {matchingProjectList?.map((item) => (
-            <div key={item.projectId}>
-              <MatchingCard {...item} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
-          {projectList?.map((item) => (
-            <div key={item.projectId}>
-              <ApplyDetailCard {...item} />
-            </div>
-          ))}
-        </div>
-      )}
+                  <h1
+                    className={` ${status === item.en ? 'text-white' : 'text-[#525466]'} text-[13px]`}
+                  >
+                    {item.title}
+                  </h1>
+                </button>
+                {item.title === 'ALL' && (
+                  <div className="bg-[#52546648] h-[33px] w-[1px] ml-[20px] mr-[9px]" />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {seePage ? (
+          <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+            {matchingProjectList?.map((item) => (
+              <div key={item.projectId}>
+                <MatchingCard {...item} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+            {projectList?.map((item) => (
+              <div key={item.projectId}>
+                <ApplyDetailCard {...item} />
+              </div>
+            ))}
+          </div>
+        )}{' '}
+      </div>
+      <button
+        onClick={() => setSeePage(!seePage)}
+        className={`w-[full] font-bold mr-[40px] relative h-[31px] flex justify-end text-[14px] ${seePage ? 'text-[#7484FF]' : 'text-black'} cursor-pointer`}
+      >
+        {seePage ? '신청 프로젝트 목록 >' : '지원 가능 프로젝트 >'}
+      </button>
     </div>
   );
 }

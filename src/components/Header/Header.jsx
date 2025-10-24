@@ -20,7 +20,7 @@ export default function Header() {
             <Link to="/chat">
               <img src={messageIcon} alt="messageIcon" />
             </Link>
-            <Link>
+            <Link to="/client-page/request-list/writing">
               <img src={notificationIcon} alt="notificationIcon" />
             </Link>
           </div>

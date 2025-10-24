@@ -1,7 +1,7 @@
 import MainLayout from '../../components/layout/MainLayout';
 import { useChat } from '../../context/ChatContext';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import morakAI from '../../assets/morak-ai.png';
+import morakAI from '../../assets/morak2.png';
 import sendIcon from '../../assets/send-icon.png';
 
 export default function ChatPage() {
@@ -196,8 +196,10 @@ export default function ChatPage() {
                       <p className="flex text-[13px] w-[190px] font-light text-[#525466]">
                         {(item?.lastMessage?.content || '').slice(0, 17)}...
                       </p>
-                      <h1 className="w-[15px] mt-[2px] h-[15px] rounded-[50%] bg-red-400 text-white flex justify-center items-center text-[10px]">
-                        {item?.unreadCount || 0}
+                      <h1
+                        className={`${item?.unreadCount && 'w-[15px] mt-[2px] h-[15px] rounded-[50%] bg-red-400 text-white flex justify-center items-center text-[10px]'}`}
+                      >
+                        {item?.unreadCount}
                       </h1>
                     </div>
                   </div>

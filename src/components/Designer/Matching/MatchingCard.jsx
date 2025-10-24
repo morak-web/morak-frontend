@@ -18,7 +18,7 @@ export default function MatchingCard(props) {
   return (
     <div className="bg-[#EAECF5] w-[100%] min-h-[230px] rounded-[10px] flex">
       {/* left content */}
-      <div className="w-[75%] px-[27px] py-[25px]">
+      <div className="w-[75%] px-[27px] py-[25px] flex flex-col justify-between">
         <h1 className="text-[#525466] text-[18px] mb-[19px]">{props.title}</h1>
         <div className="text-[#525466] text-[13px] flex mb-[13px]">
           <div className="flex gap-[5px]">

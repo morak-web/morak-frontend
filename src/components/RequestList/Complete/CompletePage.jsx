@@ -31,10 +31,10 @@ export default function CompletePage() {
   const [interFeedbackModalOpen, setInterFeedbackModalOpen] = useState(false);
   const { projectList, fetchProjectList, error, loading } = useProject();
   useEffect(() => {
-    fetchProjectList('MATCHING');
+    fetchProjectList('COMPLETE');
   }, []);
   const completeData = projectList.filter(
-    (item) => item['status'] === 'MATCHING'
+    (item) => item['status'] === 'COMPLETE'
   );
   if (loading) return <div>Loading...</div>;
   if (error) return <div>error!! {String(error.message || error)}</div>;
