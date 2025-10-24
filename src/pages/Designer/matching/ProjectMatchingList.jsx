@@ -47,6 +47,7 @@ const STATUS = [
 
 export default function ProjectMatchingList() {
   const [status, setStatus] = useState('MATCHING');
+  console.log(status);
   const [checkedCategory, setCheckedCategory] = useState(0);
   const [seePage, setSeePage] = useState(true);
   const {
@@ -60,7 +61,7 @@ export default function ProjectMatchingList() {
   useEffect(() => {
     fetchApplyProjectList(status);
     fetchMatchingWaiting();
-  }, []);
+  }, [status]);
   if (loading) return <div>Loading...</div>;
   if (error) return <div>error!! {String(error.message || error)}</div>;
   const matchingProjectList =
@@ -69,12 +70,12 @@ export default function ProjectMatchingList() {
       : matchingWaitingList?.filter(
           (item) => item?.categoryId === checkedCategory
         );
-  console.log('1', matchingWaitingList);
-  console.log(matchingProjectList);
+  console.log('지원', applyProjectList);
   const projectList = applyProjectList?.filter(
     (item) => item?.projectStatus === status
   );
   console.log('app', projectList);
+
   return (
     <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px] flex flex-col">
       <div className="mb-[11px] flex justify-between pr-[22px]">

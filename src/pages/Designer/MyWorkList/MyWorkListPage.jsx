@@ -109,9 +109,7 @@ export default function MyWorkListPage() {
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
                 <div className="flex items-center gap-[5px]">
-                  <p className="text-[13px] text-[#525466]">
-                    날짜 어떻게 가져올 지
-                  </p>
+                  <p className="text-[13px] text-[#525466]"></p>
                   <p className="text-[13px] text-[#525466] font-medium">
                     {' '}
                     {STATUS[item.status]}

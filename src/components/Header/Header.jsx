@@ -14,7 +14,7 @@ export default function Header() {
       <Link to="/" className="w-[85px] h-[17px]">
         <img src={morakLogo} alt="morakLogo" />
       </Link>
-      {!isLogin ? (
+      {isLogin ? (
         <div className="flex gap-[23px] ">
           <div className="flex gap-[21px] items-center">
             <Link to="/chat">

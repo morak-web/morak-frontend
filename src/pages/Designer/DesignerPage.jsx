@@ -24,7 +24,7 @@ function LeftSection() {
   const { fetchMyInfo, myInfo } = useMyInfo();
   useCallback(() => {
     fetchMyInfo();
-  }, []);
+  }, [fetchMyInfo]);
 
   return (
     <div className=" w-[30%] h-[710px] flex flex-col items-center gap-[35px] ">
