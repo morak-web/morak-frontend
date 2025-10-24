@@ -12,7 +12,7 @@ export default function SocialLoginPage() {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-64px)] bg-[#F2F3FA] flex justify-center items-center">
+    <div className="w-full min-h-[calc(100vh)] bg-[#F2F3FA] flex justify-center items-center">
       <div className="w-[471px] h-[244px] bg-white py-[39px] px-[50px] rounded-[10px] shadow-lg flex flex-col items-center justify-between">
         <img src={Logo} alt="logo" className="w-[135px] h-[27px]" />
         <form

@@ -1,12 +1,18 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from 'react-router-dom';
 
 // 홈페이지
 import HomePage from '../pages/HomePage/HomePage';
 
 // 채팅
 import ChatPage from '../pages/ChatPage/ChatPage.jsx';
+
 // 로그인, 회원가입 페이지
 import SocialLoginPage from '../pages/SocialLoginPage/SocialLoginPage.jsx';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
@@ -48,24 +54,47 @@ import MatchingSeeDetailPage from '../components/RequestList/Matching/MatchingSe
 import ProgressingSeeDetailPage from '../components/RequestList/Progressing/ProgressingSeeDetailPage.jsx';
 import DesignerPortfolioPage from '../components/RequestList/portfolio/DesignerPortfolioPage.jsx';
 
-export default function Router() {
-  const hasToken = () => !!localStorage.getItem('accessToken');
+/** 토큰 변경을 구독하는 훅: localStorage → React 상태로 반영 */
+function useAuthed() {
+  const [authed, setAuthed] = useState(!!localStorage.getItem('accessToken'));
 
-  // "/" 진입 시: 토큰 있으면 홈, 없으면 로그인
-  const AuthSwitch = () =>
-    hasToken() ? <HomePage /> : <Navigate to="/login" replace />;
+  useEffect(() => {
+    const sync = () => setAuthed(!!localStorage.getItem('accessToken'));
+    // 다른 탭에서 변경될 때
+    window.addEventListener('storage', sync);
+    // 같은 탭에서 토큰 저장 직후 알림 (AuthKakaoCallback 등에서 dispatch 필요)
+    window.addEventListener('auth', sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener('auth', sync);
+    };
+  }, []);
+
+  return authed;
+}
+
+export default function Router() {
+  const authed = useAuthed();
+
+  // "/"에서: 토큰 있으면 Home, 없으면 SocialLoginPage
+  const AuthSwitch = () => (authed ? <HomePage /> : <SocialLoginPage />);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<AuthSwitch />} />
-        <Route path="/login" element={<SocialLoginPage />} />
+
+        {/* /login으로 오면 한 곳으로 통일하여 /로 보냄 (선택 사항) */}
+        <Route path="/login" element={<Navigate to="/" replace />} />
+
         <Route path="/auth/kakao/callback" element={<AuthKakaoCallback />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/chat" element={<ChatPage />} />
+
+        {/* 의뢰 작성 */}
         <Route path="/request/category" element={<ChooseCategoryPage />} />
         <Route path="/request/write" element={<RequestWritePage />} />
-
         <Route path="/request/AI-question/:id" element={<AIRequestPage />} />
         <Route
           path="/request/requirement-summary/:id"
@@ -76,10 +105,9 @@ export default function Router() {
           element={<RequestWriteCompletePage />}
         />
 
-        {/* client  */}
+        {/* client */}
         <Route path="/client-page" element={<ClientPage />}>
           <Route index element={<Navigate to="request-list" replace />} />
-          {/* request-list */}{' '}
           <Route path="request-list" element={<RequestListPage />}>
             <Route index element={<Navigate to="writing" replace />} />
             <Route path="writing" element={<WritingPage />} />
@@ -96,7 +124,7 @@ export default function Router() {
             path="matching-detail/:id"
             element={<MatchingSeeDetailPage />}
           />
-          {/* progressing-deatil */}
+          {/* progressing-detail */}
           <Route
             path="designer-portfolio/:id"
             element={<DesignerPortfolioPage />}
@@ -107,6 +135,7 @@ export default function Router() {
           />
           <Route path="payment-list" element={<PaymentListPage />} />
         </Route>
+
         <Route
           path="/client-page/request-list/complete/final-feedback/:id"
           element={<FinalFeedbackPage />}
@@ -119,7 +148,6 @@ export default function Router() {
             path="project-matching-wait"
             element={<ProjectMatchingList />}
           />
-          {/* <Route path="project/:id" element={<MatchingDetailPage />} /> */}
           <Route path="project/:id" element={<MatchingDetailPage />} />
           <Route path="my-work-list" element={<MyWorkListPage />} />
           <Route
@@ -142,4 +170,5 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  return null; // 반드시 null 리턴
 };
