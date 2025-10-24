@@ -37,16 +37,16 @@ const TYPE = [
 const STATUS = [
   {
     title: '매칭중',
-    en: 'MATCHING',
+    en: 'PENDING',
   },
   {
     title: '작업중',
-    en: 'WORKING',
+    en: 'APPROVED',
   },
 ];
 
 export default function ProjectMatchingList() {
-  const [status, setStatus] = useState('MATCHING');
+  const [status, setStatus] = useState('PENDING');
   console.log(status);
   const [checkedCategory, setCheckedCategory] = useState(0);
   const [seePage, setSeePage] = useState(true);
@@ -70,11 +70,9 @@ export default function ProjectMatchingList() {
       : matchingWaitingList?.filter(
           (item) => item?.categoryId === checkedCategory
         );
-  console.log('지원', applyProjectList);
   const projectList = applyProjectList?.filter(
-    (item) => item?.projectStatus === status
+    (item) => item?.applicationStatus === status
   );
-  console.log('app', projectList);
 
   return (
     <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] py-[20px] pl-[30px] flex flex-col">
@@ -134,7 +132,7 @@ export default function ProjectMatchingList() {
             ))}
           </div>
         ) : (
-          <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+          <div className="overflow-y-auto max-h-[535px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
             {projectList?.map((item) => (
               <div key={item.projectId}>
                 <ApplyDetailCard {...item} />
@@ -145,7 +143,7 @@ export default function ProjectMatchingList() {
       </div>
       <button
         onClick={() => setSeePage(!seePage)}
-        className={`w-[full] font-bold mr-[40px] relative h-[31px] flex justify-end text-[14px] ${seePage ? 'text-[#7484FF]' : 'text-black'} cursor-pointer`}
+        className={`w-[full] font-normal mr-[40px] relative h-[31px] flex justify-end text-[15px] ${seePage ? 'text-[#7484FF]' : 'text-black'} cursor-pointer`}
       >
         {seePage ? '신청 프로젝트 목록 >' : '지원 가능 프로젝트 >'}
       </button>

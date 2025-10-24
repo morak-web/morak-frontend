@@ -7,14 +7,19 @@ import { useProject } from '../../../../context/ProjectContext';
 import noFileImg from '../../../../assets/Designer/no-file.png';
 
 function FilePreview({ url }) {
-  if (!url)
+  if (!url) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <img src={noFileImg} alt="no file" className="max-w-[50%] opacity-70" />
+      <div className="w-full h-full flex-col gap-[10px] flex items-center justify-center">
+        <img src={noFileImg} alt="no file" className="w-[200px] opacity-70" />
+        <p className="text-[18px] text-[#525466]">
+          아직 파일이 업로드되지 않았습니다!
+        </p>
       </div>
     );
+  }
 
-  const ext = url.split('?')[0].split('.').pop()?.toLowerCase();
+  const safeUrl = encodeURI(url); // ★ 공백/한글 인코딩
+  const ext = safeUrl.split('?')[0].split('.').pop()?.toLowerCase();
   const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].includes(
     ext
   );
@@ -22,11 +27,23 @@ function FilePreview({ url }) {
 
   if (isImage) {
     return (
-      <img src={url} alt="미리보기" className="w-full h-full object-contain" />
+      <img
+        src={safeUrl}
+        alt="미리보기"
+        className="w-full h-full object-contain"
+        onError={() => console.error('[preview] 이미지 로드 실패:', safeUrl)}
+      />
     );
   }
   if (isPdf) {
-    return <iframe title="PDF 미리보기" src={url} className="w-full h-full" />;
+    return (
+      <iframe
+        title="PDF 미리보기"
+        src={safeUrl}
+        className="w-full h-full"
+        onError={() => console.error('[preview] PDF 로드 실패:', safeUrl)}
+      />
+    );
   }
   return (
     <div className="w-full h-full flex items-center justify-center text-[#525466]">
@@ -54,7 +71,9 @@ export default function FinalFeedbackPage() {
     <MainLayout>
       <div className="bg-[#F2F3FA] py-[30px] w-full min-h-[calc(100vh-64px)] flex flex-col justify-center items-center">
         <div className="flex flex-col w-[95%] h-[780px] bg-white rounded-[11px] p-[26px] gap-[2%]">
-          <FilePreview url={finalResultFile?.fileUrl} />
+          <div className="w-full h-[360px]">
+            <FilePreview url={finalResultFile?.fileUrl} />
+          </div>
           <div className="flex justify-between h-[49%]">
             <div className="flex flex-col w-[48%] h-full justify-between gap-[10px]">
               <div className="flex flex-col gap-[10px] h-[100%]">
@@ -67,30 +86,19 @@ export default function FinalFeedbackPage() {
                   </p>
                 </div>
               </div>
-              {/* <div className="flex flex-col gap-[10px] h-[35%]">
-                <h1 className="text-[#6072FF] text-[20px]  font-medium">
-                  AI 요약
-                </h1>
-                <div className="overflow-y-auto max-h-[100%] custom-scrollbar pr-[20px]">
-                  <ul className="text-[16px] list-disc pl-[20px]">
-                    <li className="">
-                      "사용자 흐름에 맞춘 직관적 레이아웃과 낮은 시각 피로도를
-                      고려한 색상 구성입니다."
-                    </li>
-                    <li>"터치 편의성과 정보 전달 중심의 실용적인 UI입니다."</li>
-                    <li>"터치 편의성과 정보 전달 중심의 실용적인 UI입니다."</li>
-                    <li>"터치 편의성과 정보 전달 중심의 실용적인 UI입니다."</li>
-                    <li>"터치 편의성과 정보 전달 중심의 실용적인 UI입니다."</li>
-                  </ul>
-                </div>
-              </div> */}
             </div>
             <div className="flex flex-col h-full justify-between w-[48%]">
               <div className="h-[85%] flex flex-col gap-[10px]">
                 <h1 className="text-[20px] font-medium">디자이너 설명</h1>
                 <div className="overflow-y-auto max-h-[100%] custom-scrollbar pr-[20px]">
                   <p className="text-[#525466] text-[16px]">
-                    {finalResultFile?.description}
+                    {finalResultFile?.description ? (
+                      finalResultFile?.description
+                    ) : (
+                      <p className="text-[#52546683]">
+                        아직 설명이 업로드되지 않았습니다.
+                      </p>
+                    )}
                   </p>
                 </div>
               </div>

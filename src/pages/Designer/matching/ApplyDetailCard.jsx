@@ -10,15 +10,14 @@ const CATEGORY = {
 };
 export default function ApplyDetailCard(props) {
   const navigate = useNavigate();
-  // date
-  const start = new Date(props.appliedAt);
-  const end = new Date(props.expectedEndDate);
 
   return (
     <div className="bg-[#EAECF5] w-[100%] min-h-[230px] rounded-[10px] flex">
       {/* left content */}
-      <div className="w-[75%] px-[27px] py-[25px]">
-        <h1 className="text-[#525466] text-[18px] mb-[19px]">{props.title}</h1>
+      <div className="w-[75%] px-[27px] py-[25px] flex flex-col justify-between">
+        <h1 className="text-[#525466] text-[18px] mb-[19px] font-semibold">
+          {props.title}
+        </h1>
         <div className="text-[#525466] text-[13px] flex mb-[13px]">
           <div className="flex gap-[5px]">
             <p className="font-medium">예산</p>
@@ -27,7 +26,7 @@ export default function ApplyDetailCard(props) {
           <p className="mx-[19px]">|</p>
           <div className="flex gap-[5px]">
             <p className="font-medium">마감일 </p>
-            <p>{end.slice(0, 10).replaceAll('-', '.')}</p>
+            <p>{props?.dueDate?.slice(0, 10).replaceAll('-', '.')}</p>
           </div>
         </div>
         <div className="text-[#525466] text-[13px] flex flex-col">
@@ -36,7 +35,7 @@ export default function ApplyDetailCard(props) {
         </div>
         <div className="text-[#525466] text-[10px] flex gap-[5px] justify-end">
           <p>등록일자</p>
-          <p>{start.slice(0, 10).replaceAll('-', '.')}</p>
+          <p>{props?.appliedAt?.slice(0, 10).replaceAll('-', '.')}</p>
         </div>
         {/* map으로 처리하기 */}
         <div className="text-[#525466] text-[12px] flex gap-[7px]">

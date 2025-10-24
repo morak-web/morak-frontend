@@ -123,7 +123,12 @@ export default function ProgressingPage() {
                 <button
                   key={label}
                   onClick={() => {
-                    if (label === 'AI 피드백') {
+                    if (label === '최종 결과') {
+                      const id = item?.projectId;
+                      navigate(
+                        `/client-page/request-list/complete/final-feedback/${id}`
+                      );
+                    } else if (label === 'AI 피드백') {
                       setAIFeedbackModalOpen(true);
                     } else if (label === '중간 결과 / 피드백') {
                       setInterFeedbackModalOpen(true);
@@ -132,8 +137,7 @@ export default function ProgressingPage() {
                       navigate(`/client-page/working-detail/${id}`);
                     }
                   }}
-                  className={`w-[100%] h-[30px] bg-[#DFE1ED] text-[#525466] text-[13px] rounded-[14px] ${label === '최종 결과' ? 'opacity-40' : 'cursor-pointer'} ${label === 'AI 피드백' ? ' text-white' : ''}`}
-                  disabled={label === '최종 결과'}
+                  className={`w-[100%] h-[30px] text-[#525466] text-[13px] rounded-[14px]  ${label === '최종 결과' ? 'bg-[#6072FF] text-white cursor-pointer' : 'cursor-pointer bg-[#DFE1ED]'}  ${label === 'AI 피드백' ? ' text-white' : ''}  `}
                   style={
                     label === 'AI 피드백'
                       ? {

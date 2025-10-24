@@ -4,8 +4,7 @@ import apiClient from '../client';
 export const getResultFile = async (projectId, phase) => {
   try {
     const { data } = await apiClient.get(
-      `/api/projects/${projectId}/results?phase={phase}`,
-      { params: { phase } }
+      `/api/projects/${projectId}/results?phase=${encodeURIComponent(phase)}`
     );
     return data;
   } catch (e) {
