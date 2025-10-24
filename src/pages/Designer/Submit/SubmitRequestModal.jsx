@@ -1,88 +1,18 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import closeBtn from '../../../assets/RequestList/close-button.png';
 import folderBtn from '../../../assets/Designer/folder.png';
 import { useDesigner } from '../../../context/DesignerContext';
 import noFileImg from '../../../assets/Designer/no-file.png';
 
-const MAX_INLINE_FILE_SIZE = 3 * 1024 * 1024; // 3MB 이하면 base64로 저장
-
 export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
-  // 언마운트되어도 복원 가능하게 localStorage 사용
-  const STORAGE_KEY = useMemo(
-    () => `submit_result_draft_v1:${id ?? 'unknown'}`,
-    [id]
-  );
-
+  // ❗ 언마운트하지 않도록 early return 제거
   const [description, setDescription] = useState('');
-  const [file, setFile] = useState(null); // 실제 File 객체
-  const [previewUrl, setPreviewUrl] = useState(null); // ObjectURL
-  const [hydrated, setHydrated] = useState(false);
-  const [largeFileMeta, setLargeFileMeta] = useState(null);
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const { createResultFile } = useDesigner();
 
-  // -------- localStorage 유틸 --------
-  const saveLocal = (draft) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
-    } catch {}
-  };
-  const loadLocal = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  };
-  const clearLocal = () => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {}
-  };
-
-  const fileToDataURL = (f) =>
-    new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result);
-      r.onerror = rej;
-      r.readAsDataURL(f);
-    });
-  const dataURLToFile = (dataUrl, name, type) => {
-    try {
-      const [meta, b64] = dataUrl.split(',');
-      const mime =
-        type || meta.match(/:(.*?);/)?.[1] || 'application/octet-stream';
-      const bin = atob(b64);
-      const u8 = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-      return new File([u8], name || 'restored', { type: mime });
-    } catch {
-      return null;
-    }
-  };
-
-  // -------- 최초 마운트/ID 변경 시 복원 --------
-  useEffect(() => {
-    const saved = loadLocal();
-    if (saved) {
-      setDescription(saved.description ?? '');
-      if (saved.file?.inlined && saved.file?.dataUrl) {
-        const restored = dataURLToFile(
-          saved.file.dataUrl,
-          saved.file.name,
-          saved.file.type
-        );
-        if (restored) setFile(restored);
-      } else if (saved.file?.meta) {
-        setLargeFileMeta(saved.file.meta);
-      }
-    }
-    setHydrated(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [STORAGE_KEY]); // 라우트로 id 바뀌어도 해당 초안 복원
-
-  // -------- 미리보기 ObjectURL 관리 --------
+  // 파일 미리보기 URL 관리 (파일 바뀌면 이전 URL 해제)
   useEffect(() => {
     if (!file) {
       setPreviewUrl(null);
@@ -93,75 +23,15 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
-  // -------- 설명 변경 시 저장 --------
-  useEffect(() => {
-    if (!hydrated) return;
-    const saved = loadLocal() || {};
-    saveLocal({ ...saved, description, savedAt: new Date().toISOString() });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [description, hydrated]);
-
-  // -------- 파일 변경 시 저장 --------
-  useEffect(() => {
-    if (!hydrated) return;
-    (async () => {
-      const saved = loadLocal() || {};
-      if (!file) {
-        setLargeFileMeta(null);
-        saveLocal({ ...saved, file: null, savedAt: new Date().toISOString() });
-        return;
-      }
-      if (file.size <= MAX_INLINE_FILE_SIZE) {
-        const dataUrl = await fileToDataURL(file);
-        saveLocal({
-          ...saved,
-          file: {
-            inlined: true,
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            dataUrl,
-          },
-          savedAt: new Date().toISOString(),
-        });
-        setLargeFileMeta(null);
-      } else {
-        const meta = {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          note: '파일이 커서 메타만 저장됨. 다시 선택 필요',
-        };
-        saveLocal({
-          ...saved,
-          file: { inlined: false, meta },
-          savedAt: new Date().toISOString(),
-        });
-        setLargeFileMeta(meta);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [file, hydrated]);
-
-  // -------- 핸들러 --------
-  const onFileChange = (e) => setFile(e.target.files?.[0] ?? null);
-
   const onSubmit = async (e) => {
     e.preventDefault();
     const phase = 'MID';
     try {
-      if (!file && largeFileMeta) {
-        alert(
-          '큰 파일은 메타만 저장되어 있습니다. 실제 파일을 다시 선택해주세요.'
-        );
-        return;
-      }
       const created = await createResultFile(id, { phase, description, file });
-      console.log('결과물:', created);
       alert('결과물 제출 완료!');
-      // 성공 시 초안 삭제(원하면 유지도 가능)
-      clearLocal();
-      // onClose?.();
+      console.log('결과물:', created);
+      // 제출 후에도 값 유지하고 싶으면 state 비우지 않음
+      // onClose?.(); // 제출 후 닫고 싶으면 주석 해제
     } catch (e) {
       console.error(e);
       alert(
@@ -172,8 +42,10 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
     }
   };
 
+  const onFileChange = (e) => setFile(e.target.files?.[0] ?? null);
+
   return (
-    // 모달은 항상 마운트(라우트 이동 후 돌아와도 복원됨). 화면에만 숨김 처리.
+    // ✅ 언마운트 대신 display만 토글
     <div
       onClick={onClose}
       style={{ display: submitModalOpen ? 'flex' : 'none' }}
@@ -231,14 +103,6 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                         결과 파일을
                         <br /> 업로드해주세요!
                       </h1>
-                      {largeFileMeta && (
-                        <div className="text-xs text-gray-500 mt-2 text-center">
-                          {largeFileMeta.name} (
-                          {Math.round(largeFileMeta.size / 1024)} KB)
-                          <br />
-                          {largeFileMeta.note}
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
@@ -259,7 +123,6 @@ export default function SubmitRequestModal({ id, submitModalOpen, onClose }) {
                     accept=".png,application/pdf"
                     onChange={onFileChange}
                     className="z-10 absolute w-[22px] h-[22px] text-transparent cursor-pointer"
-                    title="파일 선택"
                   />
                   <button
                     type="button"

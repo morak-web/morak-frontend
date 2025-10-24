@@ -7,6 +7,7 @@ import userIcon from '../../../../assets/user-icon.png';
 
 // api
 import { useProject } from '../../../../context/ProjectContext';
+import { usePayment } from '../../../../context/PaymentContext';
 
 export default function ApplyDesignerListCard() {
   const [decisionById, setDecisionById] = useState({});
@@ -25,9 +26,16 @@ export default function ApplyDesignerListCard() {
     fetchApplyDesigner,
     applyDesigner: applicantList, // ← 배열 상태라고 가정
     approveDesignerApply,
+    fetchProjectDetail,
+    projectDetail,
   } = useProject();
-
-  // ✅ id가 있을 때만, 그리고 id/함수 변경 시 재조회
+  const { createdPayment } = usePayment();
+  const amount = projectDetail?.budgetEstimate;
+  console.log(amount);
+  useEffect(() => {
+    if (!projectId) return;
+    fetchProjectDetail(projectId).catch(() => {});
+  }, [projectId, fetchProjectDetail]);
   useEffect(() => {
     if (!projectId) return;
     fetchApplyDesigner(projectId).catch((e) => {
@@ -63,6 +71,17 @@ export default function ApplyDesignerListCard() {
               Number(applicationId)
             );
             console.log('[approveDesignerApply] ok:', res);
+            if (!res) return null;
+            try {
+              const pay = await createdPayment({
+                projectId: Number(projectId),
+                amount: projectDetail?.budgetEstimate,
+              });
+              console.log(pay);
+            } catch (e) {
+              console.error(e);
+              return e;
+            }
             return res;
           } catch (e) {
             console.error(
@@ -72,7 +91,7 @@ export default function ApplyDesignerListCard() {
             console.error('[approveDesignerApply] data:', e?.response?.data);
             console.error('[approveDesignerApply] sent params:', {
               projectId: Number(projectId),
-              applicationId: Number(applicationId),
+              applicationId: Number(amount),
             });
             alert(
               e?.response?.data?.message ||
@@ -127,23 +146,24 @@ export default function ApplyDesignerListCard() {
                   </div>
                 </div>
               </div>
+              <div className="w-full h-full flex flex-col justify-between">
+                <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
+                  <p className="text-[12px] text-[#525466] text-center">
+                    {item?.designerIntro ?? ''}
+                  </p>
+                </div>
 
-              <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
-                <p className="text-[12px] text-[#525466] text-center">
-                  {item?.designerIntro ?? ''}
-                </p>
+                <button
+                  className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
+                  onClick={() => {
+                    const dId = item?.designerId;
+                    if (!dId) return;
+                    navigate(`/client-page/designer-portfolio/${dId}`);
+                  }}
+                >
+                  포트폴리오 보기
+                </button>
               </div>
-
-              <button
-                className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
-                onClick={() => {
-                  const dId = item?.designerId;
-                  if (!dId) return;
-                  navigate(`/client-page/designer-portfolio/${dId}`);
-                }}
-              >
-                포트폴리오 보기
-              </button>
             </div>
 
             {/* right content */}
