@@ -101,14 +101,14 @@ export default function CompletePage() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-[7px] mb-[7px]">
+              {/* <div className="flex flex-col gap-[7px] mb-[7px]">
                 <div className="flex justify-between">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
                     요구사항 요약
                   </h1>
                 </div>
                 <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
-              </div>
+              </div> */}
             </div>
             {/* button */}
             <div className="grid grid-cols-2 gap-x-2 gap-y-2  px-[5%]">

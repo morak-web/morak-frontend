@@ -91,9 +91,6 @@ export default function ProgressingPage() {
                   </h1>
                   <div className="flex items-end gap-[6px]">
                     <p className="text-[#525466] text-[12px]">{item.title}</p>
-                    <p className="text-[#525466] text-[10px]">
-                      {item.createdAt.slice(0, 10).replaceAll('-', '.')}
-                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-[7px] items-end">
@@ -105,16 +102,19 @@ export default function ProgressingPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-[7px]  mb-[7px]">
-                <div className="flex justify-between">
+              <div className="flex justify-between gap-[7px]  mb-[7px]">
+                <div className="flex flex-col gap-[7px]">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
-                    요구사항 요약
+                    기간
                   </h1>
-                  <h1 className="text-[#525466] text-[14px] font-semibold">
-                    D - 75
-                  </h1>
+                  <p className="text-[#525466] text-[12px]">
+                    {' '}
+                    {item.createdAt.slice(0, 10).replaceAll('-', '.')}
+                  </p>
                 </div>
-                <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
+                <h1 className="text-[#525466] text-[14px] font-semibold">
+                  D - 37
+                </h1>
               </div>
             </div>
             {/* button */}

@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useProject } from '../../../context/ProjectContext';
 import { useDesigner } from '../../../context/DesignerContext';
 
 import backIcon from '../../../assets/RequestList/RequestDetail/back-icon.png';
 import moneyIcon from '../../../assets/Designer/matching/money.png';
 import timeIcon from '../../../assets/Designer/matching/time.png';
+
 const CATEGORY = {
   1: '웹사이트',
   2: '앱',
@@ -14,33 +15,76 @@ const CATEGORY = {
   5: '그래픽/영상',
   6: '기타',
 };
+
 export default function MatchingDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [apply, setApply] = useState(false);
+
   const { designerInfo, projectApply } = useDesigner();
   const { projectDetail, fetchProjectDetail } = useProject();
+
+  // 서버 응답을 여기 저장 (응답 객체 or boolean)
+  const [appliedLocal, setAppliedLocal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
   useEffect(() => {
     fetchProjectDetail(id);
-  }, []);
+  }, [id, fetchProjectDetail]);
+
+  // 서버에서 이미 지원 여부가 내려온다면 여기서 잡아줌 (필드명은 서비스에 맞게 조정)
+  const appliedFromServer = useMemo(() => {
+    const s =
+      projectDetail?.applicationStatus ??
+      projectDetail?.status ??
+      (projectDetail?.applied ? 'APPLIED' : '');
+    return String(s || '').toUpperCase() === 'APPLIED';
+  }, [projectDetail]);
+
+  const isApplied = appliedFromServer || appliedLocal;
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (isApplied || submitting) return;
+
     const designerId = designerInfo?.id;
-    console.log(designerId);
+    if (!designerId) {
+      alert('디자이너 정보가 없습니다.');
+      return;
+    }
+
     try {
-      const crated = await projectApply(id, { designerId: designerId });
-      alert('지원하기 완료');
+      setSubmitting(true);
+      const crated = await projectApply(id, { designerId }); // ← 오타 유지 금지
+      // 응답 status가 'applied' 라고 했으니 대소문자 맞춰서 체크
+      const ok = String(crated?.status || '').toUpperCase() === 'APPLIED';
+      if (ok) {
+        setAppliedLocal(true); // 버튼 비활성화
+        alert('지원하기 완료');
+      } else {
+        // 혹시 다른 상태면 상세 로그
+        console.log('[applyProject] unexpected status:', crated);
+      }
+      // 최신 상태 갱신 (서버에서 APPLIED로 바뀌었으면 UI 반영)
+      fetchProjectDetail(id);
     } catch (e) {
-      console.error('[applyProject] status:', e.response?.status);
-      console.error('[applyProject] data:', e.response?.data);
-      console.error('[applyProject] sent payload:', payload);
-      throw e;
+      const msg = e?.response?.data?.error || e?.message;
+      if (typeof msg === 'string' && msg.includes('이미 지원')) {
+        setAppliedLocal(true);
+        alert('이미 지원한 프로젝트입니다.');
+      } else {
+        console.error(e);
+        alert('지원 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
+
   const start = new Date(projectDetail?.createdAt);
   const end = new Date(projectDetail?.expectedEndDate);
   const ms = end - start;
   const daysFloor = Math.floor(ms / 86400000);
+
   return (
     <form
       onSubmit={onSubmit}
@@ -54,35 +98,41 @@ export default function MatchingDetailPage() {
         <img src={backIcon} alt="backIcon" className="w-[12px] h-[12px]" />
         프로젝트 매칭 대기
       </button>
+
       {/* header */}
       <div className="flex justify-between items-start mt-[15px] mx-[36px] mb-[9px]">
         <div className="flex flex-col flex-1 justify-start ">
           <h1 className="text-[20px] font-semibold mb-[15px]">
             {projectDetail?.title}
           </h1>
-          {/* map으로 수정 */}
           <div className="text-[#525466] text-[13px] flex gap-[7px]">
             <div className="bg-[#EAECF5] rounded-[10px] px-[7px] py-[4px]">
               {CATEGORY[projectDetail?.categoryId]}
             </div>
           </div>
         </div>
+
         <div className="flex flex-col text-[#525466] text-[12px] font-light items-end justify-between gap-[10px]">
           <div className="flex gap-[10px]">
             <p>등록일자</p>
-            <p>{projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')}</p>
+            <p>
+              {projectDetail?.createdAt?.slice(0, 10)?.replaceAll('-', '.')}
+            </p>
           </div>
           <button
-            onClick={() => {
-              setApply(true);
-            }}
             type="submit"
-            className={`${apply ? 'bg-gray-200' : 'bg-[#668df7] text-white'}  w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] cursor-pointer`}
+            disabled={isApplied || submitting}
+            className={`w-[80px] h-[30px] flex justify-center items-center text-[14px] py-[10px] rounded-[10px] ${
+              isApplied || submitting
+                ? 'bg-gray-200 cursor-not-allowed'
+                : 'bg-[#668df7] text-white'
+            }`}
           >
-            지원하기
+            {isApplied ? '지원 완료' : submitting ? '지원 중…' : '지원하기'}
           </button>
         </div>
       </div>
+
       {/* money, time */}
       <div className="flex flex-col gap-[17px] py-[16px] border-b-[1px] border-t-[1px] border-[#52546652] mb-[14px] mx-[36px]">
         <div className="flex items-center">
@@ -95,7 +145,7 @@ export default function MatchingDetailPage() {
             예산
           </p>
           <p className="text-[#525466] text-[13px] font-light">
-            {projectDetail?.budgetEstimate.toLocaleString()}
+            {projectDetail?.budgetEstimate?.toLocaleString?.()}
           </p>
         </div>
         <div className="flex items-center">
@@ -107,77 +157,25 @@ export default function MatchingDetailPage() {
           <p className="text-[#525466] text-[13px] font-medium mr-[5px]">
             에상 기간
           </p>
-          <p className="text-[#525466] text-[13px] font-light">{daysFloor}일</p>
+          <p className="text-[#525466] text-[13px] font-light">
+            {projectDetail?.createdAt?.slice(0, 10).replaceAll('-', '.')} -{' '}
+            {projectDetail?.dueDate?.slice(0, 10).replaceAll('-', '.')}
+          </p>
         </div>
       </div>
+
       <div className="overflow-y-auto custom-scrollbar h-[430px] mr-[40px] ">
-        {/* content */}
         <div className="mx-[36px] pb-[14px] mb-[14px] border-b-[1px] border-[#52546652]">
           <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
             업무 내용
           </h1>
           <section className="mb-2 flex flex-col gap-[10px]">
-            {/* <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - 주요 기능
-              </h2>
-              <p className="text-[13px] text-[#525466] px-[10px]">
-                [ 사용자의 건강 데이터를 통합 관리하고, 목표 달성을 지원하는
-                퍼스널 헬스케어 플랫폼 ]
-              </p>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>건강 상태 트래킹 (예: 수면, 운동, 심박수, 혈압 등)</li>{' '}
-                <li>건강 목표 설정 및 진행률 확인</li>
-                <li>맞춤형 건강 피드백 및 알림 제공</li>
-                <li>식단 및 물 섭취 기록 기능</li>
-                <li>
-                  타겟 사용자: 20~50대 남녀, 건강을 꾸준히 관리하고자 하는
-                  일반인 및 헬스케어 관심층
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - 톤앤매너
-              </h2>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>
-                  밝고 신뢰감 있는 색감 사용 (예: 화이트 배경 중심에 블루/민트
-                  계열 포인트 컬러)
-                </li>
-                <li>너무 병원스럽지 않되, 전문성과 안정감이 느껴지는 스타일</li>
-                <li>전체적으로 클린하고 여백이 잘 살아있는 UI 요청드립니다</li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold mb-1 text-[#525466d3]">
-                - UX 원칙
-              </h2>
-              <ul className="list-disc pl-7 space-y-1 text-[13px] text-[#525466]">
-                <li>
-                  사용자가 처음 접해도 쉽게 이해하고 사용할 수 있도록 직관적인
-                  구조로 설계해주세요
-                </li>
-                <li>
-                  정보의 계층 구조가 명확하고, 손가락 조작(터치/스크롤)이
-                  자연스러운 흐름으로 구성되어야 합니다
-                </li>
-                <li>
-                  자주 사용하는 기능은 하단 탭바 또는 메인화면 상단에 고정하여
-                  접근성을 높여주세요
-                </li>
-                <li>
-                  피드백이나 알림은 부드러운 애니메이션 또는 아이콘 강조로
-                  거부감 없이 전달되게 구성 바랍니다
-                </li>
-              </ul>
-            </div> */}
             <p className="text-[#525466] text-[13px] font-light">
               {projectDetail?.userRequirements}
             </p>
           </section>
         </div>
-        {/* condition */}
+
         <div className="mx-[36px]">
           <h1 className="text-[#525466] text-[16px] font-bold mb-[18px]">
             모집 요건

@@ -34,7 +34,7 @@ export default function MatchingPage() {
     <div className="w-full h-[470px] flex flex-col gap-[15px]">
       {matchingData.map((item) => (
         <div
-          className="w-[100%] min-h-[230px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
+          className="w-[100%] min-h-[225px] py-[16px] px-[10px] bg-[#F7F8FC] rounded-[30px] flex"
           key={item.title}
         >
           {/* left content */}
@@ -76,16 +76,16 @@ export default function MatchingPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-[7px]">
-                <div className="flex justify-between">
+              <div className="flex justify-between gap-[7px]  mb-[7px]">
+                <div className="flex flex-col gap-[7px]">
                   <h1 className="text-[#525466] text-[14px] font-semibold">
-                    요구사항 요약
+                    기간
                   </h1>
-                  {/* <h1 className="text-[#525466] text-[14px] font-semibold">
-                    예상 기간 일
-                  </h1> */}
+                  <p className="text-[#525466] text-[12px]">
+                    {' '}
+                    {item.createdAt.slice(0, 10).replaceAll('-', '.')}
+                  </p>
                 </div>
-                <p className="text-[#525466] text-[12px]">{item.aiSummary}</p>
               </div>
             </div>
             <div className="flex gap-[10px] justify-center">
