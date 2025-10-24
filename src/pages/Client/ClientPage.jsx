@@ -1,6 +1,6 @@
 // ClientPage.jsx
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import { useMyInfo } from '../../context/MyInfoContext';
 import userIcon from '../../assets/morak2.png';
@@ -11,17 +11,14 @@ const ASIDE_BAR = [
   { title: '결제 내역', link: 'payment-list' },
 ];
 
-const LINK_HEIGHT = 50; // px
-const LINK_GAP = 8; // px (gap-[8px])
-
 function LeftSide() {
   const location = useLocation();
   const { fetchMyInfo, myInfo } = useMyInfo();
 
   const [clickedBar, setClickedBar] = useState('내 의뢰 목록');
-  const [reveal, setReveal] = useState(false); // 초기 등장 애니메이션
-  const [pulseIdx, setPulseIdx] = useState(null); // 클릭 파동 위치
-  const [navBump, setNavBump] = useState(false); // 내비 전체 살짝 튀는 효과
+  const [reveal, setReveal] = useState(false);
+  const [pulseIdx, setPulseIdx] = useState(null);
+  const [navBump, setNavBump] = useState(false);
 
   // 현재 라우트에 따라 자동 선택
   useEffect(() => {
@@ -32,7 +29,11 @@ function LeftSide() {
     if (match) setClickedBar(match.title);
   }, [location.pathname]);
 
+  // ❗ fetchMyInfo 1회만 호출 (함수 아이디 변동으로 인한 루프 방지)
+  const calledRef = useRef(false);
   useEffect(() => {
+    if (calledRef.current) return;
+    calledRef.current = true;
     fetchMyInfo?.();
   }, [fetchMyInfo]);
 
@@ -41,21 +42,12 @@ function LeftSide() {
     return () => clearTimeout(t);
   }, []);
 
-  const activeIndex = useMemo(
-    () =>
-      Math.max(
-        0,
-        ASIDE_BAR.findIndex((i) => i.title === clickedBar)
-      ),
-    [clickedBar]
-  );
-
   const handleClick = (title, idx) => {
     setClickedBar(title);
     setPulseIdx(idx);
     setNavBump(true);
-    setTimeout(() => setNavBump(false), 180); // 살짝 눌림/튀김
-    setTimeout(() => setPulseIdx(null), 650); // ping 종료 후 제거
+    setTimeout(() => setNavBump(false), 180);
+    setTimeout(() => setPulseIdx(null), 650);
   };
 
   return (
@@ -68,7 +60,6 @@ function LeftSide() {
       <div
         className={`bg-white rounded-[19px] w-[80%] h-[250px] flex flex-col items-center pt-[26px] shadow-sm`}
       >
-        {/* 로딩 스켈레톤 */}
         {!myInfo ? (
           <div className="flex flex-col items-center w-full animate-pulse">
             <div className="w-[80px] h-[80px] lg:w-[127px] lg:h-[127px] rounded-full bg-[#eef1f7]" />
@@ -100,7 +91,7 @@ function LeftSide() {
       {/* 사이드 내비 */}
       <div
         className={`relative flex flex-col 2xl:pr-[20%] gap-[8px]
-                    transition-transform duration-200 ${navBump ? 'scale-[0.995]' : 'scale-100'}`}
+                    transition-transform duration-200`}
       >
         {ASIDE_BAR.map((item, idx) => {
           const active = item.title === clickedBar;
@@ -131,7 +122,7 @@ function FadedOutlet({ triggerKey }) {
     setReveal(false);
     const t = setTimeout(() => setReveal(true), 20);
     return () => clearTimeout(t);
-  }, [triggerKey]); // ← pathname이 아니라 "섹션 키"에만 반응
+  }, [triggerKey]);
   return (
     <div
       className={`w-full h-full transition-all duration-500 ease-out
@@ -147,11 +138,11 @@ export default function ClientPage() {
   const [reveal, setReveal] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setReveal(true), 60); // 초기 페이드
+    const t = setTimeout(() => setReveal(true), 60);
     return () => clearTimeout(t);
   }, []);
 
-  // ✅ 섹션 키: 사이드바 항목 중 현재 경로에 포함되는 상위 경로만 추출
+  // 섹션 키: 사이드바 항목 중 현재 경로에 포함되는 상위 경로
   const sectionKey = useMemo(() => {
     const normalize = (l) => (l.startsWith('/') ? l : `/${l}`);
     const match = ASIDE_BAR.map((i) => normalize(i.link)).find((seg) =>
@@ -160,7 +151,6 @@ export default function ClientPage() {
     return match || 'other';
   }, [location.pathname]);
 
-  // 요청: request-list 상단 카운트 바는 애니메이션 없이, 아래 카드만 내부에서 처리
   const isRequestList = sectionKey.includes('/request-list');
 
   return (
@@ -174,10 +164,8 @@ export default function ClientPage() {
             style={{ transitionDelay: reveal ? '80ms' : '0ms' }}
           >
             {isRequestList ? (
-              // ⛔️ request-list는 여기서 애니메이션 X (상단 바 고정)
               <Outlet />
             ) : (
-              // ✅ 그 외 섹션: "섹션이 바뀔 때만" 애니메이션 1번
               <FadedOutlet triggerKey={sectionKey} />
             )}
           </div>

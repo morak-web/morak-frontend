@@ -189,7 +189,6 @@ export default function DesignerRegisterPage() {
         </div>
 
         <section className="w-[100%] flex justify-between items-center">
-          {/* 로컬 초안 삭제 버튼(선택) */}
           <button
             type="button"
             onClick={() => {
@@ -200,9 +199,7 @@ export default function DesignerRegisterPage() {
               setIntro('');
             }}
             className="text-[13px] text-red-500 underline"
-          >
-            로컬 초안 삭제
-          </button>
+          ></button>
 
           <button
             type="submit"

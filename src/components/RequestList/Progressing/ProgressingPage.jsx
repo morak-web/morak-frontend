@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import designerImg from '../../../assets/RequestList/designer1.png';
+import designerImg from '../../../assets/morak-designer.png';
 import AIBtn from '../../../assets/RequestList/btn-style.png';
 
 import AIFeedBackPage from '../../../pages/Client/RequestListPage/AIFeedbackPage/AIFeedBackPage';
@@ -73,7 +73,7 @@ export default function ProgressingPage() {
           {/* left content */}
           <div className="w-[38%] py-[10px] px-[6%] flex flex-col items-center justify-between border-r-[1px] border-[#D9D9D9]">
             <div>
-              <div className="flex gap-[20px]">
+              <div className="flex gap-[10px]">
                 <img
                   src={designerImg}
                   alt="designerImg"
@@ -86,11 +86,20 @@ export default function ProgressingPage() {
                     </span>{' '}
                     님과의 프로젝트
                   </h1>
+                  <h1 className="text-center w-[60px] text-[10px] h-[14px] bg-white rounded-[3px]">
+                    웹디자인
+                  </h1>
                 </div>
               </div>
               <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
                 <p className="text-[12px] text-[#525466] text-center">
-                  {item?.designer?.designerIntro}
+                  {item?.designer?.designerIntro
+                    ? ''
+                    : '사용자 여정 분석을 바탕으로 정보 구조를 설계하고, Figma로 와이어프레임→프로토타입→하이파이까지 빠르게 전달합니다.디자인 시스템을 구축해 일관성과 확장성을 확보하는 것을 좋아합니다. 협업 툴: Figma, Zeplin, Notion, Jira / 핸드오프 경험 다수.'.slice(
+                        0,
+                        80
+                      )}
+                  ...
                 </p>
               </div>
             </div>

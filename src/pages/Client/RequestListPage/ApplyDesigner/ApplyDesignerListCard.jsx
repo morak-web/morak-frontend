@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import YesIcon from '../../../../assets/RequestList/yes-icon.png';
 import NoIcon from '../../../../assets/RequestList/no-icon.png';
 import approveIcon from '../../../../assets/RequestList/approve-icon.png';
-import userIcon from '../../../../assets/user-icon.png';
+import designerImg from '../../../../assets/morak-designer.png';
 
 // api
 import { useProject } from '../../../../context/ProjectContext';
@@ -98,39 +98,35 @@ export default function ApplyDesignerListCard() {
           >
             {/* left content */}
             <div className="w-[50%] py-[20px] px-[6%] flex flex-col items-center border-r-[1px] border-[#D9D9D9]">
-              <div className="flex gap-[20px]">
-                <img
-                  src={userIcon}
-                  alt="designerImg"
-                  className="w-[53px] h-[53px] mb-[11px]"
-                />
-                <div className="flex flex-col gap-[5px]">
-                  <h1 className="text-[12px] font-light">
-                    <span className="text-[15px] font-semibold">
-                      {item?.name ?? '이름 미상'}
-                    </span>{' '}
-                    님과의 프로젝트
-                  </h1>
-                  <div className="flex gap-[7px]">
-                    {(item?.interestedIn ?? '')
-                      .split(',')
-                      .filter(Boolean)
-                      .slice(0, 2)
-                      .map((chip) => (
-                        <div
-                          className="text-[#525466] rounded-[3px] text-[10px] bg-white px-[5px] py-[2px]"
-                          key={chip}
-                        >
-                          {chip}
-                        </div>
-                      ))}
-                    <p className="text-[#525466] text-[10px]">
-                      {(item?.interestedIn ?? '').split(',').filter(Boolean)
-                        .length > 2
-                        ? '...'
-                        : ''}
-                    </p>
+              <div>
+                <div className="flex gap-[10px]">
+                  <img
+                    src={designerImg}
+                    alt="designerImg"
+                    className="w-[53px] h-[53px] mb-[11px]"
+                  />
+                  <div className="flex flex-col gap-[5px] mt-[10px]">
+                    <h1 className="text-[12px] font-light">
+                      <span className="text-[15px] font-semibold">
+                        {item?.designer?.name ?? '김다은'}
+                      </span>{' '}
+                      님과의 프로젝트
+                    </h1>
+                    <h1 className="text-center w-[60px] text-[10px] h-[14px] bg-white rounded-[3px]">
+                      웹디자인
+                    </h1>
                   </div>
+                </div>
+                <div className="text-[#525466] text-[12px] mb-[12px] flex flex-col items-center text-center gap-[10px]">
+                  <p className="text-[12px] text-[#525466] text-center">
+                    {item?.designer?.designerIntro
+                      ? ''
+                      : '사용자 여정 분석을 바탕으로 정보 구조를 설계하고, Figma로 와이어프레임→프로토타입→하이파이까지 빠르게 전달합니다.디자인 시스템을 구축해 일관성과 확장성을 확보하는 것을 좋아합니다. 협업 툴: Figma, Zeplin, Notion, Jira / 핸드오프 경험 다수.'.slice(
+                          0,
+                          90
+                        )}
+                    ...
+                  </p>
                 </div>
               </div>
               <div className="w-full h-full flex flex-col justify-between">
