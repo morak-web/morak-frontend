@@ -6,9 +6,10 @@ import posIcon from '../../../assets/RequestWrite/POS-icon.png';
 import graphicIcon from '../../../assets/RequestWrite/graphic-icon.png';
 import moreIcon from '../../../assets/RequestWrite/more-icon.png';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useProject } from '../../../context/ProjectContext';
+// 굳이 create/update 불러올 필요 없음 (여기선 서버호출 X)
+// import { useProject } from '../../../context/ProjectContext';
 
 const CATEGORY = [
   { title: '웹사이트', icon: websiteIcon, id: 1 },
@@ -19,18 +20,14 @@ const CATEGORY = [
   { title: '기타', icon: moreIcon, id: 6 },
 ];
 
-// userRequirements가 비면 400이 나므로 최소 초안 문구를 보냄
-const DRAFT_REQUIREMENTS_FALLBACK =
-  '(draft) 사용자 요구사항은 다음 단계에서 상세하게 작성합니다.';
-
 export default function ChooseCategoryPage() {
-  const [isClicked, setIsClicked] = useState(''); // 선택된 타이틀(하이라이트)
-  const [categoryId, setCategoryId] = useState(null); // 숫자 ID
+  const [isClicked, setIsClicked] = useState('');
+  const [categoryId, setCategoryId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const navigate = useNavigate();
-  const { create } = useProject();
 
-  // 로컬 저장값 복원 (있다면)
+  // 로컬 선택 복원
   useEffect(() => {
     const savedCategoryId = Number(
       localStorage.getItem('draftCategoryId') || 0
@@ -46,46 +43,19 @@ export default function ChooseCategoryPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!categoryId || submitting) return;
+    if (!categoryId || submitting || submittingRef.current) return;
 
+    submittingRef.current = true;
+    setSubmitting(true);
     try {
-      setSubmitting(true);
-
-      // 로컬에 임시 요구사항이 있으면 우선 사용 (비어있으면 무시)
-      const draftReq = (
-        localStorage.getItem('draftUserRequirements') || ''
-      ).trim();
-      const userRequirements =
-        draftReq.length > 0 ? draftReq : DRAFT_REQUIREMENTS_FALLBACK;
-
-      // 서버에 프로젝트 초안 생성 (필수값 채워서 전송)
-      const created = await create({
-        categoryId: Number(categoryId),
-        userRequirements, // ✅ 필수 필드 채워서 보냄
-      });
-
-      // 생성 결과에서 projectId를 가져와 로컬에 저장
-      const projectId = created?.id ?? created?.projectId ?? null;
-      if (projectId == null) {
-        throw new Error('프로젝트 ID를 확인할 수 없습니다.');
-      }
-
-      localStorage.setItem('draftProjectId', String(projectId));
+      // 서버 호출 없이 로컬만 저장
       localStorage.setItem('draftCategoryId', String(categoryId));
       localStorage.setItem('draftSavedAt', new Date().toISOString());
 
-      // 다음 단계로 이동 (라우팅에 따라 필요시 '/request/write/:id'로 변경)
-      navigate('/request/write');
-      // navigate(`/request/write/${projectId}`);
-    } catch (err) {
-      console.error(err);
-      const msg =
-        err?.response?.data?.details ||
-        err?.response?.data?.error ||
-        err?.message ||
-        '프로젝트 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-      alert(msg);
+      // 작성 페이지에서 "초안이 없으면 1회만 create" 로직이 실행됨
+      navigate('/request/write'); // or `/request/write/${draftId}` 구조면 거기에 맞춰 이동
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   };
@@ -111,7 +81,7 @@ export default function ChooseCategoryPage() {
                 } bg-[#F7F8FC] rounded-t-[20px] cursor-pointer hover:shadow-[0_0_7px_5px_#BDCFFF] flex flex-col justify-between items-start`}
                 onClick={() => {
                   setIsClicked(item.title);
-                  setCategoryId(item.id); // 숫자 ID 저장
+                  setCategoryId(item.id);
                 }}
               >
                 <h2 className="text-[16px] pl-[19px] mt-[12px]">

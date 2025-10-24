@@ -1,4 +1,4 @@
-// projectDetail
+// ProjectContext.jsx
 import { createContext, useContext, useState, useCallback } from 'react';
 import { getProjectDetail } from '../api/client/projectDetailApi';
 import { getProjectList } from '../api/client/projectListApi';
@@ -15,35 +15,38 @@ import {
   approveApply,
 } from '../api/client/applyDesignerListApi';
 
-// 컨텍스트 생성
 const ProjectContext = createContext(null);
 
-// Provider 컴포넌트
 export function ProjectProvider({ children }) {
-  // Project Detail
   const [projectDetail, setProjectDetail] = useState(null);
-  // Project List
   const [projectList, setProjectList] = useState([]);
+  const [listVersion, setListVersion] = useState(0); // ✅ 목록 무효화 트리거
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // 결과 파일
+
   const [midResultFile, setMidResultFile] = useState('');
   const [finalResultFile, setFinalResultFile] = useState('');
-  // project create
+
   const [currentData, setCurrentData] = useState(null);
   const [responseData, setReponseData] = useState(null);
-  // client feedback
+
   const [midFeedback, setMidFeedback] = useState(null);
   const [finalFeedback, setFinalFeedback] = useState(null);
-  // AI 질문 조회
+
   const [AIQuestionList, setAIQuestionList] = useState(null);
-  // AI 질문에 대한 대답
   const [AIResponse, setAIResponse] = useState(null);
-  // 지원한 디자이너 리스트
+
   const [applyDesigner, setApplyDesigner] = useState(null);
 
-  // --------------------[ GET ]------------------------
-  // 상세 조회
+  const removeFromProjectListById = useCallback((targetId) => {
+    setProjectList((prev) =>
+      Array.isArray(prev)
+        ? prev.filter((p) => String(p?.id ?? p?.projectId) !== String(targetId))
+        : prev
+    );
+  }, []);
+
+  // ---------- GET ----------
   const fetchProjectDetail = useCallback(async (projectId) => {
     if (!projectId) return null;
     setLoading(true);
@@ -61,18 +64,17 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // 프로젝트 리스트 item 정보
   const fetchProjectList = useCallback(async (status) => {
     if (!status) return null;
     setLoading(true);
     setError(null);
     try {
       const data = await getProjectList(status);
-      setProjectList(data);
+      setProjectList(Array.isArray(data) ? data : []);
       return data;
     } catch (e) {
       setError(e);
-      setProjectList(null);
+      setProjectList([]);
       return null;
     } finally {
       setLoading(false);
@@ -96,7 +98,6 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // AI 질문 조회
   const fetchAIQuestionList = useCallback(async (projectId) => {
     try {
       const data = await getAIQuestionList(projectId);
@@ -108,12 +109,10 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // 지원한 디자이너
   const fetchApplyDesigner = useCallback(async (projectId) => {
     try {
       const data = await applyDesignerList(projectId);
       setApplyDesigner(data);
-      console.log(data);
       return data;
     } catch (e) {
       console.error(e);
@@ -121,9 +120,7 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // ----------------------------[ POST ]--------------------------
-
-  // 요청 승인
+  // ---------- POST ----------
   const approveDesignerApply = useCallback(async (projectId, applicationId) => {
     try {
       const data = await approveApply(projectId, applicationId);
@@ -134,7 +131,6 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // 프로젝트 생성
   const create = useCallback(async (payload) => {
     if (!payload) return null;
     setLoading(true);
@@ -146,35 +142,29 @@ export function ProjectProvider({ children }) {
       return data;
     } catch (e) {
       console.error(e);
+      setError(e);
       return null;
+    } finally {
+      setLoading(false);
     }
   }, []);
-  //
 
-  // 클라이언트 피드백
   const createFeedback = useCallback(async (projectId, payload) => {
     try {
-      if (payload['phase'] === 'MID') {
-        const data = await createClientFeedback(projectId, payload);
-        setMidFeedback(data);
-        return data;
-      } else if (payload['phase'] === 'FINAL') {
-        const data = await createClientFeedback(projectId, payload);
-        setFinalFeedback(data);
-        return data;
-      }
+      const data = await createClientFeedback(projectId, payload);
+      if (payload?.phase === 'MID') setMidFeedback(data);
+      if (payload?.phase === 'FINAL') setFinalFeedback(data);
+      return data;
     } catch (e) {
       console.error(e);
       return null;
     }
   }, []);
 
-  // AI 질문 대답
   const createResponse = useCallback(async (projectId, payload) => {
     try {
       const data = await createResponseAIQuestion(projectId, payload);
       setAIResponse(payload);
-      console.log('data', data);
       return data;
     } catch (e) {
       console.error(e);
@@ -182,16 +172,32 @@ export function ProjectProvider({ children }) {
     }
   }, []);
 
-  // ===============[PATCH]====================
-  const patchNewProject = useCallback(async (projectId) => {
-    try {
-      const data = await submitNewProject(projectId);
-      return data;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  }, []);
+  // ---------- PATCH ----------
+  // A) 기존 함수: 제출 후 컨텍스트 목록에서 제거
+  const patchNewProject = useCallback(
+    async (projectId) => {
+      try {
+        const updated = await submitNewProject(projectId);
+        removeFromProjectListById(projectId);
+        // 목록 리패치 트리거
+        setListVersion((v) => v + 1);
+        return updated;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    },
+    [removeFromProjectListById]
+  );
+
+  // B) 새로운 편의 함수(권장): 제출 + 동기화 (RequirementSummaryPage에서 이걸 우선 사용)
+  const submitAndSync = useCallback(
+    async (projectId) => {
+      const res = await patchNewProject(projectId); // 위 로직 재사용
+      return res;
+    },
+    [patchNewProject]
+  );
 
   const resetProject = useCallback(() => {
     setProjectDetail(null);
@@ -202,14 +208,16 @@ export function ProjectProvider({ children }) {
   const value = {
     loading,
     error,
-    // Project Detail
+    // Detail
     projectDetail,
     fetchProjectDetail,
     resetProject,
-    // Project List
+    // List
     projectList,
+    setProjectList,
+    listVersion, // ✅ 목록 리패치 트리거 노출
     fetchProjectList,
-    // result file
+    // files
     midResultFile,
     finalResultFile,
     fetchResultFile,
@@ -217,22 +225,22 @@ export function ProjectProvider({ children }) {
     create,
     currentData,
     responseData,
-    // client feedback
+    // feedback
     createFeedback,
     midFeedback,
     finalFeedback,
-    // AI 질문 조회
+    // AI QnA
     fetchAIQuestionList,
     AIQuestionList,
-    // AI 질문 대답
     createResponse,
     AIResponse,
-    // 지원한 디자이너 리스트
+    // designers
     fetchApplyDesigner,
     applyDesigner,
     approveDesignerApply,
-    // 프로젝트 제출
+    // submit
     patchNewProject,
+    submitAndSync, // ✅ 추가
   };
 
   return (

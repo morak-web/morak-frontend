@@ -1,25 +1,23 @@
 // RequirementSummaryPage.jsx
 import MainLayout from '../../../components/layout/MainLayout';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import folderImg from '../../../assets/RequestWrite/folder.png';
 import { useProject } from '../../../context/ProjectContext';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 export default function RequirementSummaryPage() {
   const navigate = useNavigate();
-  const { id } = useParams(); // 문자열일 수 있음
+  const { id } = useParams();
   const projectId = useMemo(() => (id ? String(id) : null), [id]);
 
-  const { responseData, patchNewProject } = useProject();
+  // ✅ submitAndSync가 있으면 그걸 쓰고, 없으면 patchNewProject로 폴백
+  const { responseData, patchNewProject, submitAndSync } = useProject();
 
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false); // 더블클릭/엔터 중복 제출 방지
 
   const startDate = useMemo(() => new Date(), []);
-  const year = startDate.getFullYear();
-  const month = startDate.getMonth() + 1;
-  const day = startDate.getDate();
   const pad = (n) => String(n).padStart(2, '0');
-  const ymdDot = `${year}. ${pad(month)}. ${pad(day)}`;
+  const ymdDot = `${startDate.getFullYear()}. ${pad(startDate.getMonth() + 1)}. ${pad(startDate.getDate())}`;
 
   const CATEGORY = {
     1: '웹사이트',
@@ -46,13 +44,22 @@ export default function RequirementSummaryPage() {
   };
 
   const onSubmit = async () => {
-    if (!projectId || submitting) return; // 가드
+    if (!projectId || submitting || submittingRef.current) return;
+    submittingRef.current = true;
     setSubmitting(true);
     try {
-      // 서버: DRAFT -> MATCHING
-      const res = await patchNewProject(projectId); // 내부에서 PATCH /projects/:id/submit 호출
-      // 성공 시에만 로컬 정리
+      // ✅ 제출 + 작성중 목록에서 제거 (컨텍스트 동기화)
+      if (typeof submitAndSync === 'function') {
+        await submitAndSync(projectId);
+      } else {
+        // 폴백: 컨텍스트가 submitAndSync를 아직 안 노출했으면 기존 PATCH만 수행
+        await patchNewProject(projectId);
+      }
+
+      // 성공 시 로컬 임시 저장 제거
       clearLocalDraft();
+
+      // 완료 페이지로 이동
       navigate('/request/write/complete');
     } catch (e) {
       console.error(e);
@@ -64,13 +71,14 @@ export default function RequirementSummaryPage() {
       alert(msg);
     } finally {
       setSubmitting(false);
+      submittingRef.current = false;
     }
   };
 
   return (
     <MainLayout>
       <div className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center">
-        <div className=" w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgrgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
+        <div className=" w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
           <h1 className="text-[24px] font-bold flex flex-col mb-[30px]">
             의뢰 내용 확인/요약
           </h1>
