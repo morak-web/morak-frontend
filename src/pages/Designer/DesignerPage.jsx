@@ -1,5 +1,5 @@
-import { Link, Outlet } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useCallback } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import pencilIcon from '../../assets/RequestList/pencilIcon.png';
 import { useMyInfo } from '../../context/MyInfoContext';

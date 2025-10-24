@@ -125,7 +125,7 @@ export default function ProjectMatchingList() {
           </div>
         )}
         {seePage ? (
-          <div className="overflow-y-auto max-h-[570px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
+          <div className="overflow-y-auto max-h-[535px] flex flex-col gap-[29px]  custom-scrollbar mr-[13px] pr-[19px]">
             {matchingProjectList?.map((item) => (
               <div key={item.projectId}>
                 <MatchingCard {...item} />

@@ -31,8 +31,10 @@ export default function MatchingDetailPage() {
       const crated = await projectApply(id, { designerId: designerId });
       alert('지원하기 완료');
     } catch (e) {
-      console.error(e);
-      return null;
+      console.error('[applyProject] status:', e.response?.status);
+      console.error('[applyProject] data:', e.response?.data);
+      console.error('[applyProject] sent payload:', payload);
+      throw e;
     }
   };
   const start = new Date(projectDetail?.createdAt);

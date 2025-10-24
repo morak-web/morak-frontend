@@ -60,23 +60,25 @@ export default function AIFeedBackPage({
             </p>
           </div> */}
           {/* <div className="w-full h-[1px] bg-[#D9D9D9] my-[10px]" /> */}
-          <div className="w-full mt-[60px] h-[340px] flex justify-center itmes-center">
-            <img
-              src={morakAI}
-              className="w-[270px] h-[270px] relative bottom-0"
-              alt="morakAI"
-            />
-          </div>
-          <div className="relative w-full h-[200px] ">
-            {/* 본문(유리) */}
-            <div
-              className="topbar relative h-[200px] -mt-[2px] rounded-[14px] p-5 md:p-6 backdrop-blur"
-              style={GradientGlass}
-            >
-              {/* 내용 */}
-              <div className="relative z-10 text-[16px] leading-7 text-zinc-700 whitespace-pre-line">
-                {midAIFeedback?.content}
+          <div className="flex">
+            <div className=" w-[300px] h-[650px] items-end flex justify-center">
+              <img
+                src={morakAI}
+                className="w-[250px] h-[250px] relative bottom-0"
+                alt="morakAI"
+              />
+            </div>
+            <div className="relative w-full h-[650px] ">
+              <div
+                className="topbar relative h-[630px] -mt-[2px] rounded-[14px] p-5 md:p-6 backdrop-blur overflow-y-auto custom-scrollbar"
+                style={GradientGlass}
+              >
+                {/* 내용 */}
+                <div className="relative z-10 text-[16px] leading-7 text-zinc-700 whitespace-pre-line">
+                  {midAIFeedback?.content}
+                </div>
               </div>
+              {/* 본문(유리) */}
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import rightScrollButton from '../../../assets/Designer/right-scroll-button.png';
 import { useDesigner } from '../../../context/DesignerContext';
+import morak from '../../../assets/morak2.png';
 
 export default function MyWorkListPage() {
   const doingRef = useRef(null);
@@ -51,7 +52,9 @@ export default function MyWorkListPage() {
                 navigate(`/designer-page/request-doing/${item.projectId}`)
               }
             >
-              <div className="w-[260px] h-[172px] rounded-[11px] bg-[#DFE1ED] mb-[9px]" />
+              <div className="w-[260px] h-[172px] rounded-[11px] flex justify-center items-center bg-[#dfe1edb9] mb-[9px]">
+                <img src={morak} className="w-[113px] h-[113px]" alt="morak" />
+              </div>
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
                 <div className="flex items-center gap-[16px]">
