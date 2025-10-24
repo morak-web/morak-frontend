@@ -27,7 +27,7 @@ export default function MatchingPage() {
     (item) => item['status'] === 'MATCHING'
   );
   console.log(matchingData);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div></div>;
   if (error) return <div>error!! {String(error.message || error)}</div>;
 
   return (

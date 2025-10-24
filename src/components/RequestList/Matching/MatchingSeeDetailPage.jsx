@@ -53,9 +53,6 @@ export default function MatchingSeeDetailPage() {
                   {projectDetail?.createdAt.slice(0, 10).replaceAll('-', '.')} ~{' '}
                   {projectDetail?.dueDate.slice(0, 10).replaceAll('-', '.')}
                 </p>
-                {/* <p className="font-semibold text-[10px] ">
-                  ₩ {projectDetail?.budgetEstimate.toLocaleString()}
-                </p> */}
               </div>
             </div>
             <div className="w-[100%] h-[1px] border-b-[1px] mb-[10px] border-[#D9D9D9]" />

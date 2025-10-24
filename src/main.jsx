@@ -11,19 +11,17 @@ import { AIFeedbackProvider } from './context/AIFeedbackContext.jsx';
 import { MyInfoProvider } from './context/MyInfoContext.jsx';
 import { ChatProvider } from './context/ChatContext.jsx';
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <MyInfoProvider>
-      <ProjectProvider>
-        <PaymentProvider>
-          <DesignerProvider>
-            <AIFeedbackProvider>
-              <ChatProvider>
-                <App />
-              </ChatProvider>
-            </AIFeedbackProvider>
-          </DesignerProvider>
-        </PaymentProvider>
-      </ProjectProvider>
-    </MyInfoProvider>
-  </StrictMode>
+  <MyInfoProvider>
+    <ProjectProvider>
+      <PaymentProvider>
+        <DesignerProvider>
+          <AIFeedbackProvider>
+            <ChatProvider>
+              <App />
+            </ChatProvider>
+          </AIFeedbackProvider>
+        </DesignerProvider>
+      </PaymentProvider>
+    </ProjectProvider>
+  </MyInfoProvider>
 );

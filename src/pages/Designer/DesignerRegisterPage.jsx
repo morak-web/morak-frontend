@@ -103,11 +103,6 @@ export default function DesignerRegisterPage() {
       });
 
       alert('디자이너 정보가 저장되었습니다.');
-      // 제출 후 비우고 싶다면 아래 주석 해제:
-      // clearLocal();
-      // setInterestedIn('');
-      // setYearsOfExperience('');
-      // setIntro('');
     } catch (e) {
       console.error(e);
       alert('저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.');

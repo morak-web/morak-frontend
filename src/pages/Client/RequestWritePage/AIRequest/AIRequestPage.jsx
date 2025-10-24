@@ -22,7 +22,10 @@ export default function AIRequestPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [hydrated, setHydrated] = useState(false); // ★ 복원 완료 플래그
+  const [reveal, setReveal] = useState(false); // ★ 초기 등장 애니메이션
+
   const scrollRef = useRef(null);
+  const inputRef = useRef(null);
 
   // ★ 로컬 스냅샷 저장/복원 유틸 (키가 없으면 no-op)
   const saveLocal = (data) => {
@@ -61,6 +64,12 @@ export default function AIRequestPage() {
       (a, b) => a.questionId - b.questionId
     );
   };
+
+  // 초기 등장 애니메이션 트리거
+  useEffect(() => {
+    const t = setTimeout(() => setReveal(true), 20);
+    return () => clearTimeout(t);
+  }, []);
 
   // 초기 로드: storageKey가 준비되면 (1) 로컬 복원 → (2) 서버 병합
   useEffect(() => {
@@ -134,6 +143,14 @@ export default function AIRequestPage() {
     saveLocal({ thread, input });
   }, [input]); // thread 저장은 submit/병합 시점에서 처리
 
+  // ★ 복원/병합 완료 후 or 다음 질문 활성화 시 자동 포커스
+  useEffect(() => {
+    if (!hydrated) return;
+    if (hasMoreQuestions && !submitting) {
+      inputRef.current?.focus();
+    }
+  }, [hydrated, hasMoreQuestions, submitting, currentQuestion?.questionId]);
+
   const handleSubmit = async (e) => {
     e && e.preventDefault();
     if (!projectId || submitting) return;
@@ -177,6 +194,10 @@ export default function AIRequestPage() {
       // 실패해도 기존 로컬 상태는 유지
     } finally {
       setSubmitting(false);
+      // DOM 반영 뒤 포커스 회복
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
     }
   };
 
@@ -203,10 +224,14 @@ export default function AIRequestPage() {
 
           {/* Chat */}
           <form onSubmit={handleSubmit} className="w-full h-full">
-            <div className="bg-white h-[530px] rounded-[15px] pl-[30px] pr-[10px] pt-[20px] pb-[10px] flex flex-col justify-between">
+            <div
+              className={`bg-white h-[530px] rounded-[15px] pl-[30px] pr-[10px] pt-[20px] pb-[10px] flex flex-col justify-between
+              transition-all duration-500 ease-out
+              ${reveal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+            >
               <div
                 ref={scrollRef}
-                className="h+[480px] pr-[18px] pb-[20px] custom-scrollbar overflow-y-auto flex flex-col mb-[10px] gap-[26px]"
+                className="h-[480px] pr-[18px] pb-[20px] custom-scrollbar overflow-y-auto flex flex-col mb-[10px] gap-[26px]"
               >
                 {/* 첫 인사 */}
                 <div className="flex gap-[12px]">
@@ -297,6 +322,7 @@ export default function AIRequestPage() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={onKeyDown}
+                  ref={inputRef}
                   disabled={!hasMoreQuestions || submitting}
                   placeholder={
                     hasMoreQuestions

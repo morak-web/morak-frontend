@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import rightScrollButton from '../../../assets/Designer/right-scroll-button.png';
 import { useDesigner } from '../../../context/DesignerContext';
@@ -7,42 +7,86 @@ import morak from '../../../assets/morak2.png';
 export default function MyWorkListPage() {
   const doingRef = useRef(null);
   const finishRef = useRef(null);
-
   const navigate = useNavigate();
 
   const scrollNext = (ref) => {
     if (!ref.current) return;
-    // 한 번에 뷰포트 너비의 80% 만큼 스크롤
-    const amount = ref.current.clientWidth * 0.8;
-    ref.current.scrollBy({ left: amount, behavior: 'smooth' });
+    ref.current.scrollBy({
+      left: ref.current.clientWidth * 0.8,
+      behavior: 'smooth',
+    });
   };
+  const scrollPrev = (ref) => {
+    if (!ref.current) return;
+    ref.current.scrollBy({
+      left: -ref.current.clientWidth * 0.8,
+      behavior: 'smooth',
+    });
+  };
+
+  // ⬇️ 화살표 노출 제어 상태
+  const [doingArrows, setDoingArrows] = useState({ left: false, right: false });
+  const [finishArrows, setFinishArrows] = useState({
+    left: false,
+    right: false,
+  });
+
+  const computeArrows = (el) => {
+    if (!el) return { left: false, right: false };
+    const eps = 1;
+    const left = el.scrollLeft > eps;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - eps;
+    return { left, right };
+  };
+
+  const updateDoingArrows = useCallback(() => {
+    const next = computeArrows(doingRef.current);
+    setDoingArrows((prev) =>
+      prev.left !== next.left || prev.right !== next.right ? next : prev
+    );
+  }, []);
+  const updateFinishArrows = useCallback(() => {
+    const next = computeArrows(finishRef.current);
+    setFinishArrows((prev) =>
+      prev.left !== next.left || prev.right !== next.right ? next : prev
+    );
+  }, []);
 
   const { workingList, completeList, fetchDesignerProject } = useDesigner();
   useEffect(() => {
     fetchDesignerProject('WORKING');
     fetchDesignerProject('COMPLETE');
   }, []);
-  console.log(workingList);
 
-  const STATUS = {
-    WORKING: '작업 중',
-    COMPLETE: '완료',
-  };
+  // 리스트 변경/리사이즈/초기 진입 시 갱신
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      updateDoingArrows();
+      updateFinishArrows();
+    });
+    const onResize = () => {
+      updateDoingArrows();
+      updateFinishArrows();
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [workingList, completeList, updateDoingArrows, updateFinishArrows]);
+
+  const STATUS = { WORKING: '작업 중', COMPLETE: '완료' };
 
   return (
-    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] px-[36px] py-[33px] flex flex-col justify-between">
+    <div className="bg-white w-[95%] min-h-[710px] rounded-[11px] px-[36px] py-[33px] flex flex-col gap-[34px]">
       {/* 진행 중 프로젝트 */}
       <section className="h-[47%] w-full flex flex-col gap-[26px] relative">
         <h1 className="text-[16px] font-medium">진행 중 프로젝트</h1>
 
-        {/* 스크롤 컨테이너 */}
         <div
           ref={doingRef}
-          className="
-            w-full pl-[13px] h-full flex items-start
-            overflow-x-auto scroll-smooth no-scrollbar
-            gap-[48px]
-          "
+          onScroll={updateDoingArrows}
+          className="w-full pl-[13px] h-full flex items-start overflow-x-auto scroll-smooth no-scrollbar gap-[48px]"
         >
           {workingList.map((item) => (
             <div
@@ -72,30 +116,43 @@ export default function MyWorkListPage() {
           ))}
         </div>
 
-        {/* 오른쪽 버튼 */}
-        <button
-          onClick={() => scrollNext(doingRef)}
-          className="
-            absolute right-0 top-1/2 -translate-y-1/2
-            w-[66px] h-[100%] bg-gradient-to-r from-white/0 to-white/100     
-            flex items-center justify-center
-          "
-        >
-          <img src={rightScrollButton} alt="rightScrollButton" />
-        </button>
+        {/* ← 왼쪽 버튼 (여유 있을 때만 표시) */}
+        {doingArrows.left && (
+          <button
+            onClick={() => scrollPrev(doingRef)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-[66px] h-[100%]
+                       bg-gradient-to-r from-white/100 to-white/0 flex items-center justify-center"
+            aria-label="왼쪽으로 스크롤"
+          >
+            <img
+              src={rightScrollButton}
+              alt="leftScrollButton"
+              className="rotate-180"
+            />
+          </button>
+        )}
+
+        {/* → 오른쪽 버튼 (여유 있을 때만 표시) */}
+        {doingArrows.right && (
+          <button
+            onClick={() => scrollNext(doingRef)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[66px] h-[100%]
+                       bg-gradient-to-r from-white/0 to-white/100 flex items-center justify-center"
+            aria-label="오른쪽으로 스크롤"
+          >
+            <img src={rightScrollButton} alt="rightScrollButton" />
+          </button>
+        )}
       </section>
 
       {/* 완료된 프로젝트 */}
-      <section className="h-[47%] w-full flex flex-col gap-[26px] relative">
+      <section className="h-[47%] w-full flex flex-col gap-[20px] relative">
         <h1 className="text-[16px] font-medium">완료된 프로젝트</h1>
 
         <div
           ref={finishRef}
-          className="
-            w-full pl-[13px] h-full flex items-start
-            overflow-x-auto scroll-smooth no-scrollbar
-            gap-[48px]
-          "
+          onScroll={updateFinishArrows}
+          className="w-full pl-[13px] h-full flex items-start overflow-x-auto scroll-smooth no-scrollbar gap-[48px]"
         >
           {completeList?.map((item) => (
             <div
@@ -109,9 +166,7 @@ export default function MyWorkListPage() {
               <div className="flex flex-col items-center">
                 <h1 className="text-[15px] text-[#525466]">{item.title}</h1>
                 <div className="flex items-center gap-[5px]">
-                  <p className="text-[13px] text-[#525466]"></p>
                   <p className="text-[13px] text-[#525466] font-medium">
-                    {' '}
                     {STATUS[item.status]}
                   </p>
                 </div>
@@ -120,16 +175,33 @@ export default function MyWorkListPage() {
           ))}
         </div>
 
-        <button
-          onClick={() => scrollNext(finishRef)}
-          className="
-            absolute right-0 top-1/2 -translate-y-1/2
-            w-[66px] h-[100%] bg-gradient-to-r from-white/0 to-white/100     
-            flex items-center justify-center
-          "
-        >
-          <img src={rightScrollButton} alt="rightScrollButton" />
-        </button>
+        {/* ← 왼쪽 버튼 */}
+        {finishArrows.left && (
+          <button
+            onClick={() => scrollPrev(finishRef)}
+            className="cursor-pointer absolute left-0 top-1/2 -translate-y-1/2 z-10 w-[66px] h-[100%]
+                       bg-gradient-to-r from-white/100 to-white/0 flex items-center justify-center"
+            aria-label="왼쪽으로 스크롤"
+          >
+            <img
+              src={rightScrollButton}
+              alt="leftScrollButton"
+              className="rotate-180"
+            />
+          </button>
+        )}
+
+        {/* → 오른쪽 버튼 */}
+        {finishArrows.right && (
+          <button
+            onClick={() => scrollNext(finishRef)}
+            className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[66px] h-[100%]
+                       bg-gradient-to-r from-white/0 to-white/100 flex items-center justify-center"
+            aria-label="오른쪽으로 스크롤"
+          >
+            <img src={rightScrollButton} alt="rightScrollButton" />
+          </button>
+        )}
       </section>
     </div>
   );

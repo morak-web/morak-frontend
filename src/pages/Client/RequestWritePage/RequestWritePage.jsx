@@ -1,23 +1,27 @@
 // RequestWritePage.jsx
 import MainLayout from '../../../components/layout/MainLayout';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { useProject } from '../../../context/ProjectContext';
 import { useNavigate } from 'react-router-dom';
 // import 'react-datepicker/dist/react-datepicker.css'; // 필요 시 활성화
+import morakAI from '../../../assets/morak2.png'; // 경로 확인
 
 const STORAGE_KEY = 'request_write_draft_v1';
 
 export default function RequestWritePage() {
   const [warning, setWarning] = useState(false);
   const [hydrated, setHydrated] = useState(false); // ★ 복원 완료 플래그
+  const [submitting, setSubmitting] = useState(false); // ★ 제출 중 오버레이
+  const [progress, setProgress] = useState(0); // ★ 진행바 퍼센트 (0~100)
+  const intervalRef = useRef(null);
+
   const navigate = useNavigate();
 
   // api
   const { create, responseData } = useProject();
 
   // ----- state -----
-  const [title, setTitle] = useState('');
   const [budgetEstimate, setBudgetEstimate] = useState('');
   const [userRequirements, setUserRequirements] = useState('');
   const [designerRequirements, setDesignerRequirements] = useState('');
@@ -56,12 +60,20 @@ export default function RequestWritePage() {
   // -------- submit --------
   const onSubmit = async (e) => {
     e.preventDefault();
-    const categoryId = responseData?.categoryId;
+    if (submitting) return;
+
+    const categoryId =
+      Number(localStorage.getItem('draftCategoryId')) ||
+      Number(responseData?.categoryId || 0);
+
+    if (!categoryId) {
+      alert('카테고리 선택 정보가 없습니다. 카테고리를 먼저 선택해 주세요.');
+      return;
+    }
     const referenceUrls = parseReferenceUrls(referenceText);
 
     const payload = {
       categoryId: Number(categoryId),
-      title: title.trim(),
       budgetEstimate: toNumber(budgetEstimate),
       dueDate: toDateString(dueDate),
       userRequirements: userRequirements.trim(),
@@ -70,14 +82,51 @@ export default function RequestWritePage() {
     };
 
     try {
+      setSubmitting(true);
+      setProgress(8); // 시작 시 살짝 채워진 느낌
+
       const created = await create(payload);
-      if (!created) return;
-      const { projectId } = created;
-      navigate(`/request/AI-question/${projectId}`);
+
+      // 성공: 100%까지 채우고 살짝 보여준 뒤 이동
+      setProgress(100);
+      setTimeout(() => {
+        if (!created) return;
+        const { projectId } = created;
+        navigate(`/request/AI-question/${projectId}`);
+      }, 250);
     } catch (err) {
       console.error(err);
+      alert('제출 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setProgress(0);
+      setSubmitting(false);
+    } finally {
+      // 실제 언마운트/네비게이트 전까지 인터벌은 useEffect에서 정리됨
     }
   };
+
+  // -------- 진행바: 제출 중일 때 0~90%까지 서서히 증가 --------
+  useEffect(() => {
+    if (!submitting) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      setProgress(0);
+      return;
+    }
+
+    // 120ms마다 서서히 증가(90%까지만), 남은 10%는 완료 시 채움
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) return prev;
+        const step = Math.max(0.5, (90 - prev) * 0.08); // 점점 느려지는 이징
+        return Math.min(prev + step, 90);
+      });
+    }, 120);
+
+    return () => {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    };
+  }, [submitting]);
 
   // -------- restore once on mount --------
   useEffect(() => {
@@ -85,7 +134,6 @@ export default function RequestWritePage() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw);
-        setTitle(saved.title ?? '');
         setBudgetEstimate(saved.budgetEstimate ?? ''); // 포맷된 문자열 그대로
         setUserRequirements(saved.userRequirements ?? '');
         setDesignerRequirements(saved.designerRequirements ?? '');
@@ -104,7 +152,6 @@ export default function RequestWritePage() {
   useEffect(() => {
     if (!hydrated) return; // ★ 복원 끝나기 전에는 저장 금지
     const draft = {
-      title,
       budgetEstimate, // "1,234,567" 같은 포맷 문자열로 저장 가능
       userRequirements,
       designerRequirements,
@@ -119,7 +166,6 @@ export default function RequestWritePage() {
     }
   }, [
     hydrated,
-    title,
     budgetEstimate,
     userRequirements,
     designerRequirements,
@@ -131,7 +177,6 @@ export default function RequestWritePage() {
   // -------- validation --------
   useEffect(() => {
     const hasAllRequired =
-      !!title &&
       !!budgetEstimate &&
       !!dueDate &&
       !!userRequirements &&
@@ -140,7 +185,6 @@ export default function RequestWritePage() {
 
     setWarning(!hasAllRequired);
   }, [
-    title,
     budgetEstimate,
     dueDate,
     userRequirements,
@@ -152,9 +196,10 @@ export default function RequestWritePage() {
     <MainLayout>
       <form
         onSubmit={onSubmit}
+        aria-busy={submitting}
         className="w-[100%] bg-[#f1f2f8] min-h-[calc(100vh-64px)] py-[30px] flex items-center"
       >
-        <div className=" w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
+        <div className="relative w-[100%] sm:w-[55%] mx-auto bg-white h-[729px] rounded-[16px] shadow-[6px_0px_5px_rgba(0,0,0,0.1),0_7px_6px_rgba(0,0,0,0.1)] px-[42px] py-[29px] flex flex-col justify-between">
           <h1 className="text-[24px] font-bold flex flex-col mb-[30px]">
             의뢰서 직접 작성
           </h1>
@@ -163,13 +208,14 @@ export default function RequestWritePage() {
             {/* 프로젝트 제목 */}
             <div>
               <h1 className="text-[#525466] text-[17px] mb-2">
-                <span className="text-red-600">*</span> 프로젝트 제목
+                <span className="text-[#000000]">*</span> 프로젝트 제목
               </h1>
               <input
+                disabled
                 type="text"
-                className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[100%] text-black font-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694] px-4 text-[15px]"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[100%] text-[#7b7d94] font-[16px] border-[1px] border-transparent outline-none px-4 text-[15px]"
+                value={'AI가 제목을 자동으로 작성해요.'}
+                readOnly
               />
             </div>
 
@@ -183,6 +229,7 @@ export default function RequestWritePage() {
                 className="w-[200px] bg-[#F7F8FC] rounded-[8px] h-[40px] text-black font-[16px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694] pl-8 text-[15px]"
                 value={budgetEstimate}
                 onChange={(e) => setBudgetEstimate(e.target.value)}
+                disabled={submitting}
               />
               <p className="text-[#B0B3C6] text-[14px] absolute bottom-2 left-[10px]">
                 ₩
@@ -205,6 +252,7 @@ export default function RequestWritePage() {
                   className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[121px] text-[14px] text-center outline-none focus:border-[1px] focus:border-[#d6d6d694]"
                   popperPlacement="bottom-start"
                   popperClassName="z-[9999]"
+                  disabled={submitting}
                 />
               </div>
               <p className="text-[#B0B3C6] text-[30px] mx-[25px]">-</p>
@@ -220,6 +268,7 @@ export default function RequestWritePage() {
                   className="bg-[#F7F8FC] rounded-[8px] h-[40px] w-[121px] text-[14px] text-center outline-none focus:border-[1px] focus:border-[#d6d6d694]"
                   popperPlacement="bottom-start"
                   popperClassName="z-[9999]"
+                  disabled={submitting}
                 />
               </div>
             </div>
@@ -237,6 +286,7 @@ export default function RequestWritePage() {
                 className="w-[100%] h-[125px] bg-[#F7F8FC] rounded-[20px] resize-none py-[10px] px-4 text-black text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
                 value={userRequirements}
                 onChange={(e) => setUserRequirements(e.target.value)}
+                disabled={submitting}
               />
             </div>
 
@@ -252,6 +302,7 @@ export default function RequestWritePage() {
                 className="w-[100%] h-[125px] bg-[#F7F8FC] rounded-[20px] resize-none py-[10px] px-4 text-black text-[15px] border-[1px] border-transparent outline-none focus:border-[1px] focus:border-[#d6d6d694]"
                 value={designerRequirements}
                 onChange={(e) => setDesignerRequirements(e.target.value)}
+                disabled={submitting}
               />
             </div>
 
@@ -268,11 +319,8 @@ export default function RequestWritePage() {
                 value={referenceText}
                 onChange={(e) => setReferenceText(e.target.value)}
                 placeholder={`https://linear.app\nhttps://notion.so/...`}
+                disabled={submitting}
               />
-              {/* 미리보기 (선택) */}
-              {/* <div className="mt-2 text-xs text-gray-500">
-                {parseReferenceUrls(referenceText).map((u) => <div key={u}>{u}</div>)}
-              </div> */}
             </div>
           </div>
 
@@ -281,6 +329,7 @@ export default function RequestWritePage() {
               type="button"
               onClick={() => navigate('/request/category')}
               className="text-[18px] cursor-pointer"
+              disabled={submitting}
             >
               이전
             </button>
@@ -288,12 +337,67 @@ export default function RequestWritePage() {
             {/* submit에서만 네비게이션 */}
             <button
               type="submit"
-              disabled={warning}
-              className={`${warning ? 'bg-gray-300 pointer-events-none' : 'bg-[#BDCFFF]'} px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer`}
+              disabled={warning || submitting}
+              className={`px-[17px] py-[8px] rounded-[16px] text-[18px] cursor-pointer ${
+                warning || submitting
+                  ? 'bg-gray-300 pointer-events-none'
+                  : 'bg-[#BDCFFF]'
+              }`}
             >
-              다음
+              {submitting ? '제출 중…' : '다음'}
             </button>
           </div>
+
+          {/* ★ 제출 중 오버레이: 캐릭터 통통 튀기 + 안내 문구 + 점점 차는 진행바 */}
+          {submitting && (
+            <div
+              className="absolute inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-[2px] rounded-[16px]"
+              role="alertdialog"
+              aria-live="assertive"
+              aria-label="제출 중입니다. 잠시만 기다려주세요."
+            >
+              <div className="flex flex-col items-center gap-3">
+                <img
+                  src={morakAI}
+                  alt="모락 캐릭터"
+                  className="w-[72px] h-[72px] animate-bounce"
+                  draggable={false}
+                />
+                <div className="text-[#444] text-[16px] font-medium">
+                  잠시만 기다려주세요
+                </div>
+                <div className="flex items-center gap-1 mt-[-6px]">
+                  <span
+                    className="w-2 h-2 rounded-full bg-[#9aa] animate-bounce"
+                    style={{ animationDelay: '0ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 rounded-full bg-[#9aa] animate-bounce"
+                    style={{ animationDelay: '120ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 rounded-full bg-[#9aa] animate-bounce"
+                    style={{ animationDelay: '240ms' }}
+                  />
+                </div>
+
+                {/* 진행바 */}
+                <div
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(progress)}
+                  className="w-[220px] h-[8px] bg-[#e9ecf6] rounded-full overflow-hidden mt-2"
+                  title={`${Math.round(progress)}%`}
+                >
+                  <div
+                    className="h-full bg-[#BDCFFF] transition-all duration-200 ease-out"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </MainLayout>

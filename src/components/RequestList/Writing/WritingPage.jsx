@@ -117,7 +117,7 @@ export default function WritingPage() {
               {/* 기존: to="/request/category" → 수정: 초안 이어쓰기 */}
               <button
                 onClick={() => handleContinue(item)}
-                className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center"
+                className="text-[#525466] text-[13px] font-semibold bg-[#DFE1ED] py-[10px] rounded-[19px] w-[100%] text-center cursor-pointer"
               >
                 작성 이어가기
               </button>
